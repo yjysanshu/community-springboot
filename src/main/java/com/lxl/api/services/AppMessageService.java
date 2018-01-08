@@ -18,14 +18,13 @@ public class AppMessageService {
     private AppMessageMapper mapper;
 
     public List<AppMessage> getMessage() {
-        List<AppMessage> list = new ArrayList<AppMessage>();
+        List<AppMessage> list = new ArrayList<>();
         list.add(mapper.selectByPrimaryKey("xtt"));
         return list;
     }
 
     public List<AppMessage> getAllMessage(){
-        List<AppMessage> list = new ArrayList<AppMessage>();
-        list = mapper.selectAll();
+        List<AppMessage> list = mapper.selectAll();
         return list;
     }
 

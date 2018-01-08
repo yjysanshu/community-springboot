@@ -2,6 +2,7 @@ package com.lxl.api.controllers;
 
 import com.lxl.api.models.User;
 import com.lxl.api.services.UserService;
+import com.lxl.common.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,13 +54,10 @@ public class UserController {
     public Map<String, Object> addUser(@RequestBody User user){
         System.out.println(user.toString());
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("code", 0);
-        map.put("message", "系统异常！");
         if (userService.addUser(user) > 0) {
-            map.put("code", 1);
-            return map;
+            return FormatUtil.success(null);
         } else {
-            return map;
+            return FormatUtil.fail(map);
         }
     }
 

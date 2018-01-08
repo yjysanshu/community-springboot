@@ -1,13 +1,11 @@
-package com.lxl.api.config;
+package com.lxl.common.config;
 
-import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 /**
- * Created by Administrator on 2017/12/17.
+ * Created by Administrator on 2018/1/8.
  */
-@Configuration
 public class CorsConfig extends WebMvcConfigurerAdapter {
 
     @Override
