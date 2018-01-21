@@ -1,6 +1,6 @@
 package com.lxl.api.services;
 
-import com.lxl.api.mapper.UserMapper;
+import com.lxl.common.mapper.UserMapper;
 import com.lxl.api.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,26 +18,24 @@ public class UserService {
     private UserMapper mapper;
 
     public List<User> getUser() {
-        List<User> list = new ArrayList<User>();
-        list.add(mapper.selectByPrimaryKey("xtt"));
+        List<User> list = new ArrayList<>();
+        list.add(mapper.selectByPrimaryKey(0));
         return list;
     }
 
     public List<User> getAllUser(){
-        List<User> list = new ArrayList<User>();
-        list = mapper.selectAll();
-        return list;
+        return mapper.selectAll(new User());
     }
 
     public int addUser(User user) {
         return mapper.insert(user);
     }
 
-    public List<User> getUserById(String id) {
-        return mapper.getMessById(id);
+    public List<User> getUserById(Integer id) {
+        return mapper.findById(id);
     }
 
-    public int delUser(String id) {
+    public int delUser(Integer id) {
         return mapper.deleteByPrimaryKey(id);
     }
 }

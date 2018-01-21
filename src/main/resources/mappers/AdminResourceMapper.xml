@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxl.common.mapper.AdminResourceMapper" >
+
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.AdminResource" >
+        <id column="admin_resource_id" property="adminResourceId" jdbcType="INTEGER" />
+        <result column="admin_resource_parent_id" property="adminResourceParentId" jdbcType="INTEGER" />
+        <result column="admin_resource_type" property="adminResourceType" jdbcType="INTEGER" />
+        <result column="admin_resource_target" property="adminResourceTarget" jdbcType="VARCHAR" />
+        <result column="admin_resource_data" property="adminResourceData" jdbcType="VARCHAR" />
+        <result column="admin_resource_create_at" property="adminResourceCreateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_resource_update_at" property="adminResourceUpdateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_resource_create_by" property="adminResourceCreateBy" jdbcType="VARCHAR" />
+        <result column="admin_resource_update_by" property="adminResourceUpdateBy" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        admin_resource_id, admin_resource_parent_id, admin_resource_type, admin_resource_target, admin_resource_data,
+         admin_resource_create_at, admin_resource_update_at, admin_resource_create_by, admin_resource_update_by
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from admin_resource
+        where admin_resource_id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from admin_resource
+        where admin_resource_id = #{adminResourceId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
+        insert into admin_resource (id, message, senddate
+        )
+        values (#{admin_resource_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.lxl.common.models.AdminResource" >
+        insert into admin_resource
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="adminResourceId != null" >
+                admin_resource_id,
+            </if>
+            <if test="adminResourceParentId != null" >
+                admin_resource_parent_id,
+            </if>
+            <if test="adminResourceType != null" >
+                admin_resource_type,
+            </if>
+            <if test="adminResourceTarget != null" >
+                admin_resource_target,
+            </if>
+            <if test="adminResourceData != null" >
+                admin_resource_data,
+            </if>
+            <if test="adminResourceCreateAt != null" >
+                admin_resource_create_at,
+            </if>
+            <if test="adminResourceUpdateAt != null" >
+                admin_resource_update_at,
+            </if>
+            <if test="adminResourceCreateBy != null" >
+                admin_resource_create_by,
+            </if>
+            <if test="adminResourceUpdateBy != null" >
+                admin_resource_update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="adminResourceId != null" >
+                #{adminResourceId,jdbcType=INTEGER},
+            </if>
+            <if test="adminResourceParentId != null" >
+                #{adminResourceParentId,jdbcType=INTEGER},
+            </if>
+            <if test="adminResourceType != null" >
+                #{adminResourceType,jdbcType=INTEGER},
+            </if>
+            <if test="adminResourceTarget != null" >
+                #{adminResourceTarget,jdbcType=VARCHAR},
+            </if>
+            <if test="adminResourceData != null" >
+                #{adminResourceData,jdbcType=VARCHAR},
+            </if>
+            <if test="adminResourceCreateAt != null" >
+                #{adminResourceCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminResourceUpdateAt != null" >
+                #{adminResourceUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminResourceCreateBy != null" >
+                #{adminResourceCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminResourceUpdateBy != null" >
+                #{adminResourceUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.AdminResource" >
+        update admin_resource
+        <set>
+            <if test="adminResourceParentId != null" >
+                admin_resource_parent_id = #{adminResourceParentId,jdbcType=INTEGER},
+            </if>
+            <if test="adminResourceType != null" >
+                admin_resource_type = #{adminResourceType,jdbcType=INTEGER},
+            </if>
+            <if test="adminResourceTarget != null" >
+                admin_resource_target = #{adminResourceTarget,jdbcType=VARCHAR},
+            </if>
+            <if test="adminResourceData != null" >
+                admin_resource_data = #{adminResourceData,jdbcType=VARCHAR},
+            </if>
+            <if test="adminResourceCreateAt != null" >
+                admin_resource_create_at = #{adminResourceCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminResourceUpdateAt != null" >
+                admin_resource_update_at = #{adminResourceUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminResourceCreateBy != null" >
+                admin_resource_create_by = #{adminResourceCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminResourceUpdateBy != null" >
+                admin_resource_update_by = #{adminResourceUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where admin_resource_id = #{adminResourceId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
+        update admin_resource
+        set message = #{message,jdbcType=VARCHAR},
+        senddate = #{senddate,jdbcType=TIMESTAMP}
+        where admin_resource_id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.AdminResource">
+        select
+        <include refid="Base_Column_List" />
+        from admin_resource
+        <where>
+            <if test="adminResourceParentId != null" >
+                AND admin_resource_parent_id = #{adminResourceParentId,jdbcType=INTEGER}
+            </if>
+            <if test="adminResourceType != null" >
+                AND admin_resource_type = #{adminResourceType,jdbcType=INTEGER}
+            </if>
+            <if test="adminResourceTarget != null" >
+                AND admin_resource_target = #{adminResourceTarget,jdbcType=VARCHAR}
+            </if>
+            <if test="adminResourceData != null" >
+                AND admin_resource_data = #{adminResourceData,jdbcType=VARCHAR}
+            </if>
+            <if test="adminResourceCreateAt != null" >
+                AND admin_resource_create_at = #{adminResourceCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminResourceUpdateAt != null" >
+                AND admin_resource_update_at = #{adminResourceUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminResourceCreateBy != null" >
+                AND admin_resource_create_by = #{adminResourceCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminResourceUpdateBy != null" >
+                AND admin_resource_update_by = #{adminResourceUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by admin_resource_id asc
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from
+        admin_resource
+        where admin_resource_id = #{id,jdbcType=INTEGER}
+        order by admin_resource_id asc
+    </select>
+
+    <select id="findByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from
+        admin_resource
+        where admin_resource_parent_id = #{parentId,jdbcType=INTEGER}
+        order by admin_resource_id asc
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.AdminResource">
+        SELECT COUNT(*) FROM admin_resource
+        <where>
+            <if test="adminResourceParentId != null" >
+                AND admin_resource_parent_id = #{adminResourceParentId,jdbcType=INTEGER}
+            </if>
+            <if test="adminResourceType != null" >
+                AND admin_resource_type = #{adminResourceType,jdbcType=INTEGER}
+            </if>
+            <if test="adminResourceTarget != null" >
+                AND admin_resource_target = #{adminResourceTarget,jdbcType=VARCHAR}
+            </if>
+            <if test="adminResourceData != null" >
+                AND admin_resource_data = #{adminResourceData,jdbcType=VARCHAR}
+            </if>
+            <if test="adminResourceCreateAt != null" >
+                AND admin_resource_create_at = #{adminResourceCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminResourceUpdateAt != null" >
+                AND admin_resource_update_at = #{adminResourceUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminResourceCreateBy != null" >
+                AND admin_resource_create_by = #{adminResourceCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminResourceUpdateBy != null" >
+                AND admin_resource_update_by = #{adminResourceUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+
+</mapper>

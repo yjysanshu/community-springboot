@@ -1,4 +1,4 @@
-package com.lxl.api.mapper;
+package com.lxl.common.mapper;
 
 import java.util.List;
 
@@ -7,19 +7,21 @@ import java.util.List;
  */
 public interface BaseMapper<T> {
 
-    int deleteByPrimaryKey(String id);
+    int deleteByPrimaryKey(Integer id);
 
     int insert(T record);
 
     int insertSelective(T record);
 
-    T selectByPrimaryKey(String id);
+    T selectByPrimaryKey(Integer id);
 
     int updateByPrimaryKeySelective(T record);
 
     int updateByPrimaryKey(T record);
 
-    List<T> selectAll();
+    int getTotal(T record);
 
-    List<T> getMessById(String id);
+    List<T> selectAll(T record);
+
+    List<T> findById(Integer id);
 }

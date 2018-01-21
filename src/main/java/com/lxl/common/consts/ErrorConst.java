@@ -5,13 +5,17 @@ import java.util.Map;
 
 public class ErrorConst {
 
+    public static int NO_EXCEPTION = 0;
     public static int SYSTEM_EXCEPTION = 1;
+
+    //参数异常errorCode
     public static int PARAMS_EXCEPTION = 10000;
 
-    public static Map<Integer, String> message = new HashMap<>();
-
+    //异常message
+    public static Map<Integer, String> messageMap = new HashMap<>();
     static {
-        message.put(SYSTEM_EXCEPTION, "系统异常，请稍后重试！");
-        message.put(PARAMS_EXCEPTION, "您的请求有误！");
+        messageMap.put(NO_EXCEPTION, "成功");
+        messageMap.put(SYSTEM_EXCEPTION, "系统异常，请稍后重试！");
+        messageMap.put(PARAMS_EXCEPTION, "你的请求参数异常！");
     }
 }

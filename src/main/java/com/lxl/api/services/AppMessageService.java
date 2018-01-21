@@ -1,6 +1,6 @@
 package com.lxl.api.services;
 
-import com.lxl.api.mapper.AppMessageMapper;
+import com.lxl.common.mapper.AppMessageMapper;
 import com.lxl.api.models.AppMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +18,13 @@ public class AppMessageService {
     private AppMessageMapper mapper;
 
     public List<AppMessage> getMessage() {
-        List<AppMessage> list = new ArrayList<AppMessage>();
+        List<AppMessage> list = new ArrayList<>();
         list.add(mapper.selectByPrimaryKey("xtt"));
         return list;
     }
 
     public List<AppMessage> getAllMessage(){
-        List<AppMessage> list = new ArrayList<AppMessage>();
-        list = mapper.selectAll();
+        List<AppMessage> list = mapper.selectAll();
         return list;
     }
 

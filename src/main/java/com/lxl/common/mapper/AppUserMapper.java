@@ -1,4 +1,4 @@
-package com.lxl.api.mapper;
+package com.lxl.common.mapper;
 
 /**
  * Created by Administrator on 2017/12/16.

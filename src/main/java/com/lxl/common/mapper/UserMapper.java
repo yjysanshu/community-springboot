@@ -1,4 +1,4 @@
-package com.lxl.api.mapper;
+package com.lxl.common.mapper;
 
 import com.lxl.api.models.User;
 

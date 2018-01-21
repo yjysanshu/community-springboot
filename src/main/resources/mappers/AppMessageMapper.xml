@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lxl.api.mapper.AppMessageMapper" >
+<mapper namespace="com.lxl.common.mapper.AppMessageMapper" >
 
-    <resultMap id="BaseResultMap" type="com.lxl.api.models.AppMessage" >
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.AppMessage" >
         <id column="id" property="id" jdbcType="VARCHAR" />
         <result column="message" property="message" jdbcType="VARCHAR" />
         <result column="senddate" property="senddate" jdbcType="TIMESTAMP" />
@@ -21,13 +21,13 @@
         delete from appuser_message
         where id = #{id,jdbcType=VARCHAR}
     </delete>
-    <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
+    <insert id="insert" parameterType="com.lxl.common.models.AppMessage" >
         insert into appuser_message (id, message, senddate
         )
         values (#{id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
         )
     </insert>
-    <insert id="insertSelective" parameterType="com.lxl.api.models.AppMessage" >
+    <insert id="insertSelective" parameterType="com.lxl.common.models.AppMessage" >
         insert into appuser_message
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="id != null" >
@@ -52,7 +52,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.api.models.AppMessage" >
+    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.AppMessage" >
         update appuser_message
         <set >
             <if test="message != null" >
@@ -64,7 +64,7 @@
         </set>
         where id = #{id,jdbcType=VARCHAR}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
+    <update id="updateByPrimaryKey" parameterType="com.lxl.common.models.AppMessage" >
         update appuser_message
         set message = #{message,jdbcType=VARCHAR},
         senddate = #{senddate,jdbcType=TIMESTAMP}
