@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxl.common.mapper.HouseHoldMapper" >
+
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.HouseHold" >
+        <id column="house_hold_id" property="houseHoldId" jdbcType="INTEGER" />
+        <result column="house_hold_room_id" property="houseHoldRoomId" jdbcType="INTEGER" />
+        <result column="house_hold_name" property="houseHoldName" jdbcType="VARCHAR" />
+        <result column="house_hold_phone" property="houseHoldPhone" jdbcType="VARCHAR" />
+        <result column="house_hold_sex" property="houseHoldSex" jdbcType="VARCHAR" />
+        <result column="house_hold_individual" property="houseHoldIndividual" jdbcType="VARCHAR" />
+        <result column="house_hold_type" property="houseHoldType" jdbcType="INTEGER" />
+        <result column="house_hold_description" property="houseHoldDescription" jdbcType="VARCHAR" />
+        <result column="house_hold_create_at" property="houseHoldCreateAt" jdbcType="TIMESTAMP" />
+        <result column="house_hold_update_at" property="houseHoldUpdateAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        house_hold_id, house_hold_room_id, house_hold_name, house_hold_phone, house_hold_sex,
+        house_hold_individual, house_hold_type, house_hold_description, house_hold_create_at, house_hold_update_at
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from house
+        where house_id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from house
+        where house_id = #{houseId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.lxl.common.models.HouseHold" >
+        insert into house (id, message, senddate
+        )
+        values (#{house_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.lxl.common.models.HouseHold" >
+        INSERT INTO house
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="houseHoldId != null" >
+                house_hold_id,
+            </if>
+            <if test="houseHoldRoomId != null" >
+                house_hold_room_id,
+            </if>
+            <if test="houseHoldName != null" >
+                house_hold_name,
+            </if>
+            <if test="houseHoldPhone != null" >
+                house_hold_phone,
+            </if>
+            <if test="houseHoldSex != null" >
+                house_hold_sex,
+            </if>
+            <if test="houseHoldIndividual != null" >
+                house_hold_individual,
+            </if>
+            <if test="houseHoldType != null" >
+                house_hold_type,
+            </if>
+            <if test="houseHoldDescription != null" >
+                house_hold_description,
+            </if>
+            <if test="houseHoldCreateAt != null" >
+                house_hold_create_at,
+            </if>
+            <if test="houseHoldUpdateAt != null" >
+                house_hold_update_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="houseHoldId != null" >
+                #{houseHoldId,jdbcType=INTEGER},
+            </if>
+            <if test="houseHoldRoomId != null" >
+                #{houseHoldRoomId,jdbcType=VARCHAR},
+            </if>
+            <if test="houseHoldName != null" >
+                #{houseHoldName,jdbcType=VARCHAR},
+            </if>
+            <if test="houseHoldPhone != null" >
+                #{houseHoldPhone,jdbcType=INTEGER},
+            </if>
+            <if test="houseHoldSex != null" >
+                #{houseHoldSex,jdbcType=VARCHAR},
+            </if>
+            <if test="houseHoldIndividual != null" >
+                #{houseHoldIndividual,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldType != null" >
+                #{houseHoldType,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldDescription != null" >
+                #{houseHoldDescription,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldCreateAt != null" >
+                #{houseHoldCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldUpdateAt != null" >
+                #{houseHoldUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.HouseHold" >
+        UPDATE house_hold
+        <set>
+            <if test="houseHoldId != null" >
+                house_hold_id = #{houseHoldId,jdbcType=INTEGER},
+            </if>
+            <if test="houseHoldRoomId != null" >
+                house_hold_room_id = #{houseHoldRoomId,jdbcType=VARCHAR},
+            </if>
+            <if test="houseHoldName != null" >
+                house_hold_name = #{houseHoldName,jdbcType=VARCHAR},
+            </if>
+            <if test="houseHoldPhone != null" >
+                house_hold_phone = #{houseHoldPhone,jdbcType=INTEGER},
+            </if>
+            <if test="houseHoldSex != null" >
+                house_hold_sex = #{houseHoldSex,jdbcType=VARCHAR},
+            </if>
+            <if test="houseHoldIndividual != null" >
+                house_hold_individual = #{houseHoldIndividual,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldType != null" >
+                house_hold_type = #{houseHoldType,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldDescription != null" >
+                house_hold_description = #{houseHoldDescription,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldCreateAt != null" >
+                house_hold_create_at = #{houseHoldCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="houseHoldUpdateAt != null" >
+                house_hold_update_at = #{houseHoldUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        WHERE house_hold_id = #{houseHoldId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.lxl.common.models.HouseHold" >
+        update house
+        set message = #{message,jdbcType=VARCHAR},
+        senddate = #{senddate,jdbcType=TIMESTAMP}
+        where house_id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.HouseHold">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM house
+        <where>
+            <if test="houseHoldId != null" >
+                AND house_hold_id = #{houseHoldId,jdbcType=INTEGER}
+            </if>
+            <if test="houseHoldRoomId != null" >
+                AND house_hold_room_id = #{houseHoldRoomId,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHoldName != null" >
+                AND house_hold_name = #{houseHoldName,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHoldPhone != null" >
+                AND house_hold_phone = #{houseHoldPhone,jdbcType=INTEGER}
+            </if>
+            <if test="houseHoldSex != null" >
+                AND house_hold_sex = #{houseHoldSex,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHoldIndividual != null" >
+                AND house_hold_individual = #{houseHoldIndividual,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldType != null" >
+                AND house_hold_type = #{houseHoldType,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldDescription != null" >
+                AND house_hold_description = #{houseHoldDescription,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldCreateAt != null" >
+                AND house_hold_create_at = #{houseHoldCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldUpdateAt != null" >
+                AND house_hold_update_at = #{houseHoldUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by house_hold_id DESC
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from
+        house
+        where house_id = #{id,jdbcType=INTEGER}
+        order by house_id asc
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.HouseHold">
+        SELECT COUNT(*) FROM house
+        <where>
+            <if test="houseHoldId != null" >
+                AND house_hold_id = #{houseHoldId,jdbcType=INTEGER}
+            </if>
+            <if test="houseHoldRoomId != null" >
+                AND house_hold_room_id = #{houseHoldRoomId,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHoldName != null" >
+                AND house_hold_name = #{houseHoldName,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHoldPhone != null" >
+                AND house_hold_phone = #{houseHoldPhone,jdbcType=INTEGER}
+            </if>
+            <if test="houseHoldSex != null" >
+                AND house_hold_sex = #{houseHoldSex,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHoldIndividual != null" >
+                AND house_hold_individual = #{houseHoldIndividual,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldType != null" >
+                AND house_hold_type = #{houseHoldType,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldDescription != null" >
+                AND house_hold_description = #{houseHoldDescription,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldCreateAt != null" >
+                AND house_hold_create_at = #{houseHoldCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHoldUpdateAt != null" >
+                AND house_hold_update_at = #{houseHoldUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+</mapper>

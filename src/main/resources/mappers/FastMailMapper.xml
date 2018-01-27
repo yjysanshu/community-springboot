@@ -1,19 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lxl.common.mapper.HouseMapper" >
+<mapper namespace="com.lxl.common.mapper.FastMailMapper" >
 
     <resultMap id="BaseResultMap" type="com.lxl.common.models.House" >
-        <id column="house_id" property="houseId" jdbcType="INTEGER" />
-        <result column="house_code" property="houseCode" jdbcType="VARCHAR" />
-        <result column="house_name" property="houseName" jdbcType="VARCHAR" />
-        <result column="house_stages" property="houseStages" jdbcType="INTEGER" />
-        <result column="house_description" property="houseDescription" jdbcType="VARCHAR" />
-        <result column="house_create_at" property="houseCreateAt" jdbcType="TIMESTAMP" />
-        <result column="house_update_at" property="houseUpdateAt" jdbcType="TIMESTAMP" />
+        <id column="fast_mail_id" property="fastMailId" jdbcType="INTEGER" />
+        <result column="fast_mail_order_no" property="fastMailOrderNo" jdbcType="VARCHAR" />
+        <result column="fast_mail_custom_no" property="fastMailCustomNo" jdbcType="VARCHAR" />
+        <result column="fast_mail_business" property="fastMailBusiness" jdbcType="VARCHAR" />
+        <result column="fast_mail_receive_room_id" property="fastMailReceiveRoomId" jdbcType="INTEGER" />
+        <result column="fast_mail_receive_name" property="fastMailReceiveName" jdbcType="VARCHAR" />
+        <result column="fast_mail_receive_phone" property="fastMailReceivePhone" jdbcType="VARCHAR" />
+        <result column="fast_mail_receive_address" property="fastMailReceiveAddress" jdbcType="VARCHAR" />
+        <result column="fast_mail_status" property="fastMailStatus" jdbcType="INTEGER" />
+        <result column="fast_mail_memo" property="fastMailMemo" jdbcType="VARCHAR" />
+        <result column="fast_mail_create_at" property="fastMailCreateAt" jdbcType="TIMESTAMP" />
+        <result column="fast_mail_update_at" property="fastMailUpdateAt" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        house_id, house_code, house_name, house_stages, house_description, house_create_at, house_update_at
+        fast_mail_id, fast_mail_order_no, fast_mail_custom_no, fast_mail_business, fast_mail_receive_room_id,
+        fast_mail_receive_name, fast_mail_receive_phone, fast_mail_receive_address, fast_mail_status, fast_mail_memo,
+        fast_mail_create_at, fast_mail_update_at
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select
@@ -141,12 +148,12 @@
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        SELECT
+        select
         <include refid="Base_Column_List" />
-        FROM
+        from
         house
-        WHERE house_id = #{id,jdbcType=INTEGER}
-        ORDER BY house_id ASC
+        where house_id = #{id,jdbcType=INTEGER}
+        order by house_id asc
     </select>
 
     <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">

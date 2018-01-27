@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lxl.common.mapper.HouseMapper" >
+<mapper namespace="com.lxl.common.mapper.AdvertMapper" >
 
     <resultMap id="BaseResultMap" type="com.lxl.common.models.House" >
         <id column="house_id" property="houseId" jdbcType="INTEGER" />
@@ -141,12 +141,12 @@
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        SELECT
+        select
         <include refid="Base_Column_List" />
-        FROM
+        from
         house
-        WHERE house_id = #{id,jdbcType=INTEGER}
-        ORDER BY house_id ASC
+        where house_id = #{id,jdbcType=INTEGER}
+        order by house_id asc
     </select>
 
     <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">

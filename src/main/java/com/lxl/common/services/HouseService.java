@@ -1,6 +1,7 @@
 package com.lxl.common.services;
 
-import com.lxl.admin.models.HouseRequest;
+import com.lxl.admin.models.request.HouseRequest;
+import com.lxl.admin.models.response.HouseResponse;
 import com.lxl.common.mapper.HouseMapper;
 import com.lxl.common.models.House;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +17,19 @@ public class HouseService {
     @Autowired
     private HouseMapper houseMapper;
 
-    public List<HouseRequest> getList(HouseRequest request) {
+    public List<HouseResponse> getList(HouseRequest request) {
         House houseSearch = formatModelDetail(request);
         List<House> listHouse = houseMapper.selectAll(houseSearch);
-        List<HouseRequest> list = new ArrayList<>();
-        for (House house : listHouse) {
-            HouseRequest houseRequest = formatInfoDetail(house);
-            list.add(houseRequest);
+        List<HouseResponse> list = new ArrayList<>();
+        for (com.lxl.common.models.House house : listHouse) {
+            HouseResponse response = formatInfoDetail(house);
+            list.add(response);
         }
         return list;
     }
 
     public Integer getTotal(HouseRequest request) {
-        House houseSearch = formatModelDetail(request);
+        com.lxl.common.models.House houseSearch = formatModelDetail(request);
         return houseMapper.getTotal(houseSearch);
     }
 
@@ -37,7 +38,7 @@ public class HouseService {
         if (request.getId() != null) {
             house = houseMapper.selectByPrimaryKey(request.getId());
         } else {
-            house = new House();
+            house = new com.lxl.common.models.House();
             house.setHouseCreateAt(new Date());
         }
         house.setHouseCode(request.getCode());
@@ -51,14 +52,19 @@ public class HouseService {
         }
     }
 
-    private HouseRequest formatInfoDetail(House house) {
-        HouseRequest houseRequest = new HouseRequest();
-        houseRequest.setId(house.getHouseId());
-        houseRequest.setCode(house.getHouseCode());
-        houseRequest.setName(house.getHouseName());
-        houseRequest.setStages(house.getHouseStages());
-        houseRequest.setDescription(house.getHouseDescription());
-        return houseRequest;
+    public String getHouseName(Integer houseId) {
+        House house = houseMapper.selectByPrimaryKey(houseId);
+        return house.getHouseName();
+    }
+
+    private HouseResponse formatInfoDetail(House house) {
+        HouseResponse response = new HouseResponse();
+        response.setId(house.getHouseId());
+        response.setCode(house.getHouseCode());
+        response.setName(house.getHouseName());
+        response.setStages(house.getHouseStages());
+        response.setDescription(house.getHouseDescription());
+        return response;
     }
 
     private House formatModelDetail(HouseRequest request) {

@@ -104,7 +104,123 @@ CREATE TABLE `house` (
   KEY `house_idx2` (`house_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='楼栋管理表';
 
+CREATE TABLE `room` (
+  `room_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '房间ID',
+  `room_house_id` int(11) NOT NULL DEFAULT '0' COMMENT '房间楼栋ID',
+  `room_code` varchar(32) NOT NULL DEFAULT '' COMMENT '房间编号',
+  `room_name` varchar(32) NOT NULL DEFAULT '' COMMENT '房间名称',
+  `room_unit` tinyint(3) NOT NULL DEFAULT '0' COMMENT '房间所属单元',
+  `room_floor` tinyint(3) NOT NULL DEFAULT '0' COMMENT '房间楼层',
+  `room_description` varchar(512) NOT NULL DEFAULT '' COMMENT '房间说明',
+  `room_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `room_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`room_id`),
+  KEY `room_idx1` (`room_code`),
+  KEY `room_idx2` (`room_house_id`, `room_unit`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='房间管理表';
 
+CREATE TABLE `house_hold` (
+  `house_hold_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '住户ID',
+  `house_hold_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '住户房间ID',
+  `house_hold_name` varchar(32) NOT NULL DEFAULT '' COMMENT '住户姓名',
+  `house_hold_phone` varchar(20) NOT NULL DEFAULT '' COMMENT '住户联系方式',
+  `house_hold_sex` enum('f', 'm') NOT NULL DEFAULT 'f' COMMENT '住户性别 f-女, m-男',
+  `house_hold_individual` varchar(18) NOT NULL DEFAULT '' COMMENT '住户身份证号',
+  `house_hold_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '住户类型 0-业主，1-租客',
+  `house_hold_description` varchar(512) NOT NULL DEFAULT '' COMMENT '住户说明',
+  `house_hold_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `house_hold_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`house_hold_id`),
+  KEY `house_hold_idx1` (`house_hold_name`),
+  KEY `house_hold_idx2` (`house_hold_individual`),
+  KEY `house_hold_idx3` (`house_hold_phone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='住户管理表';
 
+CREATE TABLE `advert` (
+  `advert_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '公告ID',
+  `advert_department` varchar(32) NOT NULL DEFAULT '' COMMENT '公告发布单位',
+  `advert_title` varchar(32) NOT NULL DEFAULT '' COMMENT '公告标题',
+  `advert_pic` varchar(100) NOT NULL DEFAULT '' COMMENT '公告图片',
+  `advert_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '公告类型 0-默认公告信息, 1-首页公告',
+  `advert_sort` tinyint(2) NOT NULL DEFAULT '0' COMMENT '公告排序',
+  `advert_is_top` tinyint(1) NOT NULL DEFAULT '0' COMMENT '公告置顶 1-置顶',
+  `advert_content` varchar(512) NOT NULL DEFAULT '' COMMENT '公告内容',
+  `advert_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `advert_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`advert_id`),
+  KEY `advert_idx1` (`advert_title`),
+  KEY `advert_idx2` (`advert_department`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='公告管理表';
 
+CREATE TABLE `fast_mail` (
+  `fast_mail_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '快递ID',
+  `fast_mail_order_no` varchar(32) NOT NULL DEFAULT '' COMMENT '快递单号',
+  `fast_mail_custom_no` varchar(32) NOT NULL DEFAULT '' COMMENT '快递自定义单号',
+  `fast_mail_business` varchar(100) NOT NULL DEFAULT '' COMMENT '快递商',
+  `fast_mail_receive_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '快递收件人房间ID',
+  `fast_mail_receive_name` varchar(100) NOT NULL DEFAULT '' COMMENT '快递收件人姓名',
+  `fast_mail_receive_phone` varchar(20) NOT NULL DEFAULT '' COMMENT '快递收件人联系方式',
+  `fast_mail_receive_address` varchar(512) NOT NULL DEFAULT '' COMMENT '快递收件人详细地址',
+  `fast_mail_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '快递状态 0-未收，1-已收',
+  `fast_mail_memo` varchar(512) NOT NULL DEFAULT '' COMMENT '其他备注',
+  `fast_mail_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `fast_mail_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`fast_mail_id`),
+  KEY `fast_mail_idx1` (`fast_mail_receive_name`),
+  KEY `fast_mail_idx2` (`fast_mail_order_no`),
+  KEY `fast_mail_idx3` (`fast_mail_custom_no`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='快递管理表';
 
+CREATE TABLE `repair_order` (
+  `repair_order_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '报修ID',
+  `repair_order_code` varchar(32) NOT NULL DEFAULT '' COMMENT '报修单号',
+  `repair_order_room_id` int(11) NOT NULL DEFAULT '0' COMMENT '报修房间ID',
+  `repair_order_repair_range_id` int(11) NOT NULL DEFAULT '0' COMMENT '报修范围ID',
+  `repair_order_phone` varchar(20) NOT NULL DEFAULT '' COMMENT '报修联系方式',
+  `repair_order_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '报修状态 0-未处理，1-已修复，2-其他问题',
+  `repair_order_admin_user_id` int(11) NOT NULL DEFAULT '0' COMMENT '报修处理人',
+  `repair_order_description` varchar(512) NOT NULL DEFAULT '' COMMENT '报修详细描述',
+  `repair_order_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `repair_order_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`repair_order_id`),
+  KEY `repair_order_idx1` (`repair_order_code`),
+  KEY `repair_order_idx2` (`repair_order_phone`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='报修管理表';
+
+CREATE TABLE `payment` (
+  `payment_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付ID',
+  `payment_serial_no` varchar(32) NOT NULL DEFAULT '' COMMENT '支付流水号',
+  `payment_card_no` varchar(20) NOT NULL DEFAULT '0' COMMENT '支付卡号',
+  `payment_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '支付类型 0-未知，1-银行卡，2-支付宝，3-微信',
+  `payment_order_id` int(11) NOT NULL DEFAULT '' COMMENT '支付订单ID',
+  `payment_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `payment_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`payment_id`),
+  KEY `repair_order_idx1` (`payment_serial_no`),
+  KEY `repair_order_idx2` (`payment_order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付流水管理表';
+
+CREATE TABLE `order` (
+  `order_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付订单ID',
+  `order_code` varchar(32) NOT NULL DEFAULT '' COMMENT '支付订单单号',
+  `order_house_hold_id` int(11) NOT NULL DEFAULT '0' COMMENT '支付订单住户',
+  `order_type` tinyint(2) NOT NULL DEFAULT '0' COMMENT '支付类型 1-水电费，2-物业费，3-其他费用',
+  `order_amount` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '支付总金额',
+  `order_status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '支付状态 0-待支付，1-支付中，2-支付成功，3-支付失败',
+  `order_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `order_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`order_id`),
+  KEY `order_idx1` (`order_code`),
+  KEY `order_idx2` (`order_house_hold_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付订单管理表';
+
+CREATE TABLE `order_detail` (
+  `order_detail_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '支付详情ID',
+  `order_detail_order_id` varchar(32) NOT NULL DEFAULT '' COMMENT '支付详情支付单号',
+  `order_detail_terms` int(11) NOT NULL DEFAULT '0' COMMENT '支付项',
+  `order_detail_amount` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '支付金额',
+  `order_detail_create_at` datetime NOT NULL DEFAULT '1000-01-01 00:00:00' COMMENT '创建时间',
+  `order_detail_update_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`order_detail_id`),
+  KEY `order_detail_idx1` (`order_detail_order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付订单详情表';

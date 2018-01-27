@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lxl.common.mapper.HouseMapper" >
+<mapper namespace="com.lxl.common.mapper.PaymentMapper" >
 
     <resultMap id="BaseResultMap" type="com.lxl.common.models.House" >
-        <id column="house_id" property="houseId" jdbcType="INTEGER" />
-        <result column="house_code" property="houseCode" jdbcType="VARCHAR" />
-        <result column="house_name" property="houseName" jdbcType="VARCHAR" />
-        <result column="house_stages" property="houseStages" jdbcType="INTEGER" />
-        <result column="house_description" property="houseDescription" jdbcType="VARCHAR" />
-        <result column="house_create_at" property="houseCreateAt" jdbcType="TIMESTAMP" />
-        <result column="house_update_at" property="houseUpdateAt" jdbcType="TIMESTAMP" />
+        <id column="payment_id" property="paymentId" jdbcType="INTEGER" />
+        <result column="payment_serial_no" property="paymentSerialNo" jdbcType="VARCHAR" />
+        <result column="payment_card_no" property="paymentCardNo" jdbcType="VARCHAR" />
+        <result column="payment_type" property="paymentType" jdbcType="INTEGER" />
+        <result column="payment_order_id" property="paymentOrderId" jdbcType="INTEGER" />
+        <result column="payment_create_at" property="paymentCreateAt" jdbcType="TIMESTAMP" />
+        <result column="payment_update_at" property="paymentUpdateAt" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -141,12 +141,12 @@
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        SELECT
+        select
         <include refid="Base_Column_List" />
-        FROM
+        from
         house
-        WHERE house_id = #{id,jdbcType=INTEGER}
-        ORDER BY house_id ASC
+        where house_id = #{id,jdbcType=INTEGER}
+        order by house_id asc
     </select>
 
     <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">

@@ -1,7 +1,8 @@
 package com.lxl.admin.controllers;
 
-import com.lxl.admin.models.request.HouseRequest;
-import com.lxl.common.services.HouseService;
+import com.lxl.admin.models.House;
+import com.lxl.admin.models.request.AdvertRequest;
+import com.lxl.common.services.AdvertService;
 import com.lxl.common.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,22 +13,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/house")
-public class HouseController {
+@RequestMapping("/advert")
+public class AdvertController {
 
     @Autowired
-    private HouseService houseService;
+    private AdvertService advertService;
 
     @RequestMapping("/list")
-    public Map list(@RequestBody HouseRequest request) {
+    public Map list(@RequestBody AdvertRequest request) {
         Map<String, Object> map = new HashMap<>();
-        map.put("list", houseService.getList(request));
-        map.put("total", houseService.getTotal(request));
+        map.put("list", advertService.getList(request));
+        map.put("total", advertService.getTotal(request));
         return FormatUtil.success(map);
     }
 
     @RequestMapping("/save")
-    public Map save(@RequestBody HouseRequest request) {
-        return FormatUtil.success(houseService.save(request));
+    public Map save(@RequestBody AdvertRequest request) {
+        return FormatUtil.success(advertService.save(request));
     }
 }

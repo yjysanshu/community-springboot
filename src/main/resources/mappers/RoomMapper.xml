@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxl.common.mapper.RoomMapper" >
+
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.Room" >
+        <id column="room_id" property="roomId" jdbcType="INTEGER" />
+        <result column="room_house_id" property="roomHouseId" jdbcType="INTEGER" />
+        <result column="room_code" property="roomCode" jdbcType="VARCHAR" />
+        <result column="room_name" property="roomName" jdbcType="VARCHAR" />
+        <result column="room_unit" property="roomUnit" jdbcType="INTEGER" />
+        <result column="room_floor" property="roomFloor" jdbcType="INTEGER" />
+        <result column="room_description" property="roomDescription" jdbcType="VARCHAR" />
+        <result column="room_create_at" property="roomCreateAt" jdbcType="TIMESTAMP" />
+        <result column="room_update_at" property="roomUpdateAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        room_id, room_house_id, room_code, room_name, room_unit, room_floor, room_description, room_create_at, room_update_at
+    </sql>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        select
+        <include refid="Base_Column_List" />
+        from room
+        where room_id = #{id,jdbcType=VARCHAR}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+        delete from room
+        where room_id = #{houseId,jdbcType=INTEGER}
+    </delete>
+    <insert id="insert" parameterType="com.lxl.common.models.Room" >
+        insert into room (id, message, senddate
+        )
+        values (#{room_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.lxl.common.models.Room" >
+        insert into room
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="roomId != null" >
+                room_id,
+            </if>
+            <if test="roomHouseId != null" >
+                room_house_id,
+            </if>
+            <if test="roomCode != null" >
+                room_code,
+            </if>
+            <if test="roomName != null" >
+                room_name,
+            </if>
+            <if test="roomUnit != null" >
+                room_unit,
+            </if>
+            <if test="roomFloor != null" >
+                room_floor,
+            </if>
+            <if test="roomDescription != null" >
+                room_description,
+            </if>
+            <if test="roomCreateAt != null" >
+                room_create_at,
+            </if>
+            <if test="roomUpdateAt != null" >
+                room_update_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="roomId != null" >
+                #{roomId,jdbcType=INTEGER},
+            </if>
+            <if test="roomHouseId != null" >
+                #{roomHouseId,jdbcType=INTEGER},
+            </if>
+            <if test="roomCode != null" >
+                #{roomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="roomName != null" >
+                #{roomName,jdbcType=VARCHAR},
+            </if>
+            <if test="roomUnit != null" >
+                #{roomUnit,jdbcType=INTEGER},
+            </if>
+            <if test="roomFloor != null" >
+                #{roomFloor,jdbcType=INTEGER},
+            </if>
+            <if test="roomDescription != null" >
+                #{roomDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="roomCreateAt != null" >
+                #{roomCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="roomUpdateAt != null" >
+                #{roomUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.Room" >
+        update room
+        <set>
+            <if test="roomId != null" >
+                room_id = #{roomId,jdbcType=INTEGER},
+            </if>
+            <if test="roomHouseId != null" >
+                room_house_id = #{roomHouseId,jdbcType=INTEGER},
+            </if>
+            <if test="roomCode != null" >
+                room_code = #{roomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="roomName != null" >
+                room_name = #{roomName,jdbcType=VARCHAR},
+            </if>
+            <if test="roomUnit != null" >
+                room_unit = #{roomUnit,jdbcType=INTEGER},
+            </if>
+            <if test="roomFloor != null" >
+                room_floor = #{roomFloor,jdbcType=INTEGER},
+            </if>
+            <if test="roomDescription != null" >
+                room_description = #{roomDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="roomCreateAt != null" >
+                room_create_at = #{roomCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="roomUpdateAt != null" >
+                room_update_at = #{roomUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where room_id = #{roomId,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.lxl.common.models.Room" >
+        update room
+        set message = #{message,jdbcType=VARCHAR},
+        senddate = #{senddate,jdbcType=TIMESTAMP}
+        where house_id = #{id,jdbcType=VARCHAR}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.Room">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM room
+        <where>
+            <if test="roomId != null" >
+                AND room_id = #{roomId,jdbcType=INTEGER}
+            </if>
+            <if test="roomHouseId != null" >
+                AND room_house_id = #{roomHouseId,jdbcType=INTEGER}
+            </if>
+            <if test="roomCode != null" >
+                <bind name="pattern" value="'%' + roomCode +'%'" />
+                AND room_code = #{pattern,jdbcType=VARCHAR}
+            </if>
+            <if test="roomName != null" >
+                <bind name="pattern" value="'%' + roomName +'%'" />
+                AND room_name = #{pattern,jdbcType=VARCHAR}
+            </if>
+            <if test="roomUnit != null" >
+                AND room_unit = #{roomUnit,jdbcType=INTEGER}
+            </if>
+            <if test="roomFloor != null" >
+                AND room_floor = #{roomFloor,jdbcType=INTEGER}
+            </if>
+            <if test="roomDescription != null" >
+                AND room_description = #{roomDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="roomCreateAt != null" >
+                AND room_create_at = #{roomCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="roomUpdateAt != null" >
+                AND room_update_at = #{roomUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        order by room_id DESC
+    </select>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        select
+        <include refid="Base_Column_List" />
+        from
+        room
+        where room_id = #{id,jdbcType=INTEGER}
+        order by room_id asc
+    </select>
+
+    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.Room">
+        SELECT COUNT(*) FROM room
+        <where>
+            <if test="roomId != null" >
+                AND room_id = #{roomId,jdbcType=INTEGER}
+            </if>
+            <if test="roomHouseId != null" >
+                AND room_house_id = #{roomHouseId,jdbcType=INTEGER}
+            </if>
+            <if test="roomCode != null" >
+                <bind name="pattern" value="'%' + roomCode +'%'" />
+                AND room_code = #{pattern,jdbcType=VARCHAR}
+            </if>
+            <if test="roomName != null" >
+                <bind name="pattern" value="'%' + roomName +'%'" />
+                AND room_name = #{pattern,jdbcType=VARCHAR}
+            </if>
+            <if test="roomUnit != null" >
+                AND room_unit = #{roomUnit,jdbcType=INTEGER}
+            </if>
+            <if test="roomFloor != null" >
+                AND room_floor = #{roomFloor,jdbcType=INTEGER}
+            </if>
+            <if test="roomDescription != null" >
+                AND room_description = #{roomDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="roomCreateAt != null" >
+                AND room_create_at = #{roomCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="roomUpdateAt != null" >
+                AND room_update_at = #{roomUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+</mapper>

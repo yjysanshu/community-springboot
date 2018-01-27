@@ -1,6 +1,7 @@
 package com.lxl.admin.controllers;
 
-import com.lxl.admin.models.request.HouseRequest;
+import com.lxl.admin.models.request.HouseHoldRequest;
+import com.lxl.common.services.HouseHoldService;
 import com.lxl.common.services.HouseService;
 import com.lxl.common.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +13,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/house")
-public class HouseController {
+@RequestMapping("/house-hold")
+public class HouseHoldController {
 
     @Autowired
-    private HouseService houseService;
+    private HouseHoldService houseHoldService;
 
     @RequestMapping("/list")
-    public Map list(@RequestBody HouseRequest request) {
+    public Map list(@RequestBody HouseHoldRequest request) {
         Map<String, Object> map = new HashMap<>();
-        map.put("list", houseService.getList(request));
-        map.put("total", houseService.getTotal(request));
+        map.put("list", houseHoldService.getList(request));
+        map.put("total", houseHoldService.getTotal(request));
         return FormatUtil.success(map);
     }
 
     @RequestMapping("/save")
-    public Map save(@RequestBody HouseRequest request) {
-        return FormatUtil.success(houseService.save(request));
+    public Map save(@RequestBody HouseHoldRequest request) {
+        return FormatUtil.success(houseHoldService.save(request));
     }
 }

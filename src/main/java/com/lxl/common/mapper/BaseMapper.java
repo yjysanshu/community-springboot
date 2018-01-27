@@ -24,4 +24,6 @@ public interface BaseMapper<T> {
     List<T> selectAll(T record);
 
     List<T> findById(Integer id);
+
+    T findOneById(Integer id);
 }

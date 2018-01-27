@@ -1,8 +1,6 @@
-package com.lxl.admin.models;
+package com.lxl.admin.models.response;
 
-import com.lxl.admin.models.request.BaseRequest;
-
-public class MenuBase extends BaseRequest {
+public class MenuResponse {
     private Integer id;
     private String url;
     private Integer parentId;

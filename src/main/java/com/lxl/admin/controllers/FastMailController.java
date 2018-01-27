@@ -1,6 +1,7 @@
 package com.lxl.admin.controllers;
 
-import com.lxl.admin.models.request.HouseRequest;
+import com.lxl.admin.models.request.FastMailRequest;
+import com.lxl.common.services.FastMailService;
 import com.lxl.common.services.HouseService;
 import com.lxl.common.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,22 +13,22 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/house")
-public class HouseController {
+@RequestMapping("/fast-mail")
+public class FastMailController {
 
     @Autowired
-    private HouseService houseService;
+    private FastMailService fastMailService;
 
     @RequestMapping("/list")
-    public Map list(@RequestBody HouseRequest request) {
+    public Map list(@RequestBody FastMailRequest request) {
         Map<String, Object> map = new HashMap<>();
-        map.put("list", houseService.getList(request));
-        map.put("total", houseService.getTotal(request));
+        map.put("list", fastMailService.getList(request));
+        map.put("total", fastMailService.getTotal(request));
         return FormatUtil.success(map);
     }
 
     @RequestMapping("/save")
-    public Map save(@RequestBody HouseRequest request) {
-        return FormatUtil.success(houseService.save(request));
+    public Map save(@RequestBody FastMailRequest request) {
+        return FormatUtil.success(fastMailService.save(request));
     }
 }

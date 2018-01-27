@@ -1,19 +1,11 @@
-package com.lxl.admin.models;
+package com.lxl.admin.models.response;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.util.Date;
-
-public class HouseRequest extends BaseRequest {
+public class HouseResponse extends BaseResponse {
     private Integer id;
     private String code;
     private String name;
     private Integer stages;
     private String description;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createAt;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateAt;
 
     public Integer getId() {
         return id;
@@ -53,21 +45,5 @@ public class HouseRequest extends BaseRequest {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
-    }
-
-    public Date getUpdateAt() {
-        return updateAt;
-    }
-
-    public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
     }
 }

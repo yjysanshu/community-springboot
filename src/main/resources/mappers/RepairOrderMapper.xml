@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lxl.common.mapper.HouseMapper" >
+<mapper namespace="com.lxl.common.mapper.RepairOrderMapper" >
 
     <resultMap id="BaseResultMap" type="com.lxl.common.models.House" >
-        <id column="house_id" property="houseId" jdbcType="INTEGER" />
-        <result column="house_code" property="houseCode" jdbcType="VARCHAR" />
-        <result column="house_name" property="houseName" jdbcType="VARCHAR" />
-        <result column="house_stages" property="houseStages" jdbcType="INTEGER" />
-        <result column="house_description" property="houseDescription" jdbcType="VARCHAR" />
-        <result column="house_create_at" property="houseCreateAt" jdbcType="TIMESTAMP" />
-        <result column="house_update_at" property="houseUpdateAt" jdbcType="TIMESTAMP" />
+        <id column="repair_order_id" property="repairOrderId" jdbcType="INTEGER" />
+        <result column="repair_order_code" property="repairOrderCode" jdbcType="VARCHAR" />
+        <result column="repair_order_room_id" property="repairOrderRoomId" jdbcType="INTEGER" />
+        <result column="repair_order_repair_range_id" property="repairOrderRepairRangeId" jdbcType="INTEGER" />
+        <result column="repair_order_phone" property="repairOrderPhone" jdbcType="VARCHAR" />
+        <result column="repair_order_status" property="repairOrderStatus" jdbcType="INTEGER" />
+        <result column="repair_order_admin_user_id" property="repairOrderAdminUserId" jdbcType="INTEGER" />
+        <result column="repair_order_description" property="repairOrderDescription" jdbcType="VARCHAR" />
+        <result column="repair_order_create_at" property="repairOrderCreateAt" jdbcType="TIMESTAMP" />
+        <result column="repair_order_update_at" property="repairOrderUpdateAt" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        house_id, house_code, house_name, house_stages, house_description, house_create_at, house_update_at
+        repair_order_id, repair_order_code, repair_order_room_id, repair_order_repair_range_id, repair_order_phone,
+        repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at
     </sql>
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select
@@ -141,12 +145,12 @@
     </select>
 
     <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        SELECT
+        select
         <include refid="Base_Column_List" />
-        FROM
+        from
         house
-        WHERE house_id = #{id,jdbcType=INTEGER}
-        ORDER BY house_id ASC
+        where house_id = #{id,jdbcType=INTEGER}
+        order by house_id asc
     </select>
 
     <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">

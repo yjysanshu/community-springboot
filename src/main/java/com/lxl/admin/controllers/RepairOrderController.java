@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/house")
-public class HouseController {
+@RequestMapping("/repair-order")
+public class RepairOrderController {
 
     @Autowired
     private HouseService houseService;
