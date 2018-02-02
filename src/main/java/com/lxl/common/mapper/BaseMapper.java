@@ -7,23 +7,17 @@ import java.util.List;
  */
 public interface BaseMapper<T> {
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteOneById(Integer id);
 
     int insert(T record);
 
-    int insertSelective(T record);
+    int insertByParams(T record);
 
-    T selectByPrimaryKey(Integer id);
+    int updateByIdAndParams(T record);
 
-    int updateByPrimaryKeySelective(T record);
+    int findTotalByParams(T record);
 
-    int updateByPrimaryKey(T record);
-
-    int getTotal(T record);
-
-    List<T> selectAll(T record);
-
-    List<T> findById(Integer id);
+    List<T> findByParams(T record);
 
     T findOneById(Integer id);
 }

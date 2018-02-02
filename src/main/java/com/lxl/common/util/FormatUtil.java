@@ -4,6 +4,7 @@ import com.lxl.common.consts.ErrorConst;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -48,6 +49,13 @@ public class FormatUtil {
         map.put("code", errorCode);
         map.put("message", message);
         map.put("data", data);
+        return map;
+    }
+
+    public static Map formatList(List list, Integer total) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("list", list);
+        map.put("total", total);
         return map;
     }
 }

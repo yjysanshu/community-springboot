@@ -24,7 +24,7 @@ public class RoomService {
 
     public List<RoomResponse> getList(RoomRequest request) {
         Room roomSearch = formatModelDetail(request);
-        List<Room> listRoom = roomMapper.selectAll(roomSearch);
+        List<Room> listRoom = roomMapper.findByParams(roomSearch);
         List<RoomResponse> list = new ArrayList<>();
         for (Room room : listRoom) {
             RoomResponse roomResponse = formatResponseDetail(room);
@@ -36,13 +36,13 @@ public class RoomService {
 
     public Integer getTotal(RoomRequest request) {
         Room roomSearch = formatModelDetail(request);
-        return roomMapper.getTotal(roomSearch);
+        return roomMapper.findTotalByParams(roomSearch);
     }
 
     public Integer save(RoomRequest request) {
         Room room;
         if (request.getId() != null) {
-            room = roomMapper.selectByPrimaryKey(request.getId());
+            room = roomMapper.findOneById(request.getId());
         } else {
             room = new Room();
             room.setRoomCreateAt(new Date());
@@ -54,9 +54,9 @@ public class RoomService {
         room.setRoomFloor(request.getFloor());
         room.setRoomDescription(request.getDescription());
         if (request.getId() != null) {
-            return roomMapper.updateByPrimaryKeySelective(room);
+            return roomMapper.updateByIdAndParams(room);
         } else {
-            return roomMapper.insertSelective(room);
+            return roomMapper.insertByParams(room);
         }
     }
 

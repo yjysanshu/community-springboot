@@ -6,7 +6,7 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.web.WebApplicationInitializer;
 
 @SpringBootApplication
-@MapperScan("com.lxl.common.mapper")
+@MapperScan(value = {"com.lxl.common.mapper", "com.lxl.generator.mapper"})
 public class Application extends SpringBootServletInitializer implements WebApplicationInitializer {
 
 	@Override
@@ -16,7 +16,6 @@ public class Application extends SpringBootServletInitializer implements WebAppl
 	}
 
 	public static void main(String[] args) {
-		//System.out.println("111111");
 		SpringApplication.run(Application.class, args);
 	}
 }

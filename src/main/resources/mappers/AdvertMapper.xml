@@ -15,22 +15,26 @@
     <sql id="Base_Column_List" >
         house_id, house_code, house_name, house_stages, house_description, house_create_at, house_update_at
     </sql>
+
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
         select
         <include refid="Base_Column_List" />
         from house
         where house_id = #{id,jdbcType=VARCHAR}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
         delete from house
         where house_id = #{houseId,jdbcType=INTEGER}
     </delete>
+
     <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
         insert into house (id, message, senddate
         )
         values (#{house_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
         )
     </insert>
+
     <insert id="insertSelective" parameterType="com.lxl.common.models.House" >
         insert into house
         <trim prefix="(" suffix=")" suffixOverrides="," >
@@ -80,6 +84,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.House" >
         update house
         <set>
@@ -104,6 +109,7 @@
         </set>
         where house_id = #{houseId,jdbcType=INTEGER}
     </update>
+
     <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
         update house
         set message = #{message,jdbcType=VARCHAR},
@@ -174,5 +180,4 @@
             </if>
         </where>
     </select>
-
 </mapper>

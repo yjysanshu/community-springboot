@@ -39,15 +39,9 @@ public class UserController {
     }
 
     @RequestMapping("/getByID")
-    public List<User> getUserById(@RequestParam("id") Integer id){
-        List<User> list = userService.getUserById(id);
-        int num = list.size();
-        if(null!=list && num>5){
-            for (int i = 0; i < num-5; i++) {
-                list.remove(0);
-            }
-        }
-        return list;
+    public User getUserById(@RequestParam("id") Integer id){
+        User user = userService.getUserById(id);
+        return user;
     }
 
     @RequestMapping(value = "/add")

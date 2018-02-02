@@ -1,0 +1,26 @@
+#! /bin/bash
+
+echo "[0]develop"
+echo "[1]prod"
+
+read -p '请输入当前环境编号:' ENV
+
+if [ $ENV == 0 ]; then
+    rm src/main/java/com/lxl/Application.java
+    echo "package com.lxl;" >> src/main/java/com/lxl/Application.java
+    echo >> src/main/java/com/lxl/Application.java
+    cat src/main/resources/environment/dev/Application.java >> src/main/java/com/lxl/Application.java
+
+    rm pom.xml
+    cat src/main/resources/environment/dev/pom.xml >> pom.xml
+elif [ $ENV == 1 ]; then
+    rm src/main/java/com/lxl/Application.java
+    echo "package com.lxl;" >> src/main/java/com/lxl/Application.java
+    echo >> src/main/java/com/lxl/Application.java
+    cat src/main/resources/environment/prod/Application.java >> src/main/java/com/lxl/Application.java
+
+    rm pom.xml
+    cat src/main/resources/environment/prod/pom.xml >> pom.xml
+else
+    echo "3333"
+fi

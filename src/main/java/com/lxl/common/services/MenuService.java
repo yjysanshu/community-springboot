@@ -23,7 +23,7 @@ public class MenuService {
     public Integer save(Menu menu) throws JsonProcessingException {
         AdminResource adminResource;
         if (menu.getId() != null) {
-            adminResource = armapper.selectByPrimaryKey(menu.getId());
+            adminResource = armapper.findOneById(menu.getId());
         } else {
             adminResource = new AdminResource();
             adminResource.setAdminResourceType(0);
@@ -32,14 +32,14 @@ public class MenuService {
         adminResource.setAdminResourceTarget(menu.getUrl());
         adminResource.setAdminResourceData(JSONUtil.menuToJson(menu));
         if (menu.getId() != null) {
-            return armapper.updateByPrimaryKeySelective(adminResource);
+            return armapper.updateByIdAndParams(adminResource);
         } else {
-            return armapper.insertSelective(adminResource);
+            return armapper.insertByParams(adminResource);
         }
     }
 
     public List<MenuBase> getList(Menu request) throws IOException {
-        List<AdminResource> listAdminResource = armapper.selectAll(formatModelDetail(request));
+        List<AdminResource> listAdminResource = armapper.findByParams(formatModelDetail(request));
         List<MenuBase> listMenu = new ArrayList<>();
         for (AdminResource adminResource : listAdminResource) {
             MenuBase menu = formatInfoBaseDetail(adminResource);

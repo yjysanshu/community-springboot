@@ -1,6 +1,5 @@
 package com.lxl.admin.controllers;
 
-import com.lxl.admin.models.House;
 import com.lxl.admin.models.request.AdvertRequest;
 import com.lxl.common.services.AdvertService;
 import com.lxl.common.util.FormatUtil;
@@ -30,5 +29,10 @@ public class AdvertController {
     @RequestMapping("/save")
     public Map save(@RequestBody AdvertRequest request) {
         return FormatUtil.success(advertService.save(request));
+    }
+
+    @RequestMapping("/del")
+    public Map delete(Integer id) {
+        return FormatUtil.success(advertService.delete(id));
     }
 }

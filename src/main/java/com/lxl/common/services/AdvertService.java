@@ -20,7 +20,7 @@ public class AdvertService {
 
     public List<AdvertResponse> getList(AdvertRequest request) {
         Advert advertSearch = formatModelDetail(request);
-        List<Advert> listAdvert = advertMapper.selectAll(advertSearch);
+        List<Advert> listAdvert = advertMapper.findByParams(advertSearch);
         List<AdvertResponse> list = new ArrayList<>();
         for (Advert advert : listAdvert) {
             AdvertResponse advertResponse = formatResponseDetail(advert);
@@ -31,13 +31,13 @@ public class AdvertService {
 
     public Integer getTotal(AdvertRequest request) {
         Advert advertSearch = formatModelDetail(request);
-        return advertMapper.getTotal(advertSearch);
+        return advertMapper.findTotalByParams(advertSearch);
     }
 
     public Integer save(AdvertRequest request) {
         Advert advert;
         if (request.getId() != null) {
-            advert = advertMapper.selectByPrimaryKey(request.getId());
+            advert = advertMapper.findOneById(request.getId());
         } else {
             advert = new Advert();
             advert.setAdvertCreateAt(new Date());
@@ -49,12 +49,15 @@ public class AdvertService {
         advert.setAdvertSort(request.getSort());
         advert.setAdvertIsTop(request.getIsTop());
         advert.setAdvertContent(request.getContent());
-        advert.setAdvertCreateAt(request.getCreateAt());
         if (request.getId() != null) {
-            return advertMapper.updateByPrimaryKeySelective(advert);
+            return advertMapper.updateByIdAndParams(advert);
         } else {
-            return advertMapper.insertSelective(advert);
+            return advertMapper.insertByParams(advert);
         }
+    }
+
+    public Integer delete(Integer id) {
+        return advertMapper.deleteOneById(id);
     }
 
     private AdvertResponse formatResponseDetail(Advert advert) {

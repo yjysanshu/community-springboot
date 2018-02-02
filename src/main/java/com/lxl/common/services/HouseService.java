@@ -19,7 +19,7 @@ public class HouseService {
 
     public List<HouseResponse> getList(HouseRequest request) {
         House houseSearch = formatModelDetail(request);
-        List<House> listHouse = houseMapper.selectAll(houseSearch);
+        List<House> listHouse = houseMapper.findByParams(houseSearch);
         List<HouseResponse> list = new ArrayList<>();
         for (com.lxl.common.models.House house : listHouse) {
             HouseResponse response = formatInfoDetail(house);
@@ -30,13 +30,13 @@ public class HouseService {
 
     public Integer getTotal(HouseRequest request) {
         com.lxl.common.models.House houseSearch = formatModelDetail(request);
-        return houseMapper.getTotal(houseSearch);
+        return houseMapper.findTotalByParams(houseSearch);
     }
 
     public Integer save(HouseRequest request) {
         House house;
         if (request.getId() != null) {
-            house = houseMapper.selectByPrimaryKey(request.getId());
+            house = houseMapper.findOneById(request.getId());
         } else {
             house = new com.lxl.common.models.House();
             house.setHouseCreateAt(new Date());
@@ -46,14 +46,14 @@ public class HouseService {
         house.setHouseDescription(request.getDescription());
         house.setHouseStages(request.getStages());
         if (request.getId() != null) {
-            return houseMapper.updateByPrimaryKeySelective(house);
+            return houseMapper.updateByIdAndParams(house);
         } else {
-            return houseMapper.insertSelective(house);
+            return houseMapper.insertByParams(house);
         }
     }
 
     public String getHouseName(Integer houseId) {
-        House house = houseMapper.selectByPrimaryKey(houseId);
+        House house = houseMapper.findOneById(houseId);
         return house.getHouseName();
     }
 

@@ -20,7 +20,7 @@ public class PaymentService {
 
     public List<PaymentResponse> getList(PaymentRequest request) {
         Payment paymentSearch = formatModelDetail(request);
-        List<Payment> listPayment = paymentMapper.selectAll(paymentSearch);
+        List<Payment> listPayment = paymentMapper.findByParams(paymentSearch);
         List<PaymentResponse> list = new ArrayList<>();
         for (Payment payment : listPayment) {
             PaymentResponse paymentResponse = formatResponseDetail(payment);
@@ -31,22 +31,22 @@ public class PaymentService {
 
     public Integer getTotal(PaymentRequest request) {
         Payment paymentSearch = formatModelDetail(request);
-        return paymentMapper.getTotal(paymentSearch);
+        return paymentMapper.findTotalByParams(paymentSearch);
     }
 
     public Integer save(PaymentRequest request) {
         Payment payment;
         if (request.getId() != null) {
-            payment = paymentMapper.selectByPrimaryKey(request.getId());
+            payment = paymentMapper.findOneById(request.getId());
         } else {
             payment = new Payment();
             payment.setPaymentCreateAt(new Date());
         }
         payment.setPaymentCreateAt(request.getCreateAt());
         if (request.getId() != null) {
-            return paymentMapper.updateByPrimaryKeySelective(payment);
+            return paymentMapper.updateByIdAndParams(payment);
         } else {
-            return paymentMapper.insertSelective(payment);
+            return paymentMapper.insertByParams(payment);
         }
     }
 

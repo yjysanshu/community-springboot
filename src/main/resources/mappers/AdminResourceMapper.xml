@@ -34,7 +34,7 @@
         values (#{admin_resource_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
         )
     </insert>
-    <insert id="insertSelective" parameterType="com.lxl.common.models.AdminResource" >
+    <insert id="insertByParams" parameterType="com.lxl.common.models.AdminResource" >
         insert into admin_resource
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="adminResourceId != null" >
@@ -95,7 +95,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.AdminResource" >
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.AdminResource" >
         update admin_resource
         <set>
             <if test="adminResourceParentId != null" >
@@ -125,14 +125,8 @@
         </set>
         where admin_resource_id = #{adminResourceId,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
-        update admin_resource
-        set message = #{message,jdbcType=VARCHAR},
-        senddate = #{senddate,jdbcType=TIMESTAMP}
-        where admin_resource_id = #{id,jdbcType=VARCHAR}
-    </update>
 
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.AdminResource">
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.AdminResource">
         select
         <include refid="Base_Column_List" />
         from admin_resource
@@ -165,7 +159,7 @@
         order by admin_resource_id asc
     </select>
 
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         select
         <include refid="Base_Column_List" />
         from
@@ -183,7 +177,7 @@
         order by admin_resource_id asc
     </select>
 
-    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.AdminResource">
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.AdminResource">
         SELECT COUNT(*) FROM admin_resource
         <where>
             <if test="adminResourceParentId != null" >

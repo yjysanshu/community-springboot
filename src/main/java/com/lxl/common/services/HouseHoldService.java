@@ -3,7 +3,6 @@ package com.lxl.common.services;
 import com.lxl.admin.models.request.HouseHoldRequest;
 import com.lxl.admin.models.response.HouseHoldResponse;
 import com.lxl.common.mapper.HouseHoldMapper;
-import com.lxl.common.mapper.HouseMapper;
 import com.lxl.common.models.HouseHold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class HouseHoldService {
 
     public List<HouseHoldResponse> getList(HouseHoldRequest request) {
         HouseHold houseHoldSearch = formatModelDetail(request);
-        List<HouseHold> listHouseHold = houseHoldMapper.selectAll(houseHoldSearch);
+        List<HouseHold> listHouseHold = houseHoldMapper.findByParams(houseHoldSearch);
         List<HouseHoldResponse> list = new ArrayList<>();
         for (HouseHold houseHold : listHouseHold) {
             HouseHoldResponse houseHoldResponse = formatResponseDetail(houseHold);
@@ -32,13 +31,13 @@ public class HouseHoldService {
 
     public Integer getTotal(HouseHoldRequest request) {
         HouseHold houseHoldSearch = formatModelDetail(request);
-        return houseHoldMapper.getTotal(houseHoldSearch);
+        return houseHoldMapper.findTotalByParams(houseHoldSearch);
     }
 
     public Integer save(HouseHoldRequest request) {
         HouseHold houseHold;
         if (request.getId() != null) {
-            houseHold = houseHoldMapper.selectByPrimaryKey(request.getId());
+            houseHold = houseHoldMapper.findOneById(request.getId());
         } else {
             houseHold = new HouseHold();
             houseHold.setHouseHoldCreateAt(new Date());
@@ -51,9 +50,9 @@ public class HouseHoldService {
         houseHold.setHouseHoldType(request.getType());
         houseHold.setHouseHoldDescription(request.getDescription());
         if (request.getId() != null) {
-            return houseHoldMapper.updateByPrimaryKeySelective(houseHold);
+            return houseHoldMapper.updateByIdAndParams(houseHold);
         } else {
-            return houseHoldMapper.insertSelective(houseHold);
+            return houseHoldMapper.insertByParams(houseHold);
         }
     }
 

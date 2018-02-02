@@ -19,23 +19,23 @@ public class UserService {
 
     public List<User> getUser() {
         List<User> list = new ArrayList<>();
-        list.add(mapper.selectByPrimaryKey(0));
+        list.add(mapper.findOneById(0));
         return list;
     }
 
     public List<User> getAllUser(){
-        return mapper.selectAll(new User());
+        return mapper.findByParams(new User());
     }
 
     public int addUser(User user) {
         return mapper.insert(user);
     }
 
-    public List<User> getUserById(Integer id) {
-        return mapper.findById(id);
+    public User getUserById(Integer id) {
+        return mapper.findOneById(id);
     }
 
     public int delUser(Integer id) {
-        return mapper.deleteByPrimaryKey(id);
+        return mapper.deleteOneById(id);
     }
 }

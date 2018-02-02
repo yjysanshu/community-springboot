@@ -20,7 +20,7 @@ public class RepairOrderService {
 
     public List<RepairOrderResponse> getList(RepairOrderRequest request) {
         RepairOrder repairOrderSearch = formatModelDetail(request);
-        List<RepairOrder> listRepairOrder = repairOrderMapper.selectAll(repairOrderSearch);
+        List<RepairOrder> listRepairOrder = repairOrderMapper.findByParams(repairOrderSearch);
         List<RepairOrderResponse> list = new ArrayList<>();
         for (RepairOrder repairOrder : listRepairOrder) {
             RepairOrderResponse repairOrderResponse = formatResponseDetail(repairOrder);
@@ -31,22 +31,22 @@ public class RepairOrderService {
 
     public Integer getTotal(RepairOrderRequest request) {
         RepairOrder repairOrderSearch = formatModelDetail(request);
-        return repairOrderMapper.getTotal(repairOrderSearch);
+        return repairOrderMapper.findTotalByParams(repairOrderSearch);
     }
 
     public Integer save(RepairOrderRequest request) {
         RepairOrder repairOrder;
         if (request.getId() != null) {
-            repairOrder = repairOrderMapper.selectByPrimaryKey(request.getId());
+            repairOrder = repairOrderMapper.findOneById(request.getId());
         } else {
             repairOrder = new RepairOrder();
             repairOrder.setRepairOrderCreateAt(new Date());
         }
         repairOrder.setRepairOrderCreateAt(request.getCreateAt());
         if (request.getId() != null) {
-            return repairOrderMapper.updateByPrimaryKeySelective(repairOrder);
+            return repairOrderMapper.updateByIdAndParams(repairOrder);
         } else {
-            return repairOrderMapper.insertSelective(repairOrder);
+            return repairOrderMapper.insertByParams(repairOrder);
         }
     }
 

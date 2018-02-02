@@ -21,7 +21,7 @@ public class FastMailService {
 
     public List<FastMailResponse> getList(FastMailRequest request) {
         FastMail fastMailSearch = formatModelDetail(request);
-        List<FastMail> listFastMail = fastMailMapper.selectAll(fastMailSearch);
+        List<FastMail> listFastMail = fastMailMapper.findByParams(fastMailSearch);
         List<FastMailResponse> list = new ArrayList<>();
         for (FastMail fastMail : listFastMail) {
             FastMailResponse fastMailResponse = formatResponseDetail(fastMail);
@@ -32,22 +32,22 @@ public class FastMailService {
 
     public Integer getTotal(FastMailRequest request) {
         FastMail fastMailSearch = formatModelDetail(request);
-        return fastMailMapper.getTotal(fastMailSearch);
+        return fastMailMapper.findTotalByParams(fastMailSearch);
     }
 
     public Integer save(FastMailRequest request) {
         FastMail fastMail;
         if (request.getId() != null) {
-            fastMail = fastMailMapper.selectByPrimaryKey(request.getId());
+            fastMail = fastMailMapper.findOneById(request.getId());
         } else {
             fastMail = new FastMail();
             fastMail.setFastMailCreateAt(new Date());
         }
         fastMail.setFastMailCreateAt(request.getCreateAt());
         if (request.getId() != null) {
-            return fastMailMapper.updateByPrimaryKeySelective(fastMail);
+            return fastMailMapper.updateByIdAndParams(fastMail);
         } else {
-            return fastMailMapper.insertSelective(fastMail);
+            return fastMailMapper.insertByParams(fastMail);
         }
     }
 
