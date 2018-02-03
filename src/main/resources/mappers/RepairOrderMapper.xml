@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lxl.common.mapper.RepairOrderMapper" >
 
-    <resultMap id="BaseResultMap" type="com.lxl.common.models.House" >
-        <id column="repair_order_id" property="repairOrderId" jdbcType="INTEGER" />
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.RepairOrder" >
+        <result column="repair_order_id" property="repairOrderId" jdbcType="INTEGER" />
         <result column="repair_order_code" property="repairOrderCode" jdbcType="VARCHAR" />
         <result column="repair_order_room_id" property="repairOrderRoomId" jdbcType="INTEGER" />
         <result column="repair_order_repair_range_id" property="repairOrderRepairRangeId" jdbcType="INTEGER" />
@@ -16,167 +16,200 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        repair_order_id, repair_order_code, repair_order_room_id, repair_order_repair_range_id, repair_order_phone,
-        repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at
+        repair_order_id, repair_order_code, repair_order_room_id, repair_order_repair_range_id, repair_order_phone, repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
         <include refid="Base_Column_List" />
-        from house
-        where house_id = #{id,jdbcType=VARCHAR}
+        FROM repair_order
+        WHERE repair_order_id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-        delete from house
-        where house_id = #{houseId,jdbcType=INTEGER}
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM repair_order
+        WHERE repair_order_id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
-        insert into house (id, message, senddate
-        )
-        values (#{house_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
-        )
+
+    <insert id="insert" parameterType="com.lxl.common.models.RepairOrder" >
+        INSERT INTO HOUSE (repair_order_id, repair_order_code, repair_order_room_id, repair_order_repair_range_id, repair_order_phone, repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at)
+        VALUES (#{repairOrderId,jdbcType=INTEGER}, #{repairOrderCode,jdbcType=VARCHAR}, #{repairOrderRoomId,jdbcType=INTEGER}, #{repairOrderRepairRangeId,jdbcType=INTEGER}, #{repairOrderPhone,jdbcType=VARCHAR}, #{repairOrderStatus,jdbcType=INTEGER}, #{repairOrderAdminUserId,jdbcType=INTEGER}, #{repairOrderDescription,jdbcType=VARCHAR}, #{repairOrderCreateAt,jdbcType=TIMESTAMP}, #{repairOrderUpdateAt,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="com.lxl.common.models.House" >
-        insert into house
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.RepairOrder" >
+        INSERT INTO repair_order
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="houseId != null" >
-                house_id,
+            <if test="repairOrderId != null" >
+                repair_order_id,
             </if>
-            <if test="houseCode != null" >
-                house_code,
+            <if test="repairOrderCode != null" >
+                repair_order_code,
             </if>
-            <if test="houseName != null" >
-                house_name,
+            <if test="repairOrderRoomId != null" >
+                repair_order_room_id,
             </if>
-            <if test="houseStages != null" >
-                house_stages,
+            <if test="repairOrderRepairRangeId != null" >
+                repair_order_repair_range_id,
             </if>
-            <if test="houseDescription != null" >
-                house_description,
+            <if test="repairOrderPhone != null" >
+                repair_order_phone,
             </if>
-            <if test="houseCreateAt != null" >
-                house_create_at,
+            <if test="repairOrderStatus != null" >
+                repair_order_status,
             </if>
-            <if test="houseUpdateAt != null" >
-                house_update_at,
+            <if test="repairOrderAdminUserId != null" >
+                repair_order_admin_user_id,
+            </if>
+            <if test="repairOrderDescription != null" >
+                repair_order_description,
+            </if>
+            <if test="repairOrderCreateAt != null" >
+                repair_order_create_at,
+            </if>
+            <if test="repairOrderUpdateAt != null" >
+                repair_order_update_at,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="houseId != null" >
-                #{houseId,jdbcType=INTEGER},
+            <if test="repairOrderId != null" >
+                #{repairOrderId,jdbcType=INTEGER},
             </if>
-            <if test="houseCode != null" >
-                #{houseCode,jdbcType=VARCHAR},
+            <if test="repairOrderCode != null" >
+                #{repairOrderCode,jdbcType=VARCHAR},
             </if>
-            <if test="houseName != null" >
-                #{houseName,jdbcType=VARCHAR},
+            <if test="repairOrderRoomId != null" >
+                #{repairOrderRoomId,jdbcType=INTEGER},
             </if>
-            <if test="houseStages != null" >
-                #{houseStages,jdbcType=INTEGER},
+            <if test="repairOrderRepairRangeId != null" >
+                #{repairOrderRepairRangeId,jdbcType=INTEGER},
             </if>
-            <if test="houseDescription != null" >
-                #{houseDescription,jdbcType=VARCHAR},
+            <if test="repairOrderPhone != null" >
+                #{repairOrderPhone,jdbcType=VARCHAR},
             </if>
-            <if test="houseCreateAt != null" >
-                #{houseCreateAt,jdbcType=TIMESTAMP},
+            <if test="repairOrderStatus != null" >
+                #{repairOrderStatus,jdbcType=INTEGER},
             </if>
-            <if test="houseUpdateAt != null" >
-                #{houseUpdateAt,jdbcType=TIMESTAMP},
+            <if test="repairOrderAdminUserId != null" >
+                #{repairOrderAdminUserId,jdbcType=INTEGER},
+            </if>
+            <if test="repairOrderDescription != null" >
+                #{repairOrderDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="repairOrderCreateAt != null" >
+                #{repairOrderCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="repairOrderUpdateAt != null" >
+                #{repairOrderUpdateAt,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.House" >
-        update house
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.RepairOrder" >
+        update repair_order
         <set>
-            <if test="houseCode != null" >
-                house_code = #{houseCode,jdbcType=INTEGER},
+            <if test="repairOrderCode != null" >
+                repair_order_code = #{repairOrderCode,jdbcType=VARCHAR},
             </if>
-            <if test="houseName != null" >
-                house_name = #{houseName,jdbcType=INTEGER},
+            <if test="repairOrderRoomId != null" >
+                repair_order_room_id = #{repairOrderRoomId,jdbcType=INTEGER},
             </if>
-            <if test="houseStages != null" >
-                house_stages = #{houseStages,jdbcType=VARCHAR},
+            <if test="repairOrderRepairRangeId != null" >
+                repair_order_repair_range_id = #{repairOrderRepairRangeId,jdbcType=INTEGER},
             </if>
-            <if test="houseDescription != null" >
-                house_description = #{houseDescription,jdbcType=VARCHAR},
+            <if test="repairOrderPhone != null" >
+                repair_order_phone = #{repairOrderPhone,jdbcType=VARCHAR},
             </if>
-            <if test="houseCreateAt != null" >
-                house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP},
+            <if test="repairOrderStatus != null" >
+                repair_order_status = #{repairOrderStatus,jdbcType=INTEGER},
             </if>
-            <if test="houseUpdateAt != null" >
-                house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP},
+            <if test="repairOrderAdminUserId != null" >
+                repair_order_admin_user_id = #{repairOrderAdminUserId,jdbcType=INTEGER},
+            </if>
+            <if test="repairOrderDescription != null" >
+                repair_order_description = #{repairOrderDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="repairOrderCreateAt != null" >
+                repair_order_create_at = #{repairOrderCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="repairOrderUpdateAt != null" >
+                repair_order_update_at = #{repairOrderUpdateAt,jdbcType=TIMESTAMP},
             </if>
         </set>
-        where house_id = #{houseId,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
-        update house
-        set message = #{message,jdbcType=VARCHAR},
-        senddate = #{senddate,jdbcType=TIMESTAMP}
-        where house_id = #{id,jdbcType=VARCHAR}
+        where repair_order_id = #{repairOrderId,jdbcType=INTEGER}
     </update>
 
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.House">
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.RepairOrder">
         SELECT
         <include refid="Base_Column_List" />
-        FROM house
+        FROM repair_order
         <where>
-            <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+            <if test="repairOrderId != null" >
+                AND repair_order_id = #{repairOrderId,jdbcType=INTEGER}
             </if>
-            <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+            <if test="repairOrderCode != null" >
+                AND repair_order_code = #{repairOrderCode,jdbcType=VARCHAR}
             </if>
-            <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+            <if test="repairOrderRoomId != null" >
+                AND repair_order_room_id = #{repairOrderRoomId,jdbcType=INTEGER}
             </if>
-            <if test="houseDescription != null" >
-                AND house_description = #{houseDescription,jdbcType=VARCHAR}
+            <if test="repairOrderRepairRangeId != null" >
+                AND repair_order_repair_range_id = #{repairOrderRepairRangeId,jdbcType=INTEGER}
             </if>
-            <if test="houseCreateAt != null" >
-                AND house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP}
+            <if test="repairOrderPhone != null" >
+                AND repair_order_phone = #{repairOrderPhone,jdbcType=VARCHAR}
             </if>
-            <if test="houseUpdateAt != null" >
-                AND house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP}
+            <if test="repairOrderStatus != null" >
+                AND repair_order_status = #{repairOrderStatus,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrderAdminUserId != null" >
+                AND repair_order_admin_user_id = #{repairOrderAdminUserId,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrderDescription != null" >
+                AND repair_order_description = #{repairOrderDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="repairOrderCreateAt != null" >
+                AND repair_order_create_at = #{repairOrderCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="repairOrderUpdateAt != null" >
+                AND repair_order_update_at = #{repairOrderUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
-        order by house_id DESC
+        ORDER BY repair_order_id DESC
     </select>
 
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List" />
-        from
-        house
-        where house_id = #{id,jdbcType=INTEGER}
-        order by house_id asc
-    </select>
-
-    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">
-        SELECT COUNT(*) FROM house
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.RepairOrder">
+        SELECT COUNT(*) FROM repair_order
         <where>
-            <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+            <if test="repairOrderId != null" >
+                AND repair_order_id = #{repairOrderId,jdbcType=INTEGER}
             </if>
-            <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+            <if test="repairOrderCode != null" >
+                AND repair_order_code = #{repairOrderCode,jdbcType=VARCHAR}
             </if>
-            <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+            <if test="repairOrderRoomId != null" >
+                AND repair_order_room_id = #{repairOrderRoomId,jdbcType=INTEGER}
             </if>
-            <if test="houseDescription != null" >
-                AND house_description = #{houseDescription,jdbcType=VARCHAR}
+            <if test="repairOrderRepairRangeId != null" >
+                AND repair_order_repair_range_id = #{repairOrderRepairRangeId,jdbcType=INTEGER}
             </if>
-            <if test="houseCreateAt != null" >
-                AND house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP}
+            <if test="repairOrderPhone != null" >
+                AND repair_order_phone = #{repairOrderPhone,jdbcType=VARCHAR}
             </if>
-            <if test="houseUpdateAt != null" >
-                AND house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP}
+            <if test="repairOrderStatus != null" >
+                AND repair_order_status = #{repairOrderStatus,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrderAdminUserId != null" >
+                AND repair_order_admin_user_id = #{repairOrderAdminUserId,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrderDescription != null" >
+                AND repair_order_description = #{repairOrderDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="repairOrderCreateAt != null" >
+                AND repair_order_create_at = #{repairOrderCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="repairOrderUpdateAt != null" >
+                AND repair_order_update_at = #{repairOrderUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>
-
 </mapper>

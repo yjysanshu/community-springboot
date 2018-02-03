@@ -42,7 +42,13 @@ public class RepairOrderService {
             repairOrder = new RepairOrder();
             repairOrder.setRepairOrderCreateAt(new Date());
         }
-        repairOrder.setRepairOrderCreateAt(request.getCreateAt());
+        repairOrder.setRepairOrderCode(request.getCode());
+        repairOrder.setRepairOrderRoomId(request.getRoomId());
+        repairOrder.setRepairOrderRepairRangeId(request.getRepairRangeId());
+        repairOrder.setRepairOrderPhone(request.getPhone());
+        repairOrder.setRepairOrderStatus(request.getStatus());
+        repairOrder.setRepairOrderAdminUserId(request.getAdminUserId());
+        repairOrder.setRepairOrderDescription(request.getDescription());
         if (request.getId() != null) {
             return repairOrderMapper.updateByIdAndParams(repairOrder);
         } else {
@@ -50,9 +56,20 @@ public class RepairOrderService {
         }
     }
 
+    public Integer delete(Integer id) {
+        return repairOrderMapper.deleteOneById(id);
+    }
+
     private RepairOrderResponse formatResponseDetail(RepairOrder repairOrder) {
         RepairOrderResponse response = new RepairOrderResponse();
         response.setId(repairOrder.getRepairOrderId());
+        response.setCode(repairOrder.getRepairOrderCode());
+        response.setRoomId(repairOrder.getRepairOrderRoomId());
+        response.setRepairRangeId(repairOrder.getRepairOrderRepairRangeId());
+        response.setPhone(repairOrder.getRepairOrderPhone());
+        response.setStatus(repairOrder.getRepairOrderStatus());
+        response.setAdminUserId(repairOrder.getRepairOrderAdminUserId());
+        response.setDescription(repairOrder.getRepairOrderDescription());
         response.setCreateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(repairOrder.getRepairOrderCreateAt()));
         response.setUpdateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(repairOrder.getRepairOrderUpdateAt()));
         return response;
@@ -61,6 +78,13 @@ public class RepairOrderService {
     private RepairOrder formatModelDetail(RepairOrderRequest request) {
         RepairOrder repairOrder = new RepairOrder();
         repairOrder.setRepairOrderId(request.getId());
+        repairOrder.setRepairOrderCode(request.getCode());
+        repairOrder.setRepairOrderRoomId(request.getRoomId());
+        repairOrder.setRepairOrderRepairRangeId(request.getRepairRangeId());
+        repairOrder.setRepairOrderPhone(request.getPhone());
+        repairOrder.setRepairOrderStatus(request.getStatus());
+        repairOrder.setRepairOrderAdminUserId(request.getAdminUserId());
+        repairOrder.setRepairOrderDescription(request.getDescription());
         repairOrder.setRepairOrderCreateAt(request.getCreateAt());
         repairOrder.setRepairOrderUpdateAt(request.getUpdateAt());
         return repairOrder;

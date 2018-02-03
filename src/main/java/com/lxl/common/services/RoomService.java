@@ -39,6 +39,11 @@ public class RoomService {
         return roomMapper.findTotalByParams(roomSearch);
     }
 
+    public String getRoomName(Integer roomId) {
+        Room room = roomMapper.findOneById(roomId);
+        return room.getRoomName();
+    }
+
     public Integer save(RoomRequest request) {
         Room room;
         if (request.getId() != null) {
@@ -58,6 +63,10 @@ public class RoomService {
         } else {
             return roomMapper.insertByParams(room);
         }
+    }
+
+    public Integer delete(Integer id) {
+        return roomMapper.deleteOneById(id);
     }
 
     private RoomResponse formatResponseDetail(Room room) {

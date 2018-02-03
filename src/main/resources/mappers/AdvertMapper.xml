@@ -2,181 +2,213 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lxl.common.mapper.AdvertMapper" >
 
-    <resultMap id="BaseResultMap" type="com.lxl.common.models.House" >
-        <id column="house_id" property="houseId" jdbcType="INTEGER" />
-        <result column="house_code" property="houseCode" jdbcType="VARCHAR" />
-        <result column="house_name" property="houseName" jdbcType="VARCHAR" />
-        <result column="house_stages" property="houseStages" jdbcType="INTEGER" />
-        <result column="house_description" property="houseDescription" jdbcType="VARCHAR" />
-        <result column="house_create_at" property="houseCreateAt" jdbcType="TIMESTAMP" />
-        <result column="house_update_at" property="houseUpdateAt" jdbcType="TIMESTAMP" />
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.Advert" >
+        <result column="advert_id" property="advertId" jdbcType="INTEGER" />
+        <result column="advert_department" property="advertDepartment" jdbcType="VARCHAR" />
+        <result column="advert_title" property="advertTitle" jdbcType="VARCHAR" />
+        <result column="advert_pic" property="advertPic" jdbcType="VARCHAR" />
+        <result column="advert_type" property="advertType" jdbcType="INTEGER" />
+        <result column="advert_sort" property="advertSort" jdbcType="INTEGER" />
+        <result column="advert_is_top" property="advertIsTop" jdbcType="INTEGER" />
+        <result column="advert_content" property="advertContent" jdbcType="VARCHAR" />
+        <result column="advert_create_at" property="advertCreateAt" jdbcType="TIMESTAMP" />
+        <result column="advert_update_at" property="advertUpdateAt" jdbcType="TIMESTAMP" />
     </resultMap>
 
     <sql id="Base_Column_List" >
-        house_id, house_code, house_name, house_stages, house_description, house_create_at, house_update_at
+        advert_id, advert_department, advert_title, advert_pic, advert_type, advert_sort, advert_is_top, advert_content, advert_create_at, advert_update_at
     </sql>
 
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
         <include refid="Base_Column_List" />
-        from house
-        where house_id = #{id,jdbcType=VARCHAR}
+        FROM advert
+        WHERE advert_id = #{id,jdbcType=INTEGER}
     </select>
 
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-        delete from house
-        where house_id = #{houseId,jdbcType=INTEGER}
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM advert
+        WHERE advert_id = #{id,jdbcType=INTEGER}
     </delete>
 
-    <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
-        insert into house (id, message, senddate
-        )
-        values (#{house_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
-        )
+    <insert id="insert" parameterType="com.lxl.common.models.Advert" >
+        INSERT INTO HOUSE (advert_id, advert_department, advert_title, advert_pic, advert_type, advert_sort, advert_is_top, advert_content, advert_create_at, advert_update_at)
+        VALUES (#{advertId,jdbcType=INTEGER}, #{advertDepartment,jdbcType=VARCHAR}, #{advertTitle,jdbcType=VARCHAR}, #{advertPic,jdbcType=VARCHAR}, #{advertType,jdbcType=INTEGER}, #{advertSort,jdbcType=INTEGER}, #{advertIsTop,jdbcType=INTEGER}, #{advertContent,jdbcType=VARCHAR}, #{advertCreateAt,jdbcType=TIMESTAMP}, #{advertUpdateAt,jdbcType=TIMESTAMP})
     </insert>
 
-    <insert id="insertSelective" parameterType="com.lxl.common.models.House" >
-        insert into house
+    <insert id="insertByParams" parameterType="com.lxl.common.models.Advert" >
+        INSERT INTO advert
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="houseId != null" >
-                house_id,
+            <if test="advertId != null" >
+                advert_id,
             </if>
-            <if test="houseCode != null" >
-                house_code,
+            <if test="advertDepartment != null" >
+                advert_department,
             </if>
-            <if test="houseName != null" >
-                house_name,
+            <if test="advertTitle != null" >
+                advert_title,
             </if>
-            <if test="houseStages != null" >
-                house_stages,
+            <if test="advertPic != null" >
+                advert_pic,
             </if>
-            <if test="houseDescription != null" >
-                house_description,
+            <if test="advertType != null" >
+                advert_type,
             </if>
-            <if test="houseCreateAt != null" >
-                house_create_at,
+            <if test="advertSort != null" >
+                advert_sort,
             </if>
-            <if test="houseUpdateAt != null" >
-                house_update_at,
+            <if test="advertIsTop != null" >
+                advert_is_top,
+            </if>
+            <if test="advertContent != null" >
+                advert_content,
+            </if>
+            <if test="advertCreateAt != null" >
+                advert_create_at,
+            </if>
+            <if test="advertUpdateAt != null" >
+                advert_update_at,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="houseId != null" >
-                #{houseId,jdbcType=INTEGER},
+            <if test="advertId != null" >
+                #{advertId,jdbcType=INTEGER},
             </if>
-            <if test="houseCode != null" >
-                #{houseCode,jdbcType=VARCHAR},
+            <if test="advertDepartment != null" >
+                #{advertDepartment,jdbcType=VARCHAR},
             </if>
-            <if test="houseName != null" >
-                #{houseName,jdbcType=VARCHAR},
+            <if test="advertTitle != null" >
+                #{advertTitle,jdbcType=VARCHAR},
             </if>
-            <if test="houseStages != null" >
-                #{houseStages,jdbcType=INTEGER},
+            <if test="advertPic != null" >
+                #{advertPic,jdbcType=VARCHAR},
             </if>
-            <if test="houseDescription != null" >
-                #{houseDescription,jdbcType=VARCHAR},
+            <if test="advertType != null" >
+                #{advertType,jdbcType=INTEGER},
             </if>
-            <if test="houseCreateAt != null" >
-                #{houseCreateAt,jdbcType=TIMESTAMP},
+            <if test="advertSort != null" >
+                #{advertSort,jdbcType=INTEGER},
             </if>
-            <if test="houseUpdateAt != null" >
-                #{houseUpdateAt,jdbcType=TIMESTAMP},
+            <if test="advertIsTop != null" >
+                #{advertIsTop,jdbcType=INTEGER},
+            </if>
+            <if test="advertContent != null" >
+                #{advertContent,jdbcType=VARCHAR},
+            </if>
+            <if test="advertCreateAt != null" >
+                #{advertCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="advertUpdateAt != null" >
+                #{advertUpdateAt,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.House" >
-        update house
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.Advert" >
+        update advert
         <set>
-            <if test="houseCode != null" >
-                house_code = #{houseCode,jdbcType=INTEGER},
+            <if test="advertDepartment != null" >
+                advert_department = #{advertDepartment,jdbcType=VARCHAR},
             </if>
-            <if test="houseName != null" >
-                house_name = #{houseName,jdbcType=INTEGER},
+            <if test="advertTitle != null" >
+                advert_title = #{advertTitle,jdbcType=VARCHAR},
             </if>
-            <if test="houseStages != null" >
-                house_stages = #{houseStages,jdbcType=VARCHAR},
+            <if test="advertPic != null" >
+                advert_pic = #{advertPic,jdbcType=VARCHAR},
             </if>
-            <if test="houseDescription != null" >
-                house_description = #{houseDescription,jdbcType=VARCHAR},
+            <if test="advertType != null" >
+                advert_type = #{advertType,jdbcType=INTEGER},
             </if>
-            <if test="houseCreateAt != null" >
-                house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP},
+            <if test="advertSort != null" >
+                advert_sort = #{advertSort,jdbcType=INTEGER},
             </if>
-            <if test="houseUpdateAt != null" >
-                house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP},
+            <if test="advertIsTop != null" >
+                advert_is_top = #{advertIsTop,jdbcType=INTEGER},
+            </if>
+            <if test="advertContent != null" >
+                advert_content = #{advertContent,jdbcType=VARCHAR},
+            </if>
+            <if test="advertCreateAt != null" >
+                advert_create_at = #{advertCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="advertUpdateAt != null" >
+                advert_update_at = #{advertUpdateAt,jdbcType=TIMESTAMP},
             </if>
         </set>
-        where house_id = #{houseId,jdbcType=INTEGER}
+        where advert_id = #{advertId,jdbcType=INTEGER}
     </update>
 
-    <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
-        update house
-        set message = #{message,jdbcType=VARCHAR},
-        senddate = #{senddate,jdbcType=TIMESTAMP}
-        where house_id = #{id,jdbcType=VARCHAR}
-    </update>
-
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.House">
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.Advert">
         SELECT
         <include refid="Base_Column_List" />
-        FROM house
+        FROM advert
         <where>
-            <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+            <if test="advertId != null" >
+                AND advert_id = #{advertId,jdbcType=INTEGER}
             </if>
-            <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+            <if test="advertDepartment != null" >
+                AND advert_department = #{advertDepartment,jdbcType=VARCHAR}
             </if>
-            <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+            <if test="advertTitle != null" >
+                AND advert_title = #{advertTitle,jdbcType=VARCHAR}
             </if>
-            <if test="houseDescription != null" >
-                AND house_description = #{houseDescription,jdbcType=VARCHAR}
+            <if test="advertPic != null" >
+                AND advert_pic = #{advertPic,jdbcType=VARCHAR}
             </if>
-            <if test="houseCreateAt != null" >
-                AND house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP}
+            <if test="advertType != null" >
+                AND advert_type = #{advertType,jdbcType=INTEGER}
             </if>
-            <if test="houseUpdateAt != null" >
-                AND house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP}
+            <if test="advertSort != null" >
+                AND advert_sort = #{advertSort,jdbcType=INTEGER}
+            </if>
+            <if test="advertIsTop != null" >
+                AND advert_is_top = #{advertIsTop,jdbcType=INTEGER}
+            </if>
+            <if test="advertContent != null" >
+                AND advert_content = #{advertContent,jdbcType=VARCHAR}
+            </if>
+            <if test="advertCreateAt != null" >
+                AND advert_create_at = #{advertCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="advertUpdateAt != null" >
+                AND advert_update_at = #{advertUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
-        order by house_id DESC
+        ORDER BY advert_id DESC
     </select>
 
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List" />
-        from
-        house
-        where house_id = #{id,jdbcType=INTEGER}
-        order by house_id asc
-    </select>
-
-    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">
-        SELECT COUNT(*) FROM house
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.Advert">
+        SELECT COUNT(*) FROM advert
         <where>
-            <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+            <if test="advertId != null" >
+                AND advert_id = #{advertId,jdbcType=INTEGER}
             </if>
-            <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+            <if test="advertDepartment != null" >
+                AND advert_department = #{advertDepartment,jdbcType=VARCHAR}
             </if>
-            <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+            <if test="advertTitle != null" >
+                AND advert_title = #{advertTitle,jdbcType=VARCHAR}
             </if>
-            <if test="houseDescription != null" >
-                AND house_description = #{houseDescription,jdbcType=VARCHAR}
+            <if test="advertPic != null" >
+                AND advert_pic = #{advertPic,jdbcType=VARCHAR}
             </if>
-            <if test="houseCreateAt != null" >
-                AND house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP}
+            <if test="advertType != null" >
+                AND advert_type = #{advertType,jdbcType=INTEGER}
             </if>
-            <if test="houseUpdateAt != null" >
-                AND house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP}
+            <if test="advertSort != null" >
+                AND advert_sort = #{advertSort,jdbcType=INTEGER}
+            </if>
+            <if test="advertIsTop != null" >
+                AND advert_is_top = #{advertIsTop,jdbcType=INTEGER}
+            </if>
+            <if test="advertContent != null" >
+                AND advert_content = #{advertContent,jdbcType=VARCHAR}
+            </if>
+            <if test="advertCreateAt != null" >
+                AND advert_create_at = #{advertCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="advertUpdateAt != null" >
+                AND advert_update_at = #{advertUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>

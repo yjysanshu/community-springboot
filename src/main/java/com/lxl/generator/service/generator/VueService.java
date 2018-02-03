@@ -4,6 +4,8 @@ import com.lxl.generator.consts.VueConst;
 import com.lxl.generator.models.TableExtend;
 import com.lxl.generator.util.StringUtil;
 
+import java.util.Arrays;
+
 public class VueService extends BaseService {
     @Override
     protected void generator() {
@@ -13,10 +15,15 @@ public class VueService extends BaseService {
         StringBuilder sbCreateFormDefault = new StringBuilder();
 
         for (TableExtend tableExtend : list) {
+            if (!Arrays.asList(VueConst.TIME_FIELD).contains(tableExtend.getColumnName()
+                    .replaceAll(tableName + VueConst.CHARACTER_UNDERLINE, VueConst.CHARACTER_NULL))) {
+                if (!tableExtend.getColumnKey().contains(VueConst.DATA_KEY_PRI)) {
+                    sbTableForm.append(this.getAfterReplace(VueConst.TXT_TABLE_FORM_COLUMN, tableExtend));
+                }
+                sbCreateFormColumn.append(this.getAfterReplace(VueConst.TXT_CREATE_FORM_COLUMN, tableExtend));
+                sbCreateFormDefault.append(this.getAfterReplace(VueConst.TXT_CREATE_FORM_DEFAULT, tableExtend));
+            }
             sbGridColumn.append(this.getAfterReplace(VueConst.TXT_TABLE_GRID_COLUMN, tableExtend));
-            sbTableForm.append(this.getAfterReplace(VueConst.TXT_TABLE_FORM_COLUMN, tableExtend));
-            sbCreateFormColumn.append(this.getAfterReplace(VueConst.TXT_CREATE_FORM_COLUMN, tableExtend));
-            sbCreateFormDefault.append(this.getAfterReplace(VueConst.TXT_CREATE_FORM_DEFAULT, tableExtend));
         }
 
         sb.append(VueConst.TXT_VUE.replaceAll(VueConst.REPLACE_MODEL_CLASS, this.getLowerModelClass())

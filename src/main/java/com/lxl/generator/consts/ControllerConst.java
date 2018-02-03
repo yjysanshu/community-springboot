@@ -39,8 +39,11 @@ public class ControllerConst extends CommonConst {
             "    }\n" +
             "\n" +
             "    @RequestMapping(\"/del\")\n" +
-            "    public Map delete(Integer id) {\n" +
-            "        return FormatUtil.success([modelClass]Service.delete(id));\n" +
+            "    public Map delete(@RequestBody [ModelClass]Request request) {\n" +
+            "        if ([modelClass]Service.delete(request.getId()) > 0) {\n" +
+            "            return FormatUtil.success();\n" +
+            "        }\n" +
+            "        return FormatUtil.fail();\n" +
             "    }\n" +
             "}";
 }

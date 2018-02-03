@@ -31,4 +31,11 @@ public class RoomController {
         return FormatUtil.success(roomService.save(request));
     }
 
+    @RequestMapping("/del")
+    public Map delete(@RequestBody RoomRequest request) {
+        if (roomService.delete(request.getId()) > 0) {
+            return FormatUtil.success();
+        }
+        return FormatUtil.fail();
+    }
 }

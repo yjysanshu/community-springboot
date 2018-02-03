@@ -21,7 +21,7 @@ public class VueConst extends CommonConst {
     public static final String TXT_VUE = "<template>\n" +
             "    <div class=\"components-container\">\n" +
             "        <div class=\"filter-container\">\n" +
-            "[searchColumn]" +
+            "            <el-input v-model=\"tableQuery.name\" @keyup.enter.native=\"handleFilter\" style=\"width: 200px;\" placeholder=\"查询信息\"></el-input>" +
             "            <el-button style=\"margin-left: 10px;\" @click=\"handleFilter\" type=\"primary\"><i class=\"el-icon-search\"></i></el-button>\n" +
             "            <el-button @click=\"handleReset\" type=\"primary\"><i class=\"el-icon-refresh\"></i></el-button>\n" +
             "            <el-button @click=\"showDialog('create')\" type=\"primary\"><i class=\"el-icon-plus\"></i> 新增[[]]</el-button>\n" +
@@ -61,7 +61,6 @@ public class VueConst extends CommonConst {
             "    import { isJson } from 'utils';\n" +
             "\n" +
             "    export default {\n" +
-            "        components: { jsonEditor },\n" +
             "        data() {\n" +
             "            return {\n" +
             "                tableQuery: {\n" +

@@ -21,14 +21,11 @@ public class ServiceService extends BaseService {
                 sbModelToRes.append(this.getFieldAfterReplace(ServiceConst.TXT_FIELD_MODEL_TO_RESPONSE_TIME, tableExtend));
                 continue;
             }
-            if (tableExtend.getColumnKey().equals(ServiceConst.DATA_KEY_PRI)) {
-                sbReqToModel.append(this.getFieldAfterReplace(ServiceConst.TXT_FIELD_REQUEST_TO_MODEL, tableExtend));
-                sbModelToRes.append(this.getFieldAfterReplace(ServiceConst.TXT_FIELD_MODEL_TO_RESPONSE, tableExtend));
-                continue;
+            if (!tableExtend.getColumnKey().equals(ServiceConst.DATA_KEY_PRI)) {
+                sbReqToSaveModel.append(this.getFieldAfterReplace(ServiceConst.TXT_FIELD_REQUEST_TO_SAVE_MODEL, tableExtend));
             }
             sbReqToModel.append(this.getFieldAfterReplace(ServiceConst.TXT_FIELD_REQUEST_TO_MODEL, tableExtend));
             sbModelToRes.append(this.getFieldAfterReplace(ServiceConst.TXT_FIELD_MODEL_TO_RESPONSE, tableExtend));
-            sbReqToSaveModel.append(this.getFieldAfterReplace(ServiceConst.TXT_FIELD_REQUEST_TO_SAVE_MODEL, tableExtend));
         }
 
         sb.append(this.getModelAfterReplace(ServiceConst.TXT_IMPORT_CUSTOM_INFO));

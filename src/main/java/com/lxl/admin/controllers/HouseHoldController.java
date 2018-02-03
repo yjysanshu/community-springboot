@@ -31,4 +31,12 @@ public class HouseHoldController {
     public Map save(@RequestBody HouseHoldRequest request) {
         return FormatUtil.success(houseHoldService.save(request));
     }
+
+    @RequestMapping("/del")
+    public Map delete(@RequestBody HouseHoldRequest request) {
+        if (houseHoldService.delete(request.getId()) > 0) {
+            return FormatUtil.success();
+        }
+        return FormatUtil.fail();
+    }
 }

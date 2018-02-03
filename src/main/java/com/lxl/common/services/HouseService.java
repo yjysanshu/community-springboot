@@ -57,6 +57,10 @@ public class HouseService {
         return house.getHouseName();
     }
 
+    public Integer delete(Integer id) {
+        return houseMapper.deleteOneById(id);
+    }
+
     private HouseResponse formatInfoDetail(House house) {
         HouseResponse response = new HouseResponse();
         response.setId(house.getHouseId());

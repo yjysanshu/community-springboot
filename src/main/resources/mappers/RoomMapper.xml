@@ -17,24 +17,26 @@
     <sql id="Base_Column_List" >
         room_id, room_house_id, room_code, room_name, room_unit, room_floor, room_description, room_create_at, room_update_at
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
         <include refid="Base_Column_List" />
-        from room
-        where room_id = #{id,jdbcType=VARCHAR}
+        FROM room
+        WHERE room_id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-        delete from room
-        where room_id = #{houseId,jdbcType=INTEGER}
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM room
+        WHERE room_id = #{id,jdbcType=INTEGER}
     </delete>
+
     <insert id="insert" parameterType="com.lxl.common.models.Room" >
-        insert into room (id, message, senddate
-        )
-        values (#{room_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
-        )
+        INSERT INTO HOUSE (room_id, room_house_id, room_code, room_name, room_unit, room_floor, room_description, room_create_at, room_update_at)
+        VALUES (#{roomId,jdbcType=INTEGER}, #{roomHouseId,jdbcType=INTEGER}, #{roomCode,jdbcType=VARCHAR}, #{roomName,jdbcType=VARCHAR}, #{roomUnit,jdbcType=INTEGER}, #{roomFloor,jdbcType=INTEGER}, #{roomDescription,jdbcType=VARCHAR}, #{roomCreateAt,jdbcType=TIMESTAMP}, #{roomUpdateAt,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="com.lxl.common.models.Room" >
-        insert into room
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.Room" >
+        INSERT INTO room
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="roomId != null" >
                 room_id,
@@ -94,12 +96,10 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.Room" >
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.Room" >
         update room
         <set>
-            <if test="roomId != null" >
-                room_id = #{roomId,jdbcType=INTEGER},
-            </if>
             <if test="roomHouseId != null" >
                 room_house_id = #{roomHouseId,jdbcType=INTEGER},
             </if>
@@ -127,14 +127,8 @@
         </set>
         where room_id = #{roomId,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.lxl.common.models.Room" >
-        update room
-        set message = #{message,jdbcType=VARCHAR},
-        senddate = #{senddate,jdbcType=TIMESTAMP}
-        where house_id = #{id,jdbcType=VARCHAR}
-    </update>
 
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.Room">
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.Room">
         SELECT
         <include refid="Base_Column_List" />
         FROM room
@@ -146,12 +140,10 @@
                 AND room_house_id = #{roomHouseId,jdbcType=INTEGER}
             </if>
             <if test="roomCode != null" >
-                <bind name="pattern" value="'%' + roomCode +'%'" />
-                AND room_code = #{pattern,jdbcType=VARCHAR}
+                AND room_code = #{roomCode,jdbcType=VARCHAR}
             </if>
             <if test="roomName != null" >
-                <bind name="pattern" value="'%' + roomName +'%'" />
-                AND room_name = #{pattern,jdbcType=VARCHAR}
+                AND room_name = #{roomName,jdbcType=VARCHAR}
             </if>
             <if test="roomUnit != null" >
                 AND room_unit = #{roomUnit,jdbcType=INTEGER}
@@ -169,19 +161,10 @@
                 AND room_update_at = #{roomUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
-        order by room_id DESC
+        ORDER BY room_id DESC
     </select>
 
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List" />
-        from
-        room
-        where room_id = #{id,jdbcType=INTEGER}
-        order by room_id asc
-    </select>
-
-    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.Room">
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.Room">
         SELECT COUNT(*) FROM room
         <where>
             <if test="roomId != null" >
@@ -191,12 +174,10 @@
                 AND room_house_id = #{roomHouseId,jdbcType=INTEGER}
             </if>
             <if test="roomCode != null" >
-                <bind name="pattern" value="'%' + roomCode +'%'" />
-                AND room_code = #{pattern,jdbcType=VARCHAR}
+                AND room_code = #{roomCode,jdbcType=VARCHAR}
             </if>
             <if test="roomName != null" >
-                <bind name="pattern" value="'%' + roomName +'%'" />
-                AND room_name = #{pattern,jdbcType=VARCHAR}
+                AND room_name = #{roomName,jdbcType=VARCHAR}
             </if>
             <if test="roomUnit != null" >
                 AND room_unit = #{roomUnit,jdbcType=INTEGER}
@@ -215,5 +196,4 @@
             </if>
         </where>
     </select>
-
 </mapper>

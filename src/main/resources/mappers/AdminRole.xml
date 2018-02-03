@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxl.common.mapper.AdminRoleMapper" >
+
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.AdminRole" >
+        <id column="admin_role_id" property="adminRoleId" jdbcType="INTEGER" />
+        <result column="admin_role_parent_id" property="adminRoleParentId" jdbcType="INTEGER" />
+        <result column="admin_role_name" property="adminRoleName" jdbcType="VARCHAR" />
+        <result column="admin_role_desc" property="adminRoleDesc" jdbcType="VARCHAR" />
+        <result column="admin_role_status" property="adminRoleStatus" jdbcType="INTEGER" />
+        <result column="admin_role_type" property="adminRoleType" jdbcType="INTEGER" />
+        <result column="admin_role_create_at" property="adminRoleCreateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_role_update_at" property="adminRoleUpdateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_role_create_by" property="adminRoleCreateBy" jdbcType="VARCHAR" />
+        <result column="admin_role_update_by" property="adminRoleUpdateBy" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        admin_role_id, admin_role_parent_id, admin_role_name, admin_role_desc, admin_role_status, admin_role_type, admin_role_create_at, admin_role_update_at, admin_role_create_by, admin_role_update_by
+    </sql>
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_role
+        WHERE admin_role_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM admin_role
+        WHERE admin_role_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.lxl.common.models.AdminRole" >
+        INSERT INTO HOUSE (admin_role_id, admin_role_parent_id, admin_role_name, admin_role_desc, admin_role_status, admin_role_type, admin_role_create_at, admin_role_update_at, admin_role_create_by, admin_role_update_by)
+        VALUES (#{adminRoleId,jdbcType=INTEGER}, #{adminRoleParentId,jdbcType=INTEGER}, #{adminRoleName,jdbcType=VARCHAR}, #{adminRoleDesc,jdbcType=VARCHAR}, #{adminRoleStatus,jdbcType=INTEGER}, #{adminRoleType,jdbcType=INTEGER}, #{adminRoleCreateAt,jdbcType=TIMESTAMP}, #{adminRoleUpdateAt,jdbcType=TIMESTAMP}, #{adminRoleCreateBy,jdbcType=VARCHAR}, #{adminRoleUpdateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.AdminRole" >
+        INSERT INTO admin_role
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="adminRoleId != null" >
+                admin_role_id,
+            </if>
+            <if test="adminRoleParentId != null" >
+                admin_role_parent_id,
+            </if>
+            <if test="adminRoleName != null" >
+                admin_role_name,
+            </if>
+            <if test="adminRoleDesc != null" >
+                admin_role_desc,
+            </if>
+            <if test="adminRoleStatus != null" >
+                admin_role_status,
+            </if>
+            <if test="adminRoleType != null" >
+                admin_role_type,
+            </if>
+            <if test="adminRoleCreateAt != null" >
+                admin_role_create_at,
+            </if>
+            <if test="adminRoleUpdateAt != null" >
+                admin_role_update_at,
+            </if>
+            <if test="adminRoleCreateBy != null" >
+                admin_role_create_by,
+            </if>
+            <if test="adminRoleUpdateBy != null" >
+                admin_role_update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="adminRoleId != null" >
+                #{adminRoleId,jdbcType=INTEGER},
+            </if>
+            <if test="adminRoleParentId != null" >
+                #{adminRoleParentId,jdbcType=INTEGER},
+            </if>
+            <if test="adminRoleName != null" >
+                #{adminRoleName,jdbcType=VARCHAR},
+            </if>
+            <if test="adminRoleDesc != null" >
+                #{adminRoleDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="adminRoleStatus != null" >
+                #{adminRoleStatus,jdbcType=INTEGER},
+            </if>
+            <if test="adminRoleType != null" >
+                #{adminRoleType,jdbcType=INTEGER},
+            </if>
+            <if test="adminRoleCreateAt != null" >
+                #{adminRoleCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminRoleUpdateAt != null" >
+                #{adminRoleUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminRoleCreateBy != null" >
+                #{adminRoleCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminRoleUpdateBy != null" >
+                #{adminRoleUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.AdminRole" >
+        update admin_role
+        <set>
+            <if test="adminRoleParentId != null" >
+                admin_role_parent_id = #{adminRoleParentId,jdbcType=INTEGER},
+            </if>
+            <if test="adminRoleName != null" >
+                admin_role_name = #{adminRoleName,jdbcType=VARCHAR},
+            </if>
+            <if test="adminRoleDesc != null" >
+                admin_role_desc = #{adminRoleDesc,jdbcType=VARCHAR},
+            </if>
+            <if test="adminRoleStatus != null" >
+                admin_role_status = #{adminRoleStatus,jdbcType=INTEGER},
+            </if>
+            <if test="adminRoleType != null" >
+                admin_role_type = #{adminRoleType,jdbcType=INTEGER},
+            </if>
+            <if test="adminRoleCreateAt != null" >
+                admin_role_create_at = #{adminRoleCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminRoleUpdateAt != null" >
+                admin_role_update_at = #{adminRoleUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminRoleCreateBy != null" >
+                admin_role_create_by = #{adminRoleCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminRoleUpdateBy != null" >
+                admin_role_update_by = #{adminRoleUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where admin_role_id = #{adminRoleId,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.AdminRole">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_role
+        <where>
+            <if test="adminRoleId != null" >
+                AND admin_role_id = #{adminRoleId,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleParentId != null" >
+                AND admin_role_parent_id = #{adminRoleParentId,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleName != null" >
+                AND admin_role_name = #{adminRoleName,jdbcType=VARCHAR}
+            </if>
+            <if test="adminRoleDesc != null" >
+                AND admin_role_desc = #{adminRoleDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="adminRoleStatus != null" >
+                AND admin_role_status = #{adminRoleStatus,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleType != null" >
+                AND admin_role_type = #{adminRoleType,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleCreateAt != null" >
+                AND admin_role_create_at = #{adminRoleCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminRoleUpdateAt != null" >
+                AND admin_role_update_at = #{adminRoleUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminRoleCreateBy != null" >
+                AND admin_role_create_by = #{adminRoleCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminRoleUpdateBy != null" >
+                AND admin_role_update_by = #{adminRoleUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY admin_role_id DESC
+    </select>
+
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.AdminRole">
+        SELECT COUNT(*) FROM admin_role
+        <where>
+            <if test="adminRoleId != null" >
+                AND admin_role_id = #{adminRoleId,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleParentId != null" >
+                AND admin_role_parent_id = #{adminRoleParentId,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleName != null" >
+                AND admin_role_name = #{adminRoleName,jdbcType=VARCHAR}
+            </if>
+            <if test="adminRoleDesc != null" >
+                AND admin_role_desc = #{adminRoleDesc,jdbcType=VARCHAR}
+            </if>
+            <if test="adminRoleStatus != null" >
+                AND admin_role_status = #{adminRoleStatus,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleType != null" >
+                AND admin_role_type = #{adminRoleType,jdbcType=INTEGER}
+            </if>
+            <if test="adminRoleCreateAt != null" >
+                AND admin_role_create_at = #{adminRoleCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminRoleUpdateAt != null" >
+                AND admin_role_update_at = #{adminRoleUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminRoleCreateBy != null" >
+                AND admin_role_create_by = #{adminRoleCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminRoleUpdateBy != null" >
+                AND admin_role_update_by = #{adminRoleUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

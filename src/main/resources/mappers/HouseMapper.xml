@@ -15,24 +15,26 @@
     <sql id="Base_Column_List" >
         house_id, house_code, house_name, house_stages, house_description, house_create_at, house_update_at
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
         <include refid="Base_Column_List" />
-        from house
-        where house_id = #{id,jdbcType=VARCHAR}
+        FROM house
+        WHERE house_id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-        delete from house
-        where house_id = #{houseId,jdbcType=INTEGER}
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM house
+        WHERE house_id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
-        insert into house (id, message, senddate
-        )
-        values (#{house_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
-        )
+
+    <insert id="insert" parameterType="com.lxl.common.models.House" >
+        INSERT INTO HOUSE (house_id, house_code, house_name, house_stages, house_description, house_create_at, house_update_at)
+        VALUES (#{houseId,jdbcType=INTEGER}, #{houseCode,jdbcType=VARCHAR}, #{houseName,jdbcType=VARCHAR}, #{houseStages,jdbcType=INTEGER}, #{houseDescription,jdbcType=VARCHAR}, #{houseCreateAt,jdbcType=TIMESTAMP}, #{houseUpdateAt,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="com.lxl.common.models.House" >
-        insert into house
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.House" >
+        INSERT INTO house
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="houseId != null" >
                 house_id,
@@ -80,17 +82,18 @@
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.House" >
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.House" >
         update house
         <set>
             <if test="houseCode != null" >
-                house_code = #{houseCode,jdbcType=INTEGER},
+                house_code = #{houseCode,jdbcType=VARCHAR},
             </if>
             <if test="houseName != null" >
-                house_name = #{houseName,jdbcType=INTEGER},
+                house_name = #{houseName,jdbcType=VARCHAR},
             </if>
             <if test="houseStages != null" >
-                house_stages = #{houseStages,jdbcType=VARCHAR},
+                house_stages = #{houseStages,jdbcType=INTEGER},
             </if>
             <if test="houseDescription != null" >
                 house_description = #{houseDescription,jdbcType=VARCHAR},
@@ -104,28 +107,23 @@
         </set>
         where house_id = #{houseId,jdbcType=INTEGER}
     </update>
-    <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
-        update house
-        set message = #{message,jdbcType=VARCHAR},
-        senddate = #{senddate,jdbcType=TIMESTAMP}
-        where house_id = #{id,jdbcType=VARCHAR}
-    </update>
 
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.House">
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.House">
         SELECT
         <include refid="Base_Column_List" />
         FROM house
         <where>
+            <if test="houseId != null" >
+                AND house_id = #{houseId,jdbcType=INTEGER}
+            </if>
             <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+                AND house_code = #{houseCode,jdbcType=VARCHAR}
             </if>
             <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+                AND house_name = #{houseName,jdbcType=VARCHAR}
             </if>
             <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+                AND house_stages = #{houseStages,jdbcType=INTEGER}
             </if>
             <if test="houseDescription != null" >
                 AND house_description = #{houseDescription,jdbcType=VARCHAR}
@@ -137,31 +135,23 @@
                 AND house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
-        order by house_id DESC
+        ORDER BY house_id DESC
     </select>
 
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        SELECT
-        <include refid="Base_Column_List" />
-        FROM
-        house
-        WHERE house_id = #{id,jdbcType=INTEGER}
-        ORDER BY house_id ASC
-    </select>
-
-    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">
         SELECT COUNT(*) FROM house
         <where>
+            <if test="houseId != null" >
+                AND house_id = #{houseId,jdbcType=INTEGER}
+            </if>
             <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+                AND house_code = #{houseCode,jdbcType=VARCHAR}
             </if>
             <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+                AND house_name = #{houseName,jdbcType=VARCHAR}
             </if>
             <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+                AND house_stages = #{houseStages,jdbcType=INTEGER}
             </if>
             <if test="houseDescription != null" >
                 AND house_description = #{houseDescription,jdbcType=VARCHAR}
@@ -174,5 +164,4 @@
             </if>
         </where>
     </select>
-
 </mapper>

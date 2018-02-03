@@ -30,4 +30,12 @@ public class HouseController {
     public Map save(@RequestBody HouseRequest request) {
         return FormatUtil.success(houseService.save(request));
     }
+
+    @RequestMapping("/del")
+    public Map delete(@RequestBody HouseRequest request) {
+        if (houseService.delete(request.getId()) > 0) {
+            return FormatUtil.success();
+        }
+        return FormatUtil.fail();
+    }
 }

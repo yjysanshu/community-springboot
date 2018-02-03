@@ -28,20 +28,16 @@ public class FormatUtil {
         return map;
     }
 
+    public static Map fail() {
+        return FormatUtil.fail(null);
+    }
+
     public static Map fail(Map data) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", ErrorConst.SYSTEM_EXCEPTION);
-        map.put("message", ErrorConst.messageMap.get(ErrorConst.SYSTEM_EXCEPTION));
-        map.put("data", data);
-        return map;
+        return FormatUtil.fail(ErrorConst.SYSTEM_EXCEPTION, data);
     }
 
     public static Map fail(int errorCode, Map data) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("code", errorCode);
-        map.put("message", ErrorConst.messageMap.get(errorCode));
-        map.put("data", data);
-        return map;
+        return FormatUtil.fail(ErrorConst.SYSTEM_EXCEPTION, ErrorConst.messageMap.get(errorCode), data);
     }
 
     public static Map fail(int errorCode, String message, Map data) {

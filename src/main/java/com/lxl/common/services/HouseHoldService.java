@@ -18,12 +18,16 @@ public class HouseHoldService {
     @Autowired
     private HouseHoldMapper houseHoldMapper;
 
+    @Autowired
+    private RoomService roomService;
+
     public List<HouseHoldResponse> getList(HouseHoldRequest request) {
         HouseHold houseHoldSearch = formatModelDetail(request);
         List<HouseHold> listHouseHold = houseHoldMapper.findByParams(houseHoldSearch);
         List<HouseHoldResponse> list = new ArrayList<>();
         for (HouseHold houseHold : listHouseHold) {
             HouseHoldResponse houseHoldResponse = formatResponseDetail(houseHold);
+            houseHoldResponse.setRoomName(roomService.getRoomName(houseHoldResponse.getRoomId()));
             list.add(houseHoldResponse);
         }
         return list;
@@ -34,6 +38,11 @@ public class HouseHoldService {
         return houseHoldMapper.findTotalByParams(houseHoldSearch);
     }
 
+    /**
+     * 保存住户信息
+     * @param request 请求的信息
+     * @return 受影响的行数
+     */
     public Integer save(HouseHoldRequest request) {
         HouseHold houseHold;
         if (request.getId() != null) {
@@ -54,6 +63,15 @@ public class HouseHoldService {
         } else {
             return houseHoldMapper.insertByParams(houseHold);
         }
+    }
+
+    /**
+     * 删除一条住户记录
+     * @param id 住户ID
+     * @return 影响的行数
+     */
+    public Integer delete(Integer id) {
+        return houseHoldMapper.deleteOneById(id);
     }
 
     private HouseHoldResponse formatResponseDetail(HouseHold houseHold) {

@@ -19,16 +19,11 @@ public class MapperXmlService extends BaseService {
         StringBuilder sbBaseValue = new StringBuilder();
 
         for (TableExtend tableExtend : list) {
-            if (tableExtend.getColumnKey().equals(MapperConst.DATA_KEY_PRI)) {
+            if (!tableExtend.getColumnKey().equals(MapperConst.DATA_KEY_PRI)) {
+                sbConditionSet.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_SET, tableExtend));
+            } else {
                 this.primaryKey = tableExtend.getColumnName();
                 this.primaryKeyColumn = tableExtend.getColumnNameModel();
-                sbResult.append(this.getConditionAfterReplace(MapperConst.TXT_ID_LINE, tableExtend));
-                sbConditionList.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_LIST, tableExtend));
-                sbConditionValue.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_VALUE, tableExtend));
-                sbConditionWhere.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_WHERE, tableExtend));
-                sbBaseLine.append(this.getConditionAfterReplace(MapperConst.TXT_COLUMN_LINE, tableExtend));
-                sbBaseValue.append(this.getConditionAfterReplace(MapperConst.TXT_VALUE_LINE, tableExtend));
-                continue;
             }
             sbResult.append(this.getConditionAfterReplace(MapperConst.TXT_RESULT_LINE, tableExtend));
             sbConditionList.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_LIST, tableExtend));
@@ -36,7 +31,7 @@ public class MapperXmlService extends BaseService {
             sbConditionWhere.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_WHERE, tableExtend));
             sbBaseLine.append(this.getConditionAfterReplace(MapperConst.TXT_COLUMN_LINE, tableExtend));
             sbBaseValue.append(this.getConditionAfterReplace(MapperConst.TXT_VALUE_LINE, tableExtend));
-            sbConditionSet.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_SET, tableExtend));
+
         }
         sb.append(MapperConst.TXT_XML.replaceAll(MapperConst.REPLACE_RESULT_MAP_LINE, sbResult.toString())
                 .replaceAll(MapperConst.REPLACE_CONDITION_COLUMN_LIST, sbConditionList.toString())
@@ -55,7 +50,7 @@ public class MapperXmlService extends BaseService {
     @Override
     protected String getClassName() {
         if (this.className == null) {
-            this.className = StringUtil.firstCharacterToUpper(StringUtil.formatField(tableName));
+            this.className = StringUtil.firstCharacterToUpper(StringUtil.formatField(tableName)) + MapperConst.CLASS_NAME_MAPPER;
         }
         return this.className;
     }

@@ -63,9 +63,13 @@ public class AdvertService {
     private AdvertResponse formatResponseDetail(Advert advert) {
         AdvertResponse response = new AdvertResponse();
         response.setId(advert.getAdvertId());
+        response.setDepartment(advert.getAdvertDepartment());
         response.setTitle(advert.getAdvertTitle());
         response.setPic(advert.getAdvertPic());
         response.setType(advert.getAdvertType());
+        response.setSort(advert.getAdvertSort());
+        response.setIsTop(advert.getAdvertIsTop());
+        response.setContent(advert.getAdvertContent());
         response.setCreateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(advert.getAdvertCreateAt()));
         response.setUpdateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(advert.getAdvertUpdateAt()));
         return response;

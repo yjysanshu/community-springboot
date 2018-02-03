@@ -3,6 +3,7 @@ package com.lxl.admin.models.response;
 public class HouseHoldResponse extends BaseResponse {
     private Integer id;
     private Integer roomId;
+    private String roomName;
     private String name;
     private String phone;
     private String sex;
@@ -24,6 +25,14 @@ public class HouseHoldResponse extends BaseResponse {
 
     public void setRoomId(Integer roomId) {
         this.roomId = roomId;
+    }
+
+    public String getRoomName() {
+        return roomName;
+    }
+
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
     }
 
     public String getName() {

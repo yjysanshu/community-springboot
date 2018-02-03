@@ -3,7 +3,6 @@ package com.lxl.common.services;
 import com.lxl.admin.models.request.FastMailRequest;
 import com.lxl.admin.models.response.FastMailResponse;
 import com.lxl.common.mapper.FastMailMapper;
-import com.lxl.common.mapper.HouseMapper;
 import com.lxl.common.models.FastMail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,7 +42,15 @@ public class FastMailService {
             fastMail = new FastMail();
             fastMail.setFastMailCreateAt(new Date());
         }
-        fastMail.setFastMailCreateAt(request.getCreateAt());
+        fastMail.setFastMailOrderNo(request.getOrderNo());
+        fastMail.setFastMailCustomNo(request.getCustomNo());
+        fastMail.setFastMailBusiness(request.getBusiness());
+        fastMail.setFastMailReceiveRoomId(request.getReceiveRoomId());
+        fastMail.setFastMailReceiveName(request.getReceiveName());
+        fastMail.setFastMailReceivePhone(request.getReceivePhone());
+        fastMail.setFastMailReceiveAddress(request.getReceiveAddress());
+        fastMail.setFastMailStatus(request.getStatus());
+        fastMail.setFastMailMemo(request.getMemo());
         if (request.getId() != null) {
             return fastMailMapper.updateByIdAndParams(fastMail);
         } else {
@@ -51,9 +58,22 @@ public class FastMailService {
         }
     }
 
+    public Integer delete(Integer id) {
+        return fastMailMapper.deleteOneById(id);
+    }
+
     private FastMailResponse formatResponseDetail(FastMail fastMail) {
         FastMailResponse response = new FastMailResponse();
         response.setId(fastMail.getFastMailId());
+        response.setOrderNo(fastMail.getFastMailOrderNo());
+        response.setCustomNo(fastMail.getFastMailCustomNo());
+        response.setBusiness(fastMail.getFastMailBusiness());
+        response.setReceiveRoomId(fastMail.getFastMailReceiveRoomId());
+        response.setReceiveName(fastMail.getFastMailReceiveName());
+        response.setReceivePhone(fastMail.getFastMailReceivePhone());
+        response.setReceiveAddress(fastMail.getFastMailReceiveAddress());
+        response.setStatus(fastMail.getFastMailStatus());
+        response.setMemo(fastMail.getFastMailMemo());
         response.setCreateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(fastMail.getFastMailCreateAt()));
         response.setUpdateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(fastMail.getFastMailUpdateAt()));
         return response;
@@ -62,6 +82,15 @@ public class FastMailService {
     private FastMail formatModelDetail(FastMailRequest request) {
         FastMail fastMail = new FastMail();
         fastMail.setFastMailId(request.getId());
+        fastMail.setFastMailOrderNo(request.getOrderNo());
+        fastMail.setFastMailCustomNo(request.getCustomNo());
+        fastMail.setFastMailBusiness(request.getBusiness());
+        fastMail.setFastMailReceiveRoomId(request.getReceiveRoomId());
+        fastMail.setFastMailReceiveName(request.getReceiveName());
+        fastMail.setFastMailReceivePhone(request.getReceivePhone());
+        fastMail.setFastMailReceiveAddress(request.getReceiveAddress());
+        fastMail.setFastMailStatus(request.getStatus());
+        fastMail.setFastMailMemo(request.getMemo());
         fastMail.setFastMailCreateAt(request.getCreateAt());
         fastMail.setFastMailUpdateAt(request.getUpdateAt());
         return fastMail;

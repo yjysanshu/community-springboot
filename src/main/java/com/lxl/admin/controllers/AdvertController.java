@@ -32,7 +32,10 @@ public class AdvertController {
     }
 
     @RequestMapping("/del")
-    public Map delete(Integer id) {
-        return FormatUtil.success(advertService.delete(id));
+    public Map delete(@RequestBody AdvertRequest request) {
+        if (advertService.delete(request.getId()) > 0) {
+            return FormatUtil.success();
+        }
+        return FormatUtil.fail();
     }
 }

@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lxl.common.mapper.FastMailMapper" >
 
-    <resultMap id="BaseResultMap" type="com.lxl.common.models.House" >
-        <id column="fast_mail_id" property="fastMailId" jdbcType="INTEGER" />
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.FastMail" >
+        <result column="fast_mail_id" property="fastMailId" jdbcType="INTEGER" />
         <result column="fast_mail_order_no" property="fastMailOrderNo" jdbcType="VARCHAR" />
         <result column="fast_mail_custom_no" property="fastMailCustomNo" jdbcType="VARCHAR" />
         <result column="fast_mail_business" property="fastMailBusiness" jdbcType="VARCHAR" />
@@ -18,168 +18,230 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        fast_mail_id, fast_mail_order_no, fast_mail_custom_no, fast_mail_business, fast_mail_receive_room_id,
-        fast_mail_receive_name, fast_mail_receive_phone, fast_mail_receive_address, fast_mail_status, fast_mail_memo,
-        fast_mail_create_at, fast_mail_update_at
+        fast_mail_id, fast_mail_order_no, fast_mail_custom_no, fast_mail_business, fast_mail_receive_room_id, fast_mail_receive_name, fast_mail_receive_phone, fast_mail_receive_address, fast_mail_status, fast_mail_memo, fast_mail_create_at, fast_mail_update_at
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
         <include refid="Base_Column_List" />
-        from house
-        where house_id = #{id,jdbcType=VARCHAR}
+        FROM fast_mail
+        WHERE fast_mail_id = #{id,jdbcType=INTEGER}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
-        delete from house
-        where house_id = #{houseId,jdbcType=INTEGER}
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM fast_mail
+        WHERE fast_mail_id = #{id,jdbcType=INTEGER}
     </delete>
-    <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
-        insert into house (id, message, senddate
-        )
-        values (#{house_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
-        )
+
+    <insert id="insert" parameterType="com.lxl.common.models.FastMail" >
+        INSERT INTO HOUSE (fast_mail_id, fast_mail_order_no, fast_mail_custom_no, fast_mail_business, fast_mail_receive_room_id, fast_mail_receive_name, fast_mail_receive_phone, fast_mail_receive_address, fast_mail_status, fast_mail_memo, fast_mail_create_at, fast_mail_update_at)
+        VALUES (#{fastMailId,jdbcType=INTEGER}, #{fastMailOrderNo,jdbcType=VARCHAR}, #{fastMailCustomNo,jdbcType=VARCHAR}, #{fastMailBusiness,jdbcType=VARCHAR}, #{fastMailReceiveRoomId,jdbcType=INTEGER}, #{fastMailReceiveName,jdbcType=VARCHAR}, #{fastMailReceivePhone,jdbcType=VARCHAR}, #{fastMailReceiveAddress,jdbcType=VARCHAR}, #{fastMailStatus,jdbcType=INTEGER}, #{fastMailMemo,jdbcType=VARCHAR}, #{fastMailCreateAt,jdbcType=TIMESTAMP}, #{fastMailUpdateAt,jdbcType=TIMESTAMP})
     </insert>
-    <insert id="insertSelective" parameterType="com.lxl.common.models.House" >
-        insert into house
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.FastMail" >
+        INSERT INTO fast_mail
         <trim prefix="(" suffix=")" suffixOverrides="," >
-            <if test="houseId != null" >
-                house_id,
+            <if test="fastMailId != null" >
+                fast_mail_id,
             </if>
-            <if test="houseCode != null" >
-                house_code,
+            <if test="fastMailOrderNo != null" >
+                fast_mail_order_no,
             </if>
-            <if test="houseName != null" >
-                house_name,
+            <if test="fastMailCustomNo != null" >
+                fast_mail_custom_no,
             </if>
-            <if test="houseStages != null" >
-                house_stages,
+            <if test="fastMailBusiness != null" >
+                fast_mail_business,
             </if>
-            <if test="houseDescription != null" >
-                house_description,
+            <if test="fastMailReceiveRoomId != null" >
+                fast_mail_receive_room_id,
             </if>
-            <if test="houseCreateAt != null" >
-                house_create_at,
+            <if test="fastMailReceiveName != null" >
+                fast_mail_receive_name,
             </if>
-            <if test="houseUpdateAt != null" >
-                house_update_at,
+            <if test="fastMailReceivePhone != null" >
+                fast_mail_receive_phone,
+            </if>
+            <if test="fastMailReceiveAddress != null" >
+                fast_mail_receive_address,
+            </if>
+            <if test="fastMailStatus != null" >
+                fast_mail_status,
+            </if>
+            <if test="fastMailMemo != null" >
+                fast_mail_memo,
+            </if>
+            <if test="fastMailCreateAt != null" >
+                fast_mail_create_at,
+            </if>
+            <if test="fastMailUpdateAt != null" >
+                fast_mail_update_at,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides="," >
-            <if test="houseId != null" >
-                #{houseId,jdbcType=INTEGER},
+            <if test="fastMailId != null" >
+                #{fastMailId,jdbcType=INTEGER},
             </if>
-            <if test="houseCode != null" >
-                #{houseCode,jdbcType=VARCHAR},
+            <if test="fastMailOrderNo != null" >
+                #{fastMailOrderNo,jdbcType=VARCHAR},
             </if>
-            <if test="houseName != null" >
-                #{houseName,jdbcType=VARCHAR},
+            <if test="fastMailCustomNo != null" >
+                #{fastMailCustomNo,jdbcType=VARCHAR},
             </if>
-            <if test="houseStages != null" >
-                #{houseStages,jdbcType=INTEGER},
+            <if test="fastMailBusiness != null" >
+                #{fastMailBusiness,jdbcType=VARCHAR},
             </if>
-            <if test="houseDescription != null" >
-                #{houseDescription,jdbcType=VARCHAR},
+            <if test="fastMailReceiveRoomId != null" >
+                #{fastMailReceiveRoomId,jdbcType=INTEGER},
             </if>
-            <if test="houseCreateAt != null" >
-                #{houseCreateAt,jdbcType=TIMESTAMP},
+            <if test="fastMailReceiveName != null" >
+                #{fastMailReceiveName,jdbcType=VARCHAR},
             </if>
-            <if test="houseUpdateAt != null" >
-                #{houseUpdateAt,jdbcType=TIMESTAMP},
+            <if test="fastMailReceivePhone != null" >
+                #{fastMailReceivePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="fastMailReceiveAddress != null" >
+                #{fastMailReceiveAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="fastMailStatus != null" >
+                #{fastMailStatus,jdbcType=INTEGER},
+            </if>
+            <if test="fastMailMemo != null" >
+                #{fastMailMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="fastMailCreateAt != null" >
+                #{fastMailCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fastMailUpdateAt != null" >
+                #{fastMailUpdateAt,jdbcType=TIMESTAMP},
             </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="com.lxl.common.models.House" >
-        update house
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.FastMail" >
+        update fast_mail
         <set>
-            <if test="houseCode != null" >
-                house_code = #{houseCode,jdbcType=INTEGER},
+            <if test="fastMailOrderNo != null" >
+                fast_mail_order_no = #{fastMailOrderNo,jdbcType=VARCHAR},
             </if>
-            <if test="houseName != null" >
-                house_name = #{houseName,jdbcType=INTEGER},
+            <if test="fastMailCustomNo != null" >
+                fast_mail_custom_no = #{fastMailCustomNo,jdbcType=VARCHAR},
             </if>
-            <if test="houseStages != null" >
-                house_stages = #{houseStages,jdbcType=VARCHAR},
+            <if test="fastMailBusiness != null" >
+                fast_mail_business = #{fastMailBusiness,jdbcType=VARCHAR},
             </if>
-            <if test="houseDescription != null" >
-                house_description = #{houseDescription,jdbcType=VARCHAR},
+            <if test="fastMailReceiveRoomId != null" >
+                fast_mail_receive_room_id = #{fastMailReceiveRoomId,jdbcType=INTEGER},
             </if>
-            <if test="houseCreateAt != null" >
-                house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP},
+            <if test="fastMailReceiveName != null" >
+                fast_mail_receive_name = #{fastMailReceiveName,jdbcType=VARCHAR},
             </if>
-            <if test="houseUpdateAt != null" >
-                house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP},
+            <if test="fastMailReceivePhone != null" >
+                fast_mail_receive_phone = #{fastMailReceivePhone,jdbcType=VARCHAR},
+            </if>
+            <if test="fastMailReceiveAddress != null" >
+                fast_mail_receive_address = #{fastMailReceiveAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="fastMailStatus != null" >
+                fast_mail_status = #{fastMailStatus,jdbcType=INTEGER},
+            </if>
+            <if test="fastMailMemo != null" >
+                fast_mail_memo = #{fastMailMemo,jdbcType=VARCHAR},
+            </if>
+            <if test="fastMailCreateAt != null" >
+                fast_mail_create_at = #{fastMailCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="fastMailUpdateAt != null" >
+                fast_mail_update_at = #{fastMailUpdateAt,jdbcType=TIMESTAMP},
             </if>
         </set>
-        where house_id = #{houseId,jdbcType=INTEGER}
-    </update>
-    <update id="updateByPrimaryKey" parameterType="com.lxl.api.models.AppMessage" >
-        update house
-        set message = #{message,jdbcType=VARCHAR},
-        senddate = #{senddate,jdbcType=TIMESTAMP}
-        where house_id = #{id,jdbcType=VARCHAR}
+        where fast_mail_id = #{fastMailId,jdbcType=INTEGER}
     </update>
 
-    <select id="selectAll" resultMap="BaseResultMap" parameterType="com.lxl.common.models.House">
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.FastMail">
         SELECT
         <include refid="Base_Column_List" />
-        FROM house
+        FROM fast_mail
         <where>
-            <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+            <if test="fastMailId != null" >
+                AND fast_mail_id = #{fastMailId,jdbcType=INTEGER}
             </if>
-            <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+            <if test="fastMailOrderNo != null" >
+                AND fast_mail_order_no = #{fastMailOrderNo,jdbcType=VARCHAR}
             </if>
-            <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+            <if test="fastMailCustomNo != null" >
+                AND fast_mail_custom_no = #{fastMailCustomNo,jdbcType=VARCHAR}
             </if>
-            <if test="houseDescription != null" >
-                AND house_description = #{houseDescription,jdbcType=VARCHAR}
+            <if test="fastMailBusiness != null" >
+                AND fast_mail_business = #{fastMailBusiness,jdbcType=VARCHAR}
             </if>
-            <if test="houseCreateAt != null" >
-                AND house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP}
+            <if test="fastMailReceiveRoomId != null" >
+                AND fast_mail_receive_room_id = #{fastMailReceiveRoomId,jdbcType=INTEGER}
             </if>
-            <if test="houseUpdateAt != null" >
-                AND house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP}
+            <if test="fastMailReceiveName != null" >
+                AND fast_mail_receive_name = #{fastMailReceiveName,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailReceivePhone != null" >
+                AND fast_mail_receive_phone = #{fastMailReceivePhone,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailReceiveAddress != null" >
+                AND fast_mail_receive_address = #{fastMailReceiveAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailStatus != null" >
+                AND fast_mail_status = #{fastMailStatus,jdbcType=INTEGER}
+            </if>
+            <if test="fastMailMemo != null" >
+                AND fast_mail_memo = #{fastMailMemo,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailCreateAt != null" >
+                AND fast_mail_create_at = #{fastMailCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="fastMailUpdateAt != null" >
+                AND fast_mail_update_at = #{fastMailUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
-        order by house_id DESC
+        ORDER BY fast_mail_id DESC
     </select>
 
-    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
-        select
-        <include refid="Base_Column_List" />
-        from
-        house
-        where house_id = #{id,jdbcType=INTEGER}
-        order by house_id asc
-    </select>
-
-    <select id="getTotal" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">
-        SELECT COUNT(*) FROM house
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.FastMail">
+        SELECT COUNT(*) FROM fast_mail
         <where>
-            <if test="houseCode != null" >
-                <bind name="pattern" value="'%' + houseCode +'%'" />
-                AND house_code LIKE #{pattern,jdbcType=INTEGER}
+            <if test="fastMailId != null" >
+                AND fast_mail_id = #{fastMailId,jdbcType=INTEGER}
             </if>
-            <if test="houseName != null" >
-                <bind name="pattern" value="'%' + houseName +'%'" />
-                AND house_name LIKE #{pattern,jdbcType=INTEGER}
+            <if test="fastMailOrderNo != null" >
+                AND fast_mail_order_no = #{fastMailOrderNo,jdbcType=VARCHAR}
             </if>
-            <if test="houseStages != null" >
-                AND house_stages = #{houseStages,jdbcType=VARCHAR}
+            <if test="fastMailCustomNo != null" >
+                AND fast_mail_custom_no = #{fastMailCustomNo,jdbcType=VARCHAR}
             </if>
-            <if test="houseDescription != null" >
-                AND house_description = #{houseDescription,jdbcType=VARCHAR}
+            <if test="fastMailBusiness != null" >
+                AND fast_mail_business = #{fastMailBusiness,jdbcType=VARCHAR}
             </if>
-            <if test="houseCreateAt != null" >
-                AND house_create_at = #{houseCreateAt,jdbcType=TIMESTAMP}
+            <if test="fastMailReceiveRoomId != null" >
+                AND fast_mail_receive_room_id = #{fastMailReceiveRoomId,jdbcType=INTEGER}
             </if>
-            <if test="houseUpdateAt != null" >
-                AND house_update_at = #{houseUpdateAt,jdbcType=TIMESTAMP}
+            <if test="fastMailReceiveName != null" >
+                AND fast_mail_receive_name = #{fastMailReceiveName,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailReceivePhone != null" >
+                AND fast_mail_receive_phone = #{fastMailReceivePhone,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailReceiveAddress != null" >
+                AND fast_mail_receive_address = #{fastMailReceiveAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailStatus != null" >
+                AND fast_mail_status = #{fastMailStatus,jdbcType=INTEGER}
+            </if>
+            <if test="fastMailMemo != null" >
+                AND fast_mail_memo = #{fastMailMemo,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMailCreateAt != null" >
+                AND fast_mail_create_at = #{fastMailCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="fastMailUpdateAt != null" >
+                AND fast_mail_update_at = #{fastMailUpdateAt,jdbcType=TIMESTAMP}
             </if>
         </where>
     </select>
-
 </mapper>

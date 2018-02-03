@@ -1,76 +1,76 @@
 package com.lxl.admin.models.request;
 
 public class RepairOrderRequest extends BaseRequest {
-    private Integer id;
-    private String code;
-    private Integer roomId;
-    private Integer repairRangeId;
-    private String phone;
-    private Integer status;
-    private Integer adminUserId;
-    private String description;
+	private Integer id;
+	private String code;
+	private Integer roomId;
+	private Integer repairRangeId;
+	private String phone;
+	private Integer status;
+	private Integer adminUserId;
+	private String description;
 
-    public Integer getId() {
-        return id;
-    }
+	public Integer getId() {
+		return this.id;
+	}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getCode() {
-        return code;
-    }
+	public String getCode() {
+		return this.code;
+	}
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+	public void setCode(String code) {
+		this.code = code;
+	}
 
-    public Integer getRoomId() {
-        return roomId;
-    }
+	public Integer getRoomId() {
+		return this.roomId;
+	}
 
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
-    }
+	public void setRoomId(Integer roomId) {
+		this.roomId = roomId;
+	}
 
-    public Integer getRepairRangeId() {
-        return repairRangeId;
-    }
+	public Integer getRepairRangeId() {
+		return this.repairRangeId;
+	}
 
-    public void setRepairRangeId(Integer repairRangeId) {
-        this.repairRangeId = repairRangeId;
-    }
+	public void setRepairRangeId(Integer repairRangeId) {
+		this.repairRangeId = repairRangeId;
+	}
 
-    public String getPhone() {
-        return phone;
-    }
+	public String getPhone() {
+		return this.phone;
+	}
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 
-    public Integer getStatus() {
-        return status;
-    }
+	public Integer getStatus() {
+		return this.status;
+	}
 
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
 
-    public Integer getAdminUserId() {
-        return adminUserId;
-    }
+	public Integer getAdminUserId() {
+		return this.adminUserId;
+	}
 
-    public void setAdminUserId(Integer adminUserId) {
-        this.adminUserId = adminUserId;
-    }
+	public void setAdminUserId(Integer adminUserId) {
+		this.adminUserId = adminUserId;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public String getDescription() {
+		return this.description;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }
