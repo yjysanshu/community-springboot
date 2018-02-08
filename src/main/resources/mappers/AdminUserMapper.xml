@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxl.common.mapper.AdminUserMapper" >
+
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.AdminUser" >
+        <result column="admin_user_id" property="adminUserId" jdbcType="INTEGER" />
+        <result column="admin_user_phone" property="adminUserPhone" jdbcType="VARCHAR" />
+        <result column="admin_user_name" property="adminUserName" jdbcType="VARCHAR" />
+        <result column="admin_user_email" property="adminUserEmail" jdbcType="VARCHAR" />
+        <result column="admin_user_full_name" property="adminUserFullName" jdbcType="VARCHAR" />
+        <result column="admin_user_avatar" property="adminUserAvatar" jdbcType="VARCHAR" />
+        <result column="admin_user_position" property="adminUserPosition" jdbcType="VARCHAR" />
+        <result column="admin_user_auth_key" property="adminUserAuthKey" jdbcType="VARCHAR" />
+        <result column="admin_user_password_hash" property="adminUserPasswordHash" jdbcType="VARCHAR" />
+        <result column="admin_user_password_reset_token" property="adminUserPasswordResetToken" jdbcType="VARCHAR" />
+        <result column="admin_user_status" property="adminUserStatus" jdbcType="INTEGER" />
+        <result column="admin_user_create_at" property="adminUserCreateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_user_update_at" property="adminUserUpdateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_user_create_by" property="adminUserCreateBy" jdbcType="VARCHAR" />
+        <result column="admin_user_update_by" property="adminUserUpdateBy" jdbcType="VARCHAR" />
+
+        <collection property="adminRoles" ofType="com.lxl.common.models.AdminRole">
+            <id column="admin_role_id" property="adminRoleId" jdbcType="INTEGER" />
+            <result column="admin_role_parent_id" property="adminRoleParentId" jdbcType="INTEGER" />
+            <result column="admin_role_name" property="adminRoleName" jdbcType="VARCHAR" />
+            <result column="admin_role_desc" property="adminRoleDesc" jdbcType="VARCHAR" />
+            <result column="admin_role_status" property="adminRoleStatus" jdbcType="INTEGER" />
+            <result column="admin_role_type" property="adminRoleType" jdbcType="INTEGER" />
+            <result column="admin_role_create_at" property="adminRoleCreateAt" jdbcType="TIMESTAMP" />
+            <result column="admin_role_update_at" property="adminRoleUpdateAt" jdbcType="TIMESTAMP" />
+            <result column="admin_role_create_by" property="adminRoleCreateBy" jdbcType="VARCHAR" />
+            <result column="admin_role_update_by" property="adminRoleUpdateBy" jdbcType="VARCHAR" />
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        admin_user_id, admin_user_phone, admin_user_name, admin_user_email, admin_user_full_name, admin_user_avatar, admin_user_position, admin_user_auth_key, admin_user_password_hash, admin_user_password_reset_token, admin_user_status, admin_user_create_at, admin_user_update_at, admin_user_create_by, admin_user_update_by
+    </sql>
+
+    <select id="findOneByToken" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        admin_user.*, admin_role.*
+        FROM admin_user
+        LEFT JOIN admin_role_user
+        LEFT JOIN admin_role
+        WHERE admin_user_password_reset_token = #{token,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findOneByEmail" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        admin_user.*, admin_role.*
+        FROM admin_user
+        LEFT JOIN admin_role_user ON admin_role_user_admin_user_id=admin_user_id
+        LEFT JOIN admin_role ON admin_role_user_admin_role_id=admin_role_id
+        WHERE admin_user_email = #{email,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findOneByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        admin_user.*, admin_role.*
+        FROM admin_user
+        LEFT JOIN admin_role_user
+        LEFT JOIN admin_role
+        WHERE admin_user_phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        admin_user.*, admin_role.*
+        FROM admin_user
+        LEFT JOIN admin_role_user
+        LEFT JOIN admin_role
+        WHERE admin_user_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM admin_user
+        WHERE admin_user_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.lxl.common.models.AdminUser" >
+        INSERT INTO HOUSE (admin_user_id, admin_user_phone, admin_user_name, admin_user_email, admin_user_full_name, admin_user_avatar, admin_user_position, admin_user_auth_key, admin_user_password_hash, admin_user_password_reset_token, admin_user_status, admin_user_create_at, admin_user_update_at, admin_user_create_by, admin_user_update_by)
+        VALUES (#{adminUserId,jdbcType=INTEGER}, #{adminUserPhone,jdbcType=VARCHAR}, #{adminUserName,jdbcType=VARCHAR}, #{adminUserEmail,jdbcType=VARCHAR}, #{adminUserFullName,jdbcType=VARCHAR}, #{adminUserAvatar,jdbcType=VARCHAR}, #{adminUserPosition,jdbcType=VARCHAR}, #{adminUserAuthKey,jdbcType=VARCHAR}, #{adminUserPasswordHash,jdbcType=VARCHAR}, #{adminUserPasswordResetToken,jdbcType=VARCHAR}, #{adminUserStatus,jdbcType=INTEGER}, #{adminUserCreateAt,jdbcType=TIMESTAMP}, #{adminUserUpdateAt,jdbcType=TIMESTAMP}, #{adminUserCreateBy,jdbcType=VARCHAR}, #{adminUserUpdateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.AdminUser" >
+        INSERT INTO admin_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="adminUserId != null" >
+                admin_user_id,
+            </if>
+            <if test="adminUserPhone != null" >
+                admin_user_phone,
+            </if>
+            <if test="adminUserName != null" >
+                admin_user_name,
+            </if>
+            <if test="adminUserEmail != null" >
+                admin_user_email,
+            </if>
+            <if test="adminUserFullName != null" >
+                admin_user_full_name,
+            </if>
+            <if test="adminUserAvatar != null" >
+                admin_user_avatar,
+            </if>
+            <if test="adminUserPosition != null" >
+                admin_user_position,
+            </if>
+            <if test="adminUserAuthKey != null" >
+                admin_user_auth_key,
+            </if>
+            <if test="adminUserPasswordHash != null" >
+                admin_user_password_hash,
+            </if>
+            <if test="adminUserPasswordResetToken != null" >
+                admin_user_password_reset_token,
+            </if>
+            <if test="adminUserStatus != null" >
+                admin_user_status,
+            </if>
+            <if test="adminUserCreateAt != null" >
+                admin_user_create_at,
+            </if>
+            <if test="adminUserUpdateAt != null" >
+                admin_user_update_at,
+            </if>
+            <if test="adminUserCreateBy != null" >
+                admin_user_create_by,
+            </if>
+            <if test="adminUserUpdateBy != null" >
+                admin_user_update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="adminUserId != null" >
+                #{adminUserId,jdbcType=INTEGER},
+            </if>
+            <if test="adminUserPhone != null" >
+                #{adminUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserName != null" >
+                #{adminUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserEmail != null" >
+                #{adminUserEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserFullName != null" >
+                #{adminUserFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserAvatar != null" >
+                #{adminUserAvatar,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserPosition != null" >
+                #{adminUserPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserAuthKey != null" >
+                #{adminUserAuthKey,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserPasswordHash != null" >
+                #{adminUserPasswordHash,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserPasswordResetToken != null" >
+                #{adminUserPasswordResetToken,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserStatus != null" >
+                #{adminUserStatus,jdbcType=INTEGER},
+            </if>
+            <if test="adminUserCreateAt != null" >
+                #{adminUserCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminUserUpdateAt != null" >
+                #{adminUserUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminUserCreateBy != null" >
+                #{adminUserCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserUpdateBy != null" >
+                #{adminUserUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.AdminUser" >
+        update admin_user
+        <set>
+            <if test="adminUserPhone != null" >
+                admin_user_phone = #{adminUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserName != null" >
+                admin_user_name = #{adminUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserEmail != null" >
+                admin_user_email = #{adminUserEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserFullName != null" >
+                admin_user_full_name = #{adminUserFullName,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserAvatar != null" >
+                admin_user_avatar = #{adminUserAvatar,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserPosition != null" >
+                admin_user_position = #{adminUserPosition,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserAuthKey != null" >
+                admin_user_auth_key = #{adminUserAuthKey,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserPasswordHash != null" >
+                admin_user_password_hash = #{adminUserPasswordHash,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserPasswordResetToken != null" >
+                admin_user_password_reset_token = #{adminUserPasswordResetToken,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserStatus != null" >
+                admin_user_status = #{adminUserStatus,jdbcType=INTEGER},
+            </if>
+            <if test="adminUserCreateAt != null" >
+                admin_user_create_at = #{adminUserCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminUserUpdateAt != null" >
+                admin_user_update_at = #{adminUserUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminUserCreateBy != null" >
+                admin_user_create_by = #{adminUserCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminUserUpdateBy != null" >
+                admin_user_update_by = #{adminUserUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where admin_user_id = #{adminUserId,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.AdminUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_user
+        <where>
+            <if test="adminUserId != null" >
+                AND admin_user_id = #{adminUserId,jdbcType=INTEGER}
+            </if>
+            <if test="adminUserPhone != null" >
+                AND admin_user_phone = #{adminUserPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserName != null" >
+                AND admin_user_name = #{adminUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserEmail != null" >
+                AND admin_user_email = #{adminUserEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserFullName != null" >
+                AND admin_user_full_name = #{adminUserFullName,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserAvatar != null" >
+                AND admin_user_avatar = #{adminUserAvatar,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserPosition != null" >
+                AND admin_user_position = #{adminUserPosition,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserAuthKey != null" >
+                AND admin_user_auth_key = #{adminUserAuthKey,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserPasswordHash != null" >
+                AND admin_user_password_hash = #{adminUserPasswordHash,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserPasswordResetToken != null" >
+                AND admin_user_password_reset_token = #{adminUserPasswordResetToken,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserStatus != null" >
+                AND admin_user_status = #{adminUserStatus,jdbcType=INTEGER}
+            </if>
+            <if test="adminUserCreateAt != null" >
+                AND admin_user_create_at = #{adminUserCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminUserUpdateAt != null" >
+                AND admin_user_update_at = #{adminUserUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminUserCreateBy != null" >
+                AND admin_user_create_by = #{adminUserCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserUpdateBy != null" >
+                AND admin_user_update_by = #{adminUserUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY admin_user_id DESC
+    </select>
+
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.AdminUser">
+        SELECT COUNT(*) FROM admin_user
+        <where>
+            <if test="adminUserId != null" >
+                AND admin_user_id = #{adminUserId,jdbcType=INTEGER}
+            </if>
+            <if test="adminUserPhone != null" >
+                AND admin_user_phone = #{adminUserPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserName != null" >
+                AND admin_user_name = #{adminUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserEmail != null" >
+                AND admin_user_email = #{adminUserEmail,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserFullName != null" >
+                AND admin_user_full_name = #{adminUserFullName,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserAvatar != null" >
+                AND admin_user_avatar = #{adminUserAvatar,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserPosition != null" >
+                AND admin_user_position = #{adminUserPosition,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserAuthKey != null" >
+                AND admin_user_auth_key = #{adminUserAuthKey,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserPasswordHash != null" >
+                AND admin_user_password_hash = #{adminUserPasswordHash,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserPasswordResetToken != null" >
+                AND admin_user_password_reset_token = #{adminUserPasswordResetToken,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserStatus != null" >
+                AND admin_user_status = #{adminUserStatus,jdbcType=INTEGER}
+            </if>
+            <if test="adminUserCreateAt != null" >
+                AND admin_user_create_at = #{adminUserCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminUserUpdateAt != null" >
+                AND admin_user_update_at = #{adminUserUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminUserCreateBy != null" >
+                AND admin_user_create_by = #{adminUserCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminUserUpdateBy != null" >
+                AND admin_user_update_by = #{adminUserUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

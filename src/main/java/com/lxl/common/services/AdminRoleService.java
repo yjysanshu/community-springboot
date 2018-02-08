@@ -2,21 +2,24 @@ package com.lxl.common.services;
 
 import com.lxl.admin.models.request.AdminRoleRequest;
 import com.lxl.admin.models.response.AdminRoleResponse;
+import com.lxl.common.consts.AdminRoleConst;
 import com.lxl.common.mapper.AdminRoleMapper;
 import com.lxl.common.models.AdminRole;
+import com.lxl.common.models.AdminRoleUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AdminRoleService {
 
     @Autowired
     private AdminRoleMapper adminRoleMapper;
+
+    @Autowired
+    private AdminRoleUserService adminRoleUserService;
 
     public List<AdminRoleResponse> getList(AdminRoleRequest request) {
         AdminRole adminRoleSearch = formatModelDetail(request);
@@ -27,6 +30,74 @@ public class AdminRoleService {
             list.add(adminRoleResponse);
         }
         return list;
+    }
+
+    public AdminRole getOneById(Integer roleId) {
+        return adminRoleMapper.findOneById(roleId);
+    }
+
+    /**
+     * 获取用户的角色
+     * @param userId 用户ID
+     * @return 用户的角色
+     */
+    public List<AdminRoleResponse> manageRole(Integer userId) {
+        List<AdminRoleUser> listRole = adminRoleUserService.getAdminRolesByUserId(userId);
+        List<AdminRole> listGroupRoles = new ArrayList<>();
+        for (AdminRoleUser adminRoleUser : listRole) {
+            AdminRole adminRole = adminRoleMapper.findOneById(adminRoleUser.getAdminRoleUserAdminRoleId());
+
+            if (adminRole.getAdminRoleType() == AdminRoleConst.ROLE_TYPE_GROUP) {
+                listGroupRoles.add(adminRole);
+            }
+        }
+
+        return this.nestRole(listGroupRoles, 0);
+    }
+
+    /**
+     * 获取角色
+     * @param listGroupRoles
+     * @param depth
+     * @return
+     */
+    private List<AdminRoleResponse> nestRole(List<AdminRole> listGroupRoles, Integer depth) {
+        List<AdminRoleResponse> list = new ArrayList<>();
+        for (AdminRole adminRole : listGroupRoles) {
+            List<AdminRole> listRole = adminRoleMapper.findRolesByParentId(adminRole.getAdminRoleId());
+
+            AdminRoleResponse adminRoleResponse = formatResponseDetail(adminRole);
+            adminRoleResponse.setLevel(depth);
+            adminRoleResponse.setIsExpand(false);
+
+            if (listRole.size() > 0) {
+                adminRoleResponse.setIsParent(true);
+                adminRoleResponse.setChildren(this.nestRole(listRole, depth + 1));
+            } else {
+                adminRoleResponse.setIsParent(false);
+                adminRoleResponse.setChildren(new ArrayList<>());
+            }
+            list.add(adminRoleResponse);
+        }
+        return list;
+    }
+
+    /**
+     * 通过roleId查询
+     * @param roleIds
+     * @return
+     */
+    public List<AdminRole> getByRoleIds(List<Integer> roleIds) {
+        if (roleIds.size() <= 0) {
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("roleIds", roleIds);
+        return adminRoleMapper.findByRoleIds(map);
+    }
+
+    public List<AdminRole> getByParentId(Integer parentId) {
+        return adminRoleMapper.findByParentId(parentId);
     }
 
     public Integer getTotal(AdminRoleRequest request) {

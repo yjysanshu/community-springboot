@@ -1,5 +1,7 @@
 package com.lxl.admin.models.response;
 
+import java.util.List;
+
 public class AdminRoleResponse extends BaseResponse {
 	private Integer id;
 	private Integer parentId;
@@ -9,6 +11,11 @@ public class AdminRoleResponse extends BaseResponse {
 	private Integer type;
 	private String createBy;
 	private String updateBy;
+
+	private Integer level;
+	private Boolean isExpand;
+	private Boolean isParent;
+	private List<AdminRoleResponse> children;
 
 	public Integer getId() {
 		return this.id;
@@ -72,5 +79,37 @@ public class AdminRoleResponse extends BaseResponse {
 
 	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
+	}
+
+	public Integer getLevel() {
+		return this.level;
+	}
+
+	public void setLevel(Integer level) {
+		this.level = level;
+	}
+
+	public Boolean getIsExpand() {
+		return this.isExpand;
+	}
+
+	public void setIsExpand(Boolean isExpand) {
+		this.isExpand = isExpand;
+	}
+
+	public Boolean getIsParent() {
+		return this.isParent;
+	}
+
+	public void setIsParent(Boolean isParent) {
+		this.isParent = isParent;
+	}
+
+	public List<AdminRoleResponse> getChildren() {
+		return this.children;
+	}
+
+	public void setChildren(List<AdminRoleResponse> children) {
+		this.children = children;
 	}
 }

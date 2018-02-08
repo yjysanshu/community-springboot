@@ -35,6 +35,7 @@ public class CommonConst {
     //数据库字段类型
     public static final String DATA_TYPE_INT = "int";
     public static final String DATA_TYPE_ENUM = "enum";
+    public static final String DATA_TYPE_CHAR = "char";
     public static final String DATA_TYPE_VARCHAR = "varchar";
     public static final String DATA_TYPE_TINYINT = "tinyint";
     public static final String DATA_TYPE_DATETIME = "datetime";

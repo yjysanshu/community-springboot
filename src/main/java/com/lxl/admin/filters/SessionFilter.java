@@ -1,6 +1,7 @@
 package com.lxl.admin.filters;
 
 import com.lxl.common.consts.HeaderConst;
+import com.lxl.common.models.AdminUser;
 import com.lxl.common.util.HeaderUtil;
 
 import javax.servlet.*;
@@ -39,20 +40,16 @@ public class SessionFilter implements Filter {
 
         if (isInclude(url)){
             filterChain.doFilter(httpRequest, httpResponse);
-            return;
         } else {
             System.out.println(HeaderUtil.getHeader(httpRequest, HeaderConst.X_TOKEN));
             HttpSession session = httpRequest.getSession();
-            if (session.getAttribute("") != null){
+            if (session.getAttribute("user") != null){
                 // session存在
                 filterChain.doFilter(httpRequest, httpResponse);
-                return;
             } else {
-                // session不存在 准备跳转失败
-                /* RequestDispatcher dispatcher = request.getRequestDispatcher(path);
-                    dispatcher.forward(request, response);*/
-                filterChain.doFilter(httpRequest, httpResponse);
-                return;
+                RequestDispatcher dispatcher = httpRequest.getRequestDispatcher("/login");
+                dispatcher.forward(httpRequest, httpResponse);
+                //filterChain.doFilter(httpRequest, httpResponse);
             }
         }
     }

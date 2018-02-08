@@ -1,6 +1,7 @@
 package com.lxl.common.models;
 
 import java.util.Date;
+import java.util.List;
 
 public class AdminResource {
 
@@ -9,10 +10,14 @@ public class AdminResource {
     private Integer adminResourceType;
     private String adminResourceTarget;
     private String adminResourceData;
+    private String adminResourceUrl;
+    private String adminResourceName;
     private Date adminResourceCreateAt;
     private Date adminResourceUpdateAt;
     private String adminResourceCreateBy;
     private String adminResourceUpdateBy;
+
+    private List<AdminRole> adminRoles;
 
     public Integer getAdminResourceId() {
         return adminResourceId;
@@ -54,6 +59,22 @@ public class AdminResource {
         this.adminResourceData = adminResourceData;
     }
 
+    public String getAdminResourceUrl() {
+        return adminResourceUrl;
+    }
+
+    public void setAdminResourceUrl(String adminResourceUrl) {
+        this.adminResourceUrl = adminResourceUrl;
+    }
+
+    public String getAdminResourceName() {
+        return adminResourceName;
+    }
+
+    public void setAdminResourceName(String adminResourceName) {
+        this.adminResourceName = adminResourceName;
+    }
+
     public Date getAdminResourceCreateAt() {
         return adminResourceCreateAt;
     }
@@ -85,4 +106,13 @@ public class AdminResource {
     public void setAdminResourceUpdateBy(String adminResourceUpdateBy) {
         this.adminResourceUpdateBy = adminResourceUpdateBy;
     }
+
+    public List<AdminRole> getAdminRoles() {
+        return adminRoles;
+    }
+
+    public void setAdminRoles(List<AdminRole> adminRoles) {
+        this.adminRoles = adminRoles;
+    }
+
 }

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxl.common.mapper.AdminPrivilegeMapper" >
+
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.AdminPrivilege" >
+        <result column="admin_privilege_id" property="adminPrivilegeId" jdbcType="INTEGER" />
+        <result column="admin_privilege_admin_resource_id" property="adminPrivilegeAdminResourceId" jdbcType="INTEGER" />
+        <result column="admin_privilege_admin_role_id" property="adminPrivilegeAdminRoleId" jdbcType="INTEGER" />
+        <result column="admin_privilege_type" property="adminPrivilegeType" jdbcType="VARCHAR" />
+        <result column="admin_privilege_create_at" property="adminPrivilegeCreateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_privilege_update_at" property="adminPrivilegeUpdateAt" jdbcType="TIMESTAMP" />
+        <result column="admin_privilege_create_by" property="adminPrivilegeCreateBy" jdbcType="VARCHAR" />
+        <result column="admin_privilege_update_by" property="adminPrivilegeUpdateBy" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        admin_privilege_id, admin_privilege_admin_resource_id, admin_privilege_admin_role_id, admin_privilege_type, admin_privilege_create_at, admin_privilege_update_at, admin_privilege_create_by, admin_privilege_update_by
+    </sql>
+
+    <select id="findByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_privilege
+        WHERE admin_privilege_admin_role_id = #{roleId,jdbcType=INTEGER}
+    </select>
+
+    <select id="findByRoleIdsAndResourceId" resultType="java.lang.Integer" parameterType="java.util.Map">
+        SELECT
+        COUNT(*)
+        FROM admin_privilege
+        WHERE admin_privilege_admin_role_id IN
+        <foreach item="item" index="index" collection="roleIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND admin_privilege_admin_resource_id = #{resourceId,jdbcType=INTEGER}
+    </select>
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_privilege
+        WHERE admin_privilege_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM admin_privilege
+        WHERE admin_privilege_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <delete id="deleteByRoleIdAndResourceId">
+        delete from admin_privilege
+        where admin_privilege_admin_resource_id IN
+        <foreach item="item" index="index" collection="resourceIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND admin_privilege_admin_role_id = #{roleId,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.lxl.common.models.AdminPrivilege" >
+        INSERT INTO HOUSE (admin_privilege_id, admin_privilege_admin_resource_id, admin_privilege_admin_role_id, admin_privilege_type, admin_privilege_create_at, admin_privilege_update_at, admin_privilege_create_by, admin_privilege_update_by)
+        VALUES (#{adminPrivilegeId,jdbcType=INTEGER}, #{adminPrivilegeAdminResourceId,jdbcType=INTEGER}, #{adminPrivilegeAdminRoleId,jdbcType=INTEGER}, #{adminPrivilegeType,jdbcType=VARCHAR}, #{adminPrivilegeCreateAt,jdbcType=TIMESTAMP}, #{adminPrivilegeUpdateAt,jdbcType=TIMESTAMP}, #{adminPrivilegeCreateBy,jdbcType=VARCHAR}, #{adminPrivilegeUpdateBy,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.AdminPrivilege" >
+        INSERT INTO admin_privilege
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="adminPrivilegeId != null" >
+                admin_privilege_id,
+            </if>
+            <if test="adminPrivilegeAdminResourceId != null" >
+                admin_privilege_admin_resource_id,
+            </if>
+            <if test="adminPrivilegeAdminRoleId != null" >
+                admin_privilege_admin_role_id,
+            </if>
+            <if test="adminPrivilegeType != null" >
+                admin_privilege_type,
+            </if>
+            <if test="adminPrivilegeCreateAt != null" >
+                admin_privilege_create_at,
+            </if>
+            <if test="adminPrivilegeUpdateAt != null" >
+                admin_privilege_update_at,
+            </if>
+            <if test="adminPrivilegeCreateBy != null" >
+                admin_privilege_create_by,
+            </if>
+            <if test="adminPrivilegeUpdateBy != null" >
+                admin_privilege_update_by,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="adminPrivilegeId != null" >
+                #{adminPrivilegeId,jdbcType=INTEGER},
+            </if>
+            <if test="adminPrivilegeAdminResourceId != null" >
+                #{adminPrivilegeAdminResourceId,jdbcType=INTEGER},
+            </if>
+            <if test="adminPrivilegeAdminRoleId != null" >
+                #{adminPrivilegeAdminRoleId,jdbcType=INTEGER},
+            </if>
+            <if test="adminPrivilegeType != null" >
+                #{adminPrivilegeType,jdbcType=VARCHAR},
+            </if>
+            <if test="adminPrivilegeCreateAt != null" >
+                #{adminPrivilegeCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminPrivilegeUpdateAt != null" >
+                #{adminPrivilegeUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminPrivilegeCreateBy != null" >
+                #{adminPrivilegeCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminPrivilegeUpdateBy != null" >
+                #{adminPrivilegeUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.AdminPrivilege" >
+        update admin_privilege
+        <set>
+            <if test="adminPrivilegeAdminResourceId != null" >
+                admin_privilege_admin_resource_id = #{adminPrivilegeAdminResourceId,jdbcType=INTEGER},
+            </if>
+            <if test="adminPrivilegeAdminRoleId != null" >
+                admin_privilege_admin_role_id = #{adminPrivilegeAdminRoleId,jdbcType=INTEGER},
+            </if>
+            <if test="adminPrivilegeType != null" >
+                admin_privilege_type = #{adminPrivilegeType,jdbcType=VARCHAR},
+            </if>
+            <if test="adminPrivilegeCreateAt != null" >
+                admin_privilege_create_at = #{adminPrivilegeCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminPrivilegeUpdateAt != null" >
+                admin_privilege_update_at = #{adminPrivilegeUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="adminPrivilegeCreateBy != null" >
+                admin_privilege_create_by = #{adminPrivilegeCreateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="adminPrivilegeUpdateBy != null" >
+                admin_privilege_update_by = #{adminPrivilegeUpdateBy,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where admin_privilege_id = #{adminPrivilegeId,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.AdminPrivilege">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_privilege
+        <where>
+            <if test="adminPrivilegeId != null" >
+                AND admin_privilege_id = #{adminPrivilegeId,jdbcType=INTEGER}
+            </if>
+            <if test="adminPrivilegeAdminResourceId != null" >
+                AND admin_privilege_admin_resource_id = #{adminPrivilegeAdminResourceId,jdbcType=INTEGER}
+            </if>
+            <if test="adminPrivilegeAdminRoleId != null" >
+                AND admin_privilege_admin_role_id = #{adminPrivilegeAdminRoleId,jdbcType=INTEGER}
+            </if>
+            <if test="adminPrivilegeType != null" >
+                AND admin_privilege_type = #{adminPrivilegeType,jdbcType=VARCHAR}
+            </if>
+            <if test="adminPrivilegeCreateAt != null" >
+                AND admin_privilege_create_at = #{adminPrivilegeCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminPrivilegeUpdateAt != null" >
+                AND admin_privilege_update_at = #{adminPrivilegeUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminPrivilegeCreateBy != null" >
+                AND admin_privilege_create_by = #{adminPrivilegeCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminPrivilegeUpdateBy != null" >
+                AND admin_privilege_update_by = #{adminPrivilegeUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+        ORDER BY admin_privilege_id DESC
+    </select>
+
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.AdminPrivilege">
+        SELECT COUNT(*) FROM admin_privilege
+        <where>
+            <if test="adminPrivilegeId != null" >
+                AND admin_privilege_id = #{adminPrivilegeId,jdbcType=INTEGER}
+            </if>
+            <if test="adminPrivilegeAdminResourceId != null" >
+                AND admin_privilege_admin_resource_id = #{adminPrivilegeAdminResourceId,jdbcType=INTEGER}
+            </if>
+            <if test="adminPrivilegeAdminRoleId != null" >
+                AND admin_privilege_admin_role_id = #{adminPrivilegeAdminRoleId,jdbcType=INTEGER}
+            </if>
+            <if test="adminPrivilegeType != null" >
+                AND admin_privilege_type = #{adminPrivilegeType,jdbcType=VARCHAR}
+            </if>
+            <if test="adminPrivilegeCreateAt != null" >
+                AND admin_privilege_create_at = #{adminPrivilegeCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminPrivilegeUpdateAt != null" >
+                AND admin_privilege_update_at = #{adminPrivilegeUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="adminPrivilegeCreateBy != null" >
+                AND admin_privilege_create_by = #{adminPrivilegeCreateBy,jdbcType=VARCHAR}
+            </if>
+            <if test="adminPrivilegeUpdateBy != null" >
+                AND admin_privilege_update_by = #{adminPrivilegeUpdateBy,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,16 +1,19 @@
 package com.lxl.common.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.lxl.admin.components.AdminUserComponent;
 import com.lxl.admin.models.Menu;
 import com.lxl.admin.models.MenuBase;
 import com.lxl.common.mapper.AdminResourceMapper;
 import com.lxl.common.models.AdminResource;
+import com.lxl.common.models.AdminUser;
 import com.lxl.common.util.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,12 +21,77 @@ import java.util.Map;
 public class MenuService {
 
     @Autowired
-    private AdminResourceMapper armapper;
+    private AdminResourceMapper adminRMapper;
 
+    public List<AdminResource> getAll() {
+        return new ArrayList<>();
+    }
+
+    public List<Menu> getMenuByUser() throws IOException {
+        AdminUser adminUser = AdminUserComponent.getCurrentUser();
+        return this.getMenuByParentId(adminUser.getAdminUserId());
+    }
+
+    /**
+     * 递归获取菜单
+     * @param parentId 父级ID
+     * @return 菜单
+     * @throws IOException 解析JSON错误
+     */
+    public List<Menu> getMenuByParentId(Integer parentId) throws IOException {
+        List<AdminResource> listResource = adminRMapper.findByParentId(parentId);
+        List<Menu> list = new ArrayList<>();
+        for (AdminResource adminResource : listResource) {
+            Menu menu = formatInfoDetail(adminResource);
+            menu.setChildren(this.getMenuByParentId(menu.getId()));
+            list.add(menu);
+        }
+        return list;
+    }
+
+    /**
+     * 获取所有的菜单
+     * @param request 请求信息
+     * @return 菜单信息
+     * @throws IOException json解析错误
+     */
+    public List<MenuBase> getList(Menu request) throws IOException {
+        List<AdminResource> listAdminResource = adminRMapper.findByParams(formatModelDetail(request));
+        List<MenuBase> listMenu = new ArrayList<>();
+        for (AdminResource adminResource : listAdminResource) {
+            MenuBase menu = formatInfoBaseDetail(adminResource);
+            listMenu.add(menu);
+        }
+
+        return listMenu;
+    }
+
+    /**
+     * 获取所有的父级菜单
+     * @return 菜单信息
+     * @throws IOException json解析错误
+     */
+    public List<MenuBase> getFatherList() throws IOException {
+        List<AdminResource> listAdminResource = adminRMapper.findByParentId(0);
+        List<MenuBase> listMenu = new ArrayList<>();
+        for (AdminResource adminResource : listAdminResource) {
+            MenuBase menu = formatInfoBaseDetail(adminResource);
+            listMenu.add(menu);
+        }
+
+        return listMenu;
+    }
+
+    /**
+     * 保存菜单
+     * @param menu 请求信息
+     * @return 受影响的行数
+     * @throws JsonProcessingException 解析JSON错误
+     */
     public Integer save(Menu menu) throws JsonProcessingException {
         AdminResource adminResource;
         if (menu.getId() != null) {
-            adminResource = armapper.findOneById(menu.getId());
+            adminResource = adminRMapper.findOneById(menu.getId());
         } else {
             adminResource = new AdminResource();
             adminResource.setAdminResourceType(0);
@@ -32,44 +100,53 @@ public class MenuService {
         adminResource.setAdminResourceTarget(menu.getUrl());
         adminResource.setAdminResourceData(JSONUtil.menuToJson(menu));
         if (menu.getId() != null) {
-            return armapper.updateByIdAndParams(adminResource);
+            return adminRMapper.updateByIdAndParams(adminResource);
         } else {
-            return armapper.insertByParams(adminResource);
+            return adminRMapper.insertByParams(adminResource);
         }
     }
 
-    public List<MenuBase> getList(Menu request) throws IOException {
-        List<AdminResource> listAdminResource = armapper.findByParams(formatModelDetail(request));
-        List<MenuBase> listMenu = new ArrayList<>();
-        for (AdminResource adminResource : listAdminResource) {
-            MenuBase menu = formatInfoBaseDetail(adminResource);
-            listMenu.add(menu);
+    /**
+     * 是否展示菜单: 当所有子菜单都未被勾选时，不展示当前菜单，返回 false
+     *              其他情况都需要展示菜单，均返回 true
+     * @param menu 菜单
+     * @return true-展示菜单
+     */
+    public Boolean isDisplay(Menu menu) {
+        if (menu.getChecked()) {
+            return true;
         }
-
-        return listMenu;
+        for (Menu cMenu: menu.getChildren()) {
+            if (this.isDisplay(cMenu)) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public List<MenuBase> getFatherList() throws IOException {
-        List<AdminResource> listAdminResource = armapper.findByParentId(0);
-        List<MenuBase> listMenu = new ArrayList<>();
-        for (AdminResource adminResource : listAdminResource) {
-            MenuBase menu = formatInfoBaseDetail(adminResource);
-            listMenu.add(menu);
+    /**
+     * 是否选中父菜单
+     * @param menu
+     * @return
+     */
+    public Boolean isChecked(Menu menu) {
+        for (Menu cMenu : menu.getChildren()) {
+            if (!this.isChecked(cMenu)) {
+                return false;
+            }
         }
-
-        return listMenu;
+        return menu.getChecked();
     }
 
-    public List<Menu> getUserMenu(Integer parentId) throws IOException {
-        List<AdminResource> listAdminResource = armapper.findByParentId(parentId);
-        List<Menu> listMenu = new ArrayList<>();
-        for (AdminResource adminResource : listAdminResource) {
-            Menu menu = formatInfoDetail(adminResource);
-            menu.setChildren(getUserMenu(adminResource.getAdminResourceId()));
-            listMenu.add(menu);
-        }
+    public List<AdminResource> getByPrivilegeRoleIdAndType(Integer roleId, String resourceType) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("roleId", roleId);
+        map.put("resourceType", resourceType);
+        return adminRMapper.findByJoinPrivilegeAndParams(map);
+    }
 
-        return listMenu;
+    public AdminResource getOneById(Integer id) {
+        return adminRMapper.findOneById(id);
     }
 
     private MenuBase formatInfoBaseDetail(AdminResource adminResource) throws IOException {

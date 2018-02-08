@@ -1,36 +1,43 @@
 package com.lxl.admin.controllers;
 
-import com.lxl.admin.models.Menu;
+import com.lxl.admin.resolve.Exception1;
+import com.lxl.admin.resolve.ExceptionResolver;
+import com.lxl.common.consts.ErrorConst;
 import com.lxl.common.services.MenuService;
 import com.lxl.common.util.FormatUtil;
-import com.lxl.mock.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/admin-user")
 public class AdminUserController {
 
     @Autowired
     private MenuService menuService;
 
-    @RequestMapping("/admin-user/login")
-    public Map login() {
-        return FormatUtil.success(null);
+    @RequestMapping("/login")
+    public Map login() throws Exception {
+        throw new Exception("xxxxxxxxx");
+        //return FormatUtil.fail();
     }
 
-    @RequestMapping(value = "/admin-user/menu")
-    public Map menu() throws IOException {
-        List<Menu> list = menuService.getUserMenu(0);
-        return FormatUtil.success(list);
+    @RequestMapping(value = "/menu")
+    public Map menu() throws Exception1 {
+        throw new Exception1();
+        //List<Menu> list = menuService.getMenuByUser();
+        //return FormatUtil.success(list);
     }
 
-    @RequestMapping(value = "/admin-user/info")
+    @RequestMapping(value = "/info")
     public Map info() {
-        return FormatUtil.success(null);
+        return FormatUtil.success();
+    }
+
+    @RequestMapping("/logout")
+    public Map logout() {
+        return FormatUtil.success();
     }
 }

@@ -66,6 +66,7 @@ public class TableExtend extends Table {
             case ModelConst.DATA_TYPE_TINYINT:
                 return ModelConst.JAVA_TYPE_INTEGER;
             case ModelConst.DATA_TYPE_ENUM:
+            case ModelConst.DATA_TYPE_CHAR:
             case ModelConst.DATA_TYPE_VARCHAR:
                 return ModelConst.JAVA_TYPE_VARCHAR;
             case ModelConst.DATA_TYPE_DATETIME:
@@ -86,6 +87,7 @@ public class TableExtend extends Table {
             case ModelConst.DATA_TYPE_TINYINT:
                 return ModelConst.JDBC_TYPE_INTEGER;
             case ModelConst.DATA_TYPE_ENUM:
+            case ModelConst.DATA_TYPE_CHAR:
             case ModelConst.DATA_TYPE_VARCHAR:
                 return ModelConst.JDBC_TYPE_VARCHAR;
             case ModelConst.DATA_TYPE_DATETIME:

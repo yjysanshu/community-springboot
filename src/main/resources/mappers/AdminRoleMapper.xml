@@ -19,11 +19,36 @@
         admin_role_id, admin_role_parent_id, admin_role_name, admin_role_desc, admin_role_status, admin_role_type, admin_role_create_at, admin_role_update_at, admin_role_create_by, admin_role_update_by
     </sql>
 
-    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    <select id="findByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_role
+        WHERE admin_role_parent_id = #{parentId,jdbcType=INTEGER}
+    </select>
+
+    <select id="findByRoleIds" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_role
+        WHERE admin_role_id IN
+        <foreach item="item" index="index" collection="roleIds" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         SELECT
         <include refid="Base_Column_List" />
         FROM admin_role
         WHERE admin_role_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <!-- 根据父级ID 查询角色 -->
+    <select id="findRolesByParentId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_role
+        WHERE admin_role_parent_id = #{parentId,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteOneById" parameterType="java.lang.Integer" >

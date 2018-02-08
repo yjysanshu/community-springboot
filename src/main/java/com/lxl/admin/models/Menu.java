@@ -21,4 +21,20 @@ public class Menu extends MenuBase {
     public void setChildren(List<Menu> children) {
         this.children = children;
     }
+
+    @Override
+    public String toString() {
+        return "Menu{" +
+                "id=" + this.getId() +
+                ", url='" + this.getUrl() + '\'' +
+                ", parentId=" + this.getParentId() +
+                ", title='" + this.getTitle() + '\'' +
+                ", path='" + this.getPath() + '\'' +
+                ", seq=" + this.getSeq() +
+                ", icon='" + this.getIcon() + '\'' +
+                ", type='" + this.getType() + '\'' +
+                ", checked=" + checked +
+                ", children=" + children +
+                '}';
+    }
 }

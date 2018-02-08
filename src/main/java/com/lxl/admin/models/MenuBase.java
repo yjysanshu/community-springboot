@@ -1,8 +1,8 @@
 package com.lxl.admin.models;
 
-import com.lxl.admin.models.request.BaseRequest;
+import com.lxl.admin.models.response.BaseResponse;
 
-public class MenuBase extends BaseRequest {
+public class MenuBase extends BaseResponse {
     private Integer id;
     private String url;
     private Integer parentId;
@@ -74,5 +74,19 @@ public class MenuBase extends BaseRequest {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "MenuBase{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", parentId=" + parentId +
+                ", title='" + title + '\'' +
+                ", path='" + path + '\'' +
+                ", seq=" + seq +
+                ", icon='" + icon + '\'' +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

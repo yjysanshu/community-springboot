@@ -18,22 +18,30 @@
         admin_resource_id, admin_resource_parent_id, admin_resource_type, admin_resource_target, admin_resource_data,
          admin_resource_create_at, admin_resource_update_at, admin_resource_create_by, admin_resource_update_by
     </sql>
-    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
-        select
+
+    <select id="findByJoinPrivilegeAndParams" resultMap="BaseResultMap">
+        SELECT
         <include refid="Base_Column_List" />
-        from admin_resource
-        where admin_resource_id = #{id,jdbcType=VARCHAR}
+        FROM
+        admin_privilege
+        JOIN admin_resource ON admin_resource_id = admin_privilege_admin_resource_id
+        WHERE admin_privilege_admin_role_id = #{roleId,jdbcType=INTEGER}
+        AND admin_resource_type = #{resourceType,jdbcType=VARCHAR}
+        ORDER BY admin_resource_id ASC
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer">
         delete from admin_resource
         where admin_resource_id = #{adminResourceId,jdbcType=INTEGER}
     </delete>
+
     <insert id="insert" parameterType="com.lxl.api.models.AppMessage" >
         insert into admin_resource (id, message, senddate
         )
         values (#{admin_resource_id,jdbcType=VARCHAR}, #{message,jdbcType=VARCHAR}, #{senddate,jdbcType=TIMESTAMP}
         )
     </insert>
+
     <insert id="insertByParams" parameterType="com.lxl.common.models.AdminResource" >
         insert into admin_resource
         <trim prefix="(" suffix=")" suffixOverrides="," >

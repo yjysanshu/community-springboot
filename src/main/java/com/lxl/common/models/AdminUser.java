@@ -1,97 +1,220 @@
 package com.lxl.common.models;
 
+import com.lxl.common.consts.AdminUserConst;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
-public class AdminUser {
+public class AdminUser implements UserDetails {
+	private Integer adminUserId;
+	private String adminUserPhone;
+	private String adminUserName;
+	private String adminUserEmail;
+	private String adminUserFullName;
+	private String adminUserAvatar;
+	private String adminUserPosition;
+	private String adminUserAuthKey;
+	private String adminUserPasswordHash;
+	private String adminUserPasswordResetToken;
+	private Integer adminUserStatus;
+	private Date adminUserCreateAt;
+	private Date adminUserUpdateAt;
+	private String adminUserCreateBy;
+	private String adminUserUpdateBy;
 
-    private Integer adminRoleId;
-    private Integer adminRoleParentId;
-    private String adminRoleName;
-    private String adminRoleDesc;
-    private Integer adminRoleStatus;
-    private Integer adminRoleType;
-    private Date adminRoleCreateAt;
-    private Date adminRoleUpdateAt;
-    private String adminRoleCreateBy;
-    private String adminRoleUpdateBy;
+	private List<AdminRole> adminRoles;
 
-    public Integer getAdminRoleId() {
-        return adminRoleId;
-    }
+	public Integer getAdminUserId() {
+		return this.adminUserId;
+	}
 
-    public void setAdminRoleId(Integer adminRoleId) {
-        this.adminRoleId = adminRoleId;
-    }
+	public void setAdminUserId(Integer adminUserId) {
+		this.adminUserId = adminUserId;
+	}
 
-    public Integer getAdminRoleParentId() {
-        return adminRoleParentId;
-    }
+	public String getAdminUserPhone() {
+		return this.adminUserPhone;
+	}
 
-    public void setAdminRoleParentId(Integer adminRoleParentId) {
-        this.adminRoleParentId = adminRoleParentId;
-    }
+	public void setAdminUserPhone(String adminUserPhone) {
+		this.adminUserPhone = adminUserPhone;
+	}
 
-    public String getAdminRoleName() {
-        return adminRoleName;
-    }
+	public String getAdminUserName() {
+		return this.adminUserName;
+	}
 
-    public void setAdminRoleName(String adminRoleName) {
-        this.adminRoleName = adminRoleName;
-    }
+	public void setAdminUserName(String adminUserName) {
+		this.adminUserName = adminUserName;
+	}
 
-    public String getAdminRoleDesc() {
-        return adminRoleDesc;
-    }
+	public String getAdminUserEmail() {
+		return this.adminUserEmail;
+	}
 
-    public void setAdminRoleDesc(String adminRoleDesc) {
-        this.adminRoleDesc = adminRoleDesc;
-    }
+	public void setAdminUserEmail(String adminUserEmail) {
+		this.adminUserEmail = adminUserEmail;
+	}
 
-    public Integer getAdminRoleStatus() {
-        return adminRoleStatus;
-    }
+	public String getAdminUserFullName() {
+		return this.adminUserFullName;
+	}
 
-    public void setAdminRoleStatus(Integer adminRoleStatus) {
-        this.adminRoleStatus = adminRoleStatus;
-    }
+	public void setAdminUserFullName(String adminUserFullName) {
+		this.adminUserFullName = adminUserFullName;
+	}
 
-    public Integer getAdminRoleType() {
-        return adminRoleType;
-    }
+	public String getAdminUserAvatar() {
+		return this.adminUserAvatar;
+	}
 
-    public void setAdminRoleType(Integer adminRoleType) {
-        this.adminRoleType = adminRoleType;
-    }
+	public void setAdminUserAvatar(String adminUserAvatar) {
+		this.adminUserAvatar = adminUserAvatar;
+	}
 
-    public Date getAdminRoleCreateAt() {
-        return adminRoleCreateAt;
-    }
+	public String getAdminUserPosition() {
+		return this.adminUserPosition;
+	}
 
-    public void setAdminRoleCreateAt(Date adminRoleCreateAt) {
-        this.adminRoleCreateAt = adminRoleCreateAt;
-    }
+	public void setAdminUserPosition(String adminUserPosition) {
+		this.adminUserPosition = adminUserPosition;
+	}
 
-    public Date getAdminRoleUpdateAt() {
-        return adminRoleUpdateAt;
-    }
+	public String getAdminUserAuthKey() {
+		return this.adminUserAuthKey;
+	}
 
-    public void setAdminRoleUpdateAt(Date adminRoleUpdateAt) {
-        this.adminRoleUpdateAt = adminRoleUpdateAt;
-    }
+	public void setAdminUserAuthKey(String adminUserAuthKey) {
+		this.adminUserAuthKey = adminUserAuthKey;
+	}
 
-    public String getAdminRoleCreateBy() {
-        return adminRoleCreateBy;
-    }
+	public String getAdminUserPasswordHash() {
+		return this.adminUserPasswordHash;
+	}
 
-    public void setAdminRoleCreateBy(String adminRoleCreateBy) {
-        this.adminRoleCreateBy = adminRoleCreateBy;
-    }
+	public void setAdminUserPasswordHash(String adminUserPasswordHash) {
+		this.adminUserPasswordHash = adminUserPasswordHash;
+	}
 
-    public String getAdminRoleUpdateBy() {
-        return adminRoleUpdateBy;
-    }
+	public String getAdminUserPasswordResetToken() {
+		return this.adminUserPasswordResetToken;
+	}
 
-    public void setAdminRoleUpdateBy(String adminRoleUpdateBy) {
-        this.adminRoleUpdateBy = adminRoleUpdateBy;
-    }
+	public void setAdminUserPasswordResetToken(String adminUserPasswordResetToken) {
+		this.adminUserPasswordResetToken = adminUserPasswordResetToken;
+	}
+
+	public Integer getAdminUserStatus() {
+		return this.adminUserStatus;
+	}
+
+	public void setAdminUserStatus(Integer adminUserStatus) {
+		this.adminUserStatus = adminUserStatus;
+	}
+
+	public Date getAdminUserCreateAt() {
+		return this.adminUserCreateAt;
+	}
+
+	public void setAdminUserCreateAt(Date adminUserCreateAt) {
+		this.adminUserCreateAt = adminUserCreateAt;
+	}
+
+	public Date getAdminUserUpdateAt() {
+		return this.adminUserUpdateAt;
+	}
+
+	public void setAdminUserUpdateAt(Date adminUserUpdateAt) {
+		this.adminUserUpdateAt = adminUserUpdateAt;
+	}
+
+	public String getAdminUserCreateBy() {
+		return this.adminUserCreateBy;
+	}
+
+	public void setAdminUserCreateBy(String adminUserCreateBy) {
+		this.adminUserCreateBy = adminUserCreateBy;
+	}
+
+	public String getAdminUserUpdateBy() {
+		return this.adminUserUpdateBy;
+	}
+
+	public void setAdminUserUpdateBy(String adminUserUpdateBy) {
+		this.adminUserUpdateBy = adminUserUpdateBy;
+	}
+
+	public List<AdminRole> getAdminRoles() {
+		return adminRoles;
+	}
+
+	public void setAdminRoles(List<AdminRole> adminRoles) {
+		this.adminRoles = adminRoles;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for (AdminRole role : adminRoles) {
+			authorities.add(new SimpleGrantedAuthority(role.getAdminRoleName()));
+		}
+		return authorities;
+	}
+
+	@Override
+	public String getPassword() {
+		return this.getAdminUserPasswordHash();
+	}
+
+	@Override
+	public String getUsername() {
+		return this.adminUserEmail;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return adminUserStatus == AdminUserConst.USER_STATUS_ACTIVE;
+	}
+
+	@Override
+	public String toString() {
+		return "AdminUser{" +
+				"adminUserId=" + adminUserId +
+				", adminUserPhone='" + adminUserPhone + '\'' +
+				", adminUserName='" + adminUserName + '\'' +
+				", adminUserEmail='" + adminUserEmail + '\'' +
+				", adminUserFullName='" + adminUserFullName + '\'' +
+				", adminUserAvatar='" + adminUserAvatar + '\'' +
+				", adminUserPosition='" + adminUserPosition + '\'' +
+				", adminUserAuthKey='" + adminUserAuthKey + '\'' +
+				", adminUserPasswordHash='" + adminUserPasswordHash + '\'' +
+				", adminUserPasswordResetToken='" + adminUserPasswordResetToken + '\'' +
+				", adminUserStatus=" + adminUserStatus +
+				", adminUserCreateAt=" + adminUserCreateAt +
+				", adminUserUpdateAt=" + adminUserUpdateAt +
+				", adminUserCreateBy='" + adminUserCreateBy + '\'' +
+				", adminUserUpdateBy='" + adminUserUpdateBy + '\'' +
+				", adminRoles=" + adminRoles +
+				'}';
+	}
 }
