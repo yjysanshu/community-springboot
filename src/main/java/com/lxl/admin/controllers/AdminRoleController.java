@@ -1,11 +1,9 @@
 package com.lxl.admin.controllers;
 
-import com.lxl.admin.models.request.AdminPrivilegeRequest;
-import com.lxl.admin.models.request.AdminRoleRequest;
-import com.lxl.admin.models.request.IdRequest;
-import com.lxl.admin.models.request.PrivilegeRequest;
+import com.lxl.admin.models.request.*;
 import com.lxl.common.services.AdminPrivilegeService;
 import com.lxl.common.services.AdminRoleService;
+import com.lxl.common.services.AdminRoleUserService;
 import com.lxl.common.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,9 +24,17 @@ public class AdminRoleController {
     @Autowired
     private AdminPrivilegeService adminPrivilegeService;
 
+    @Autowired
+    private AdminRoleUserService adminRoleUserService;
+
     @RequestMapping("/list")
-    public Map list(@RequestBody AdminRoleRequest request) {
-        return FormatUtil.success(adminRoleService.manageRole(1));
+    public Map list() {
+        return FormatUtil.success(adminRoleService.manageRole());
+    }
+
+    @RequestMapping("/all")
+    public Map all(@RequestBody AdminRoleRequest request) {
+        return FormatUtil.success(adminRoleService.getList(request));
     }
 
     @RequestMapping("/get-menu")
@@ -36,9 +42,19 @@ public class AdminRoleController {
         return FormatUtil.success(adminPrivilegeService.getRoleMenu(request.getId()));
     }
 
+    @RequestMapping("/get-user")
+    public Map getUser(@RequestBody IdRequest request) {
+        return FormatUtil.success(adminRoleUserService.getRoleUser(request.getId()));
+    }
+
     @RequestMapping("/save")
     public Map save(@RequestBody AdminRoleRequest request) {
         return FormatUtil.success(adminRoleService.save(request));
+    }
+
+    @RequestMapping("/save-user")
+    public Map saveUser(@RequestBody UserRoleRequest request) {
+        return FormatUtil.success(adminRoleUserService.saveRoleUser(request));
     }
 
     @RequestMapping("/save-privilege")

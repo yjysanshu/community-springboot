@@ -1,18 +1,21 @@
 package com.lxl.common.services;
 
 import com.lxl.admin.models.request.AdminRoleUserRequest;
+import com.lxl.admin.models.request.UserRoleRequest;
 import com.lxl.admin.models.response.AdminRoleUserResponse;
+import com.lxl.common.consts.CommonConst;
 import com.lxl.common.mapper.AdminRoleUserMapper;
 import com.lxl.common.models.AdminPrivilege;
 import com.lxl.common.models.AdminRole;
 import com.lxl.common.models.AdminRoleUser;
+import com.lxl.common.models.AdminUser;
+import com.lxl.common.util.ConsoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AdminRoleUserService {
@@ -22,6 +25,36 @@ public class AdminRoleUserService {
 
     @Autowired
     private AdminRoleService adminRoleService;
+
+    @Autowired
+    private AdminUserService adminUserService;
+
+    /**
+     * 保存角色用户信息
+     * @param request UserRoleRequest
+     * @return 影响的行数
+     */
+    @Transactional
+    public Integer saveRoleUser(UserRoleRequest request) {
+        AdminRoleUser adminRoleUser;
+        for (Integer userId : request.getList()) {
+            Map<String, Integer> map = new HashMap<>();
+            map.put("userId", userId);
+            map.put("roleId", request.getId());
+            adminRoleUser = adminRoleUserMapper.findByUserIdAndRoleId(map);
+            if (adminRoleUser != null) {
+                ConsoleUtil.formatPrint("已经存在" + userId);
+                continue;
+            }
+            adminRoleUser = new AdminRoleUser();
+            adminRoleUser.setAdminRoleUserAdminRoleId(request.getId());
+            adminRoleUser.setAdminRoleUserAdminUserId(userId);
+            adminRoleUser.setAdminRoleUserCreateAt(new Date());
+            adminRoleUserMapper.insertByParams(adminRoleUser);
+        }
+
+        return CommonConst.SUCCESS;
+    }
 
     /**
      * 判断一个角色在给定角色列表中，是否有其父角色
@@ -52,6 +85,55 @@ public class AdminRoleUserService {
             adminRole = adminRoleService.getOneById(adminRole.getAdminRoleParentId());
         }
         return null;
+    }
+
+    /**
+     * 获取当前角色的用户，以及可分配的用户
+     * @return 用户信息
+     */
+    public Map<String, List<AdminUser>> getRoleUser(Integer roleId) {
+        // 获取能够选择给定角色的用户列表
+        List<AdminUser> optionalUserList = this.getOptionalUsers(roleId);
+
+        // 获取拥有给定角色的用户列表
+        List<AdminUser> currentUserList = adminUserService.getUserByRoleId(roleId);
+        Map<String, List<AdminUser>> map = new HashMap<>();
+        map.put("all", optionalUserList);
+        map.put("right", currentUserList);
+        return map;
+    }
+
+    /**
+     * 获取能够选择给定角色的用户列表
+     * @param roleId Integer
+     * @return array
+     */
+    public List<AdminUser> getOptionalUsers(Integer roleId)
+    {
+        List<AdminUser> allUserList = adminUserService.getAll();
+        List<AdminUser> adminUserList = this.getAncestorRoleUsers(roleId);
+        for (AdminUser adminUser : adminUserList) {
+            allUserList.remove(adminUser);
+        }
+        return allUserList;
+    }
+
+    /**
+     * 获取拥有祖先角色的用户列表
+     * @param roleId Integer
+     * @return array
+     */
+    public List<AdminUser> getAncestorRoleUsers(Integer roleId)
+    {
+        List<AdminUser> adminUserList = new ArrayList<>();
+        AdminRole adminRole = adminRoleService.getOneById(roleId);
+        AdminRole fatherAdminRole = adminRoleService.getOneById(adminRole.getAdminRoleParentId());
+        while(fatherAdminRole != null) {
+            List<AdminUser> fatherUserList = adminUserService.getUserByRoleId(fatherAdminRole.getAdminRoleId());
+            adminUserList.addAll(fatherUserList);
+            fatherAdminRole = adminRoleService.getOneById(fatherAdminRole.getAdminRoleParentId());
+        }
+        return adminUserList;
     }
 
     public List<AdminRoleUserResponse> getList(AdminRoleUserRequest request) {

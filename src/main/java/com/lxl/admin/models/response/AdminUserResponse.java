@@ -1,5 +1,8 @@
 package com.lxl.admin.models.response;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AdminUserResponse extends BaseResponse {
 	private Integer id;
 	private String phone;
@@ -14,6 +17,8 @@ public class AdminUserResponse extends BaseResponse {
 	private Integer status;
 	private String createBy;
 	private String updateBy;
+
+	private List<String> roles = new ArrayList<>();
 
 	public Integer getId() {
 		return this.id;
@@ -117,5 +122,13 @@ public class AdminUserResponse extends BaseResponse {
 
 	public void setUpdateBy(String updateBy) {
 		this.updateBy = updateBy;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> roles) {
+		this.roles = roles;
 	}
 }

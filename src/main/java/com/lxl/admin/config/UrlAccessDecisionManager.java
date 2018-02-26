@@ -10,7 +10,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -47,16 +46,16 @@ public class UrlAccessDecisionManager implements AccessDecisionManager {
 
     @Override
     public boolean supports(ConfigAttribute configAttribute) {
-        ConsoleUtil.formatPrint("Class: "+this.getClass().getName()+" method: "+
-                Thread.currentThread().getStackTrace()[1].getMethodName() +" line:"+
+        ConsoleUtil.formatPrint("Class: " + this.getClass().getName() + " method: " +
+                Thread.currentThread().getStackTrace()[1].getMethodName() + " line:" +
                 Thread.currentThread().getStackTrace()[1].getLineNumber());
         return true;
     }
 
     @Override
     public boolean supports(Class<?> aClass) {
-        ConsoleUtil.formatPrint("Class: "+this.getClass().getName()+" method: "+
-                Thread.currentThread().getStackTrace()[1].getMethodName() +" line:"+
+        ConsoleUtil.formatPrint("Class: " + this.getClass().getName() + " method: " +
+                Thread.currentThread().getStackTrace()[1].getMethodName() + " line:" +
                 Thread.currentThread().getStackTrace()[1].getLineNumber());
         return true;
     }

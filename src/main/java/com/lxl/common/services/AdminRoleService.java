@@ -6,6 +6,7 @@ import com.lxl.common.consts.AdminRoleConst;
 import com.lxl.common.mapper.AdminRoleMapper;
 import com.lxl.common.models.AdminRole;
 import com.lxl.common.models.AdminRoleUser;
+import com.lxl.common.models.AdminUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class AdminRoleService {
+public class AdminRoleService extends BaseService {
 
     @Autowired
     private AdminRoleMapper adminRoleMapper;
@@ -38,11 +39,11 @@ public class AdminRoleService {
 
     /**
      * 获取用户的角色
-     * @param userId 用户ID
      * @return 用户的角色
      */
-    public List<AdminRoleResponse> manageRole(Integer userId) {
-        List<AdminRoleUser> listRole = adminRoleUserService.getAdminRolesByUserId(userId);
+    public List<AdminRoleResponse> manageRole() {
+        AdminUser adminUser = this.getCurrentUser();
+        List<AdminRoleUser> listRole = adminRoleUserService.getAdminRolesByUserId(adminUser.getAdminUserId());
         List<AdminRole> listGroupRoles = new ArrayList<>();
         for (AdminRoleUser adminRoleUser : listRole) {
             AdminRole adminRole = adminRoleMapper.findOneById(adminRoleUser.getAdminRoleUserAdminRoleId());

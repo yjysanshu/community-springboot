@@ -4,10 +4,12 @@ import com.lxl.admin.models.request.AdminUserRequest;
 import com.lxl.admin.models.response.AdminUserResponse;
 import com.lxl.common.consts.AdminUserConst;
 import com.lxl.common.mapper.AdminUserMapper;
+import com.lxl.common.models.AdminRole;
 import com.lxl.common.models.AdminUser;
 import com.lxl.common.util.encrypt.BASE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,10 +22,27 @@ public class AdminUserService {
     @Autowired
     private AdminUserMapper adminUserMapper;
 
-    public AdminUser getOneByToken(String token) {
-        return adminUserMapper.findOneByToken(token);
+    /**
+     * 根据角色获取用户
+     * @param roleId Integer
+     * @return 角色对应的用户
+     */
+    public List<AdminUser> getUserByRoleId(Integer roleId) {
+        return adminUserMapper.findUserByRoleId(roleId);
+    }
+    /**
+     * 获取所有的用户信息
+     * @return 所有用户信息
+     */
+    public List<AdminUser> getAll() {
+        return adminUserMapper.findByParams(new AdminUser());
     }
 
+    /**
+     * 获取所有的用户信息-前端显示
+     * @param request AdminUserRequest
+     * @return 所有的用户信息-前端显示
+     */
     public List<AdminUserResponse> getList(AdminUserRequest request) {
         AdminUser adminUserSearch = formatModelDetail(request);
         List<AdminUser> listAdminUser = adminUserMapper.findByParams(adminUserSearch);
@@ -40,6 +59,7 @@ public class AdminUserService {
         return adminUserMapper.findTotalByParams(adminUserSearch);
     }
 
+    @Transactional
     public Integer save(AdminUserRequest request) {
         AdminUser adminUser;
         if (request.getId() != null) {
@@ -88,6 +108,12 @@ public class AdminUserService {
         response.setUpdateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(adminUser.getAdminUserUpdateAt()));
         response.setCreateBy(adminUser.getAdminUserCreateBy());
         response.setUpdateBy(adminUser.getAdminUserUpdateBy());
+
+        List<String> list = new ArrayList<>();
+        for (AdminRole adminRole : adminUser.getAdminRoles()) {
+            list.add(adminRole.getAdminRoleName());
+        }
+        response.setRoles(list);
         return response;
     }
 
@@ -101,7 +127,6 @@ public class AdminUserService {
         adminUser.setAdminUserAvatar(request.getAvatar());
         adminUser.setAdminUserPosition(request.getPosition());
         adminUser.setAdminUserAuthKey(request.getAuthKey());
-        adminUser.setAdminUserPasswordHash(request.getPasswordHash());
         adminUser.setAdminUserPasswordResetToken(request.getPasswordResetToken());
         adminUser.setAdminUserStatus(request.getStatus());
         adminUser.setAdminUserCreateAt(request.getCreateAt());

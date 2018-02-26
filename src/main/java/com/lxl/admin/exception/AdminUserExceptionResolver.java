@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
-public class AdminUserExceptionResolver implements HandlerExceptionResolver {
+public class AdminUserExceptionResolver extends Throwable implements HandlerExceptionResolver {
     @Override
     public ModelAndView resolveException(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) {
         ModelAndView mv = new ModelAndView(new MappingJackson2JsonView());

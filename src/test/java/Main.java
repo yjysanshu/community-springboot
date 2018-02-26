@@ -18,6 +18,6 @@ public class Main {
         menu.setPath("2222");
         menu.setSeq(8);
         System.out.println(JSONUtil.menuToJson(menu));*/
-        System.out.println((new BCryptPasswordEncoder()).encode("234234"));
+        System.out.println((new BCryptPasswordEncoder()).encode("ellababy"));
     }
 }

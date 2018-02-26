@@ -46,7 +46,8 @@ public class UrlFilterInvocationSecurityMetadataSource implements FilterInvocati
             }
         }
         //没有匹配上的资源，都是登录访问
-        return SecurityConfig.createList(CommonConst.ALLOW_ACCESS_URL);
+        return null;
+        //return SecurityConfig.createList(CommonConst.ALLOW_ACCESS_URL);
     }
 
     @Override

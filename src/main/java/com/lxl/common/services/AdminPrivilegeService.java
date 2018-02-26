@@ -36,6 +36,12 @@ public class AdminPrivilegeService {
     @Autowired
     private MenuService menuService;
 
+    /**
+     * 获取角色的菜单
+     * @param roleId 角色ID
+     * @return 菜单信息
+     * @throws IOException -
+     */
     public Map getRoleMenu(Integer roleId) throws IOException {
         Map<String, Object> map = new HashMap<>();
         AdminRole adminRole = adminRoleService.getOneById(roleId);
@@ -72,8 +78,8 @@ public class AdminPrivilegeService {
     /**
      * 获取给定角色的菜单列表
      * @param roleIds 角色ID
-     * @return
-     * @throws IOException
+     * @return 角色的菜单
+     * @throws IOException -
      */
     public List<Menu> getMenuByRoleList(List<Integer> roleIds) throws IOException {
         List<Menu> list = menuService.getMenuByParentId(AdminResourceConst.PARENT_ID_DEFAULT);
@@ -81,24 +87,28 @@ public class AdminPrivilegeService {
             return list;
         }
         list = this.checkMenuPrivilege(list, roleIds);
+        List<Menu> removeList = new ArrayList<>();
 
-        /**
-         * 这一段有问题 list在迭代时不能删除数据
-         */
         for (int i = 0; i < list.size(); i++) {
             if (!menuService.isDisplay(list.get(i))) {
                 ConsoleUtil.formatPrint("i = " + i);
-                //list.remove(i);
-                //i--;
+                removeList.add(list.get(i));
                 continue;
             }
             List<Menu> listChildren = list.get(i).getChildren();
+            List<Menu> removeChildrenList = new ArrayList<>();
             for (int j = 0; j < listChildren.size(); j++) {
                 if (!menuService.isDisplay(listChildren.get(j))) {
                     ConsoleUtil.formatPrint("j = " + j);
-                    //listChildren.remove(j);j--;
+                    removeChildrenList.add(listChildren.get(j));
                 }
             }
+            for (Menu menu : removeChildrenList) {
+                listChildren.remove(menu);
+            }
+        }
+        for (Menu menu : removeList) {
+            list.remove(menu);
         }
 
         return list;
@@ -106,8 +116,8 @@ public class AdminPrivilegeService {
 
     /**
      * 检查角色对菜单的权限
-     * @param listMenu
-     * @param roleIds
+     * @param listMenu 菜单
+     * @param roleIds 角色ID
      * @return array
      */
     public List<Menu> checkMenuPrivilege(List<Menu> listMenu, List<Integer> roleIds)

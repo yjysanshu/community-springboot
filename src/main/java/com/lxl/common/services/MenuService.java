@@ -1,35 +1,50 @@
 package com.lxl.common.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.lxl.admin.components.AdminUserComponent;
 import com.lxl.admin.models.Menu;
 import com.lxl.admin.models.MenuBase;
+import com.lxl.common.consts.AdminResourceConst;
+import com.lxl.common.consts.AdminRoleConst;
 import com.lxl.common.mapper.AdminResourceMapper;
+import com.lxl.common.mapper.AdminRoleUserMapper;
 import com.lxl.common.models.AdminResource;
+import com.lxl.common.models.AdminRole;
 import com.lxl.common.models.AdminUser;
+import com.lxl.common.models.relevant.AdminRoleUserRelevant;
 import com.lxl.common.util.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
-public class MenuService {
+public class MenuService extends BaseService {
 
     @Autowired
     private AdminResourceMapper adminRMapper;
+    @Autowired
+    private AdminRoleUserMapper adminRoleUserMapper;
+    @Autowired
+    private AdminPrivilegeService adminPrivilegeService;
 
     public List<AdminResource> getAll() {
         return new ArrayList<>();
     }
 
+    /**
+     * 获取用户菜单
+     * @return 菜单信息
+     * @throws IOException -
+     */
     public List<Menu> getMenuByUser() throws IOException {
-        AdminUser adminUser = AdminUserComponent.getCurrentUser();
-        return this.getMenuByParentId(adminUser.getAdminUserId());
+        AdminUser adminUser = this.getCurrentUser();
+        AdminRoleUserRelevant relevant = adminRoleUserMapper.findByUserId(adminUser.getAdminUserId());
+        if (relevant == null) {
+            return new ArrayList<>();
+        }
+        return adminPrivilegeService.getMenuByRoleList(Collections.singletonList(relevant.getAdminRole().getAdminRoleId()));
     }
 
     /**

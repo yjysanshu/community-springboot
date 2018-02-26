@@ -14,6 +14,12 @@ public class CommonConst {
     public static final String ADMIN_USER_LOGIN_PARAM_EMAIL = "email";
     public static final String ADMIN_USER_LOGIN_PARAM_PASSWD = "password";
 
+    public static final String RESPONSE_TOKEN = "token";
+
 
     public static final String LOGIN_URL = "/login";
+
+    // 函数返回值
+    public static final int SUCCESS = 1;
+    public static final int ERROR = 0;
 }

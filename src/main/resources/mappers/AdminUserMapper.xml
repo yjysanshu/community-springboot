@@ -3,7 +3,7 @@
 <mapper namespace="com.lxl.common.mapper.AdminUserMapper" >
 
     <resultMap id="BaseResultMap" type="com.lxl.common.models.AdminUser" >
-        <result column="admin_user_id" property="adminUserId" jdbcType="INTEGER" />
+        <id column="admin_user_id" property="adminUserId" jdbcType="INTEGER" />
         <result column="admin_user_phone" property="adminUserPhone" jdbcType="VARCHAR" />
         <result column="admin_user_name" property="adminUserName" jdbcType="VARCHAR" />
         <result column="admin_user_email" property="adminUserEmail" jdbcType="VARCHAR" />
@@ -41,8 +41,8 @@
         SELECT
         admin_user.*, admin_role.*
         FROM admin_user
-        LEFT JOIN admin_role_user
-        LEFT JOIN admin_role
+        LEFT JOIN admin_role_user ON admin_role_user_admin_user_id=admin_user_id
+        LEFT JOIN admin_role ON admin_role_user_admin_role_id=admin_role_id
         WHERE admin_user_password_reset_token = #{token,jdbcType=VARCHAR}
     </select>
 
@@ -59,8 +59,8 @@
         SELECT
         admin_user.*, admin_role.*
         FROM admin_user
-        LEFT JOIN admin_role_user
-        LEFT JOIN admin_role
+        LEFT JOIN admin_role_user ON admin_role_user_admin_user_id=admin_user_id
+        LEFT JOIN admin_role ON admin_role_user_admin_role_id=admin_role_id
         WHERE admin_user_phone = #{phone,jdbcType=VARCHAR}
     </select>
 
@@ -68,9 +68,17 @@
         SELECT
         admin_user.*, admin_role.*
         FROM admin_user
-        LEFT JOIN admin_role_user
-        LEFT JOIN admin_role
+        LEFT JOIN admin_role_user ON admin_role_user_admin_user_id=admin_user_id
+        LEFT JOIN admin_role ON admin_role_user_admin_role_id=admin_role_id
         WHERE admin_user_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findUserByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_user
+        LEFT JOIN admin_role_user ON admin_role_user_admin_user_id=admin_user_id
+        WHERE admin_role_user_admin_role_id = #{id,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteOneById" parameterType="java.lang.Integer" >
@@ -232,8 +240,10 @@
 
     <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.AdminUser">
         SELECT
-        <include refid="Base_Column_List" />
+        admin_user.*, admin_role.*
         FROM admin_user
+        LEFT JOIN admin_role_user ON admin_role_user_admin_user_id=admin_user_id
+        LEFT JOIN admin_role ON admin_role_user_admin_role_id=admin_role_id
         <where>
             <if test="adminUserId != null" >
                 AND admin_user_id = #{adminUserId,jdbcType=INTEGER}

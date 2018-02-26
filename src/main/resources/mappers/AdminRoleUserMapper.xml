@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.lxl.common.mapper.AdminRoleUserMapper" >
 
-    <resultMap id="BaseResultMap" type="com.lxl.common.models.AdminRoleUser" >
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.relevant.AdminRoleUserRelevant" >
         <result column="admin_role_user_id" property="adminRoleUserId" jdbcType="INTEGER" />
         <result column="admin_role_user_admin_role_id" property="adminRoleUserAdminRoleId" jdbcType="INTEGER" />
         <result column="admin_role_user_admin_user_id" property="adminRoleUserAdminUserId" jdbcType="INTEGER" />
@@ -10,6 +10,37 @@
         <result column="admin_role_user_update_at" property="adminRoleUserUpdateAt" jdbcType="TIMESTAMP" />
         <result column="admin_role_user_create_by" property="adminRoleUserCreateBy" jdbcType="VARCHAR" />
         <result column="admin_role_user_update_by" property="adminRoleUserUpdateBy" jdbcType="VARCHAR" />
+
+        <collection property="adminRole" ofType="com.lxl.common.models.AdminRole">
+            <id column="admin_role_id" property="adminRoleId" jdbcType="INTEGER" />
+            <result column="admin_role_parent_id" property="adminRoleParentId" jdbcType="INTEGER" />
+            <result column="admin_role_name" property="adminRoleName" jdbcType="VARCHAR" />
+            <result column="admin_role_desc" property="adminRoleDesc" jdbcType="VARCHAR" />
+            <result column="admin_role_status" property="adminRoleStatus" jdbcType="INTEGER" />
+            <result column="admin_role_type" property="adminRoleType" jdbcType="INTEGER" />
+            <result column="admin_role_create_at" property="adminRoleCreateAt" jdbcType="TIMESTAMP" />
+            <result column="admin_role_update_at" property="adminRoleUpdateAt" jdbcType="TIMESTAMP" />
+            <result column="admin_role_create_by" property="adminRoleCreateBy" jdbcType="VARCHAR" />
+            <result column="admin_role_update_by" property="adminRoleUpdateBy" jdbcType="VARCHAR" />
+        </collection>
+
+        <collection property="adminUser" ofType="com.lxl.common.models.AdminUser">
+            <id column="admin_user_id" property="adminUserId" jdbcType="INTEGER" />
+            <result column="admin_user_phone" property="adminUserPhone" jdbcType="VARCHAR" />
+            <result column="admin_user_name" property="adminUserName" jdbcType="VARCHAR" />
+            <result column="admin_user_email" property="adminUserEmail" jdbcType="VARCHAR" />
+            <result column="admin_user_full_name" property="adminUserFullName" jdbcType="VARCHAR" />
+            <result column="admin_user_avatar" property="adminUserAvatar" jdbcType="VARCHAR" />
+            <result column="admin_user_position" property="adminUserPosition" jdbcType="VARCHAR" />
+            <result column="admin_user_auth_key" property="adminUserAuthKey" jdbcType="VARCHAR" />
+            <result column="admin_user_password_hash" property="adminUserPasswordHash" jdbcType="VARCHAR" />
+            <result column="admin_user_password_reset_token" property="adminUserPasswordResetToken" jdbcType="VARCHAR" />
+            <result column="admin_user_status" property="adminUserStatus" jdbcType="INTEGER" />
+            <result column="admin_user_create_at" property="adminUserCreateAt" jdbcType="TIMESTAMP" />
+            <result column="admin_user_update_at" property="adminUserUpdateAt" jdbcType="TIMESTAMP" />
+            <result column="admin_user_create_by" property="adminUserCreateBy" jdbcType="VARCHAR" />
+            <result column="admin_user_update_by" property="adminUserUpdateBy" jdbcType="VARCHAR" />
+        </collection>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -22,6 +53,35 @@
         <include refid="Base_Column_List" />
         FROM admin_role_user
         WHERE admin_role_user_admin_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <!-- 根据用户ID 查询关联角色 -->
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        admin_role_user.*, admin_role.*, admin_user.*
+        FROM admin_role_user
+        JOIN admin_role ON admin_role_id=admin_role_user_admin_role_id
+        JOIN admin_user ON admin_user_id=admin_role_user_admin_user_id
+        WHERE admin_role_user_admin_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <!-- 根据角色ID 查询关联用户 -->
+    <select id="findByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        admin_role_user.*, admin_role.*, admin_user.*
+        FROM admin_role_user
+        JOIN admin_role ON admin_role_id=admin_role_user_admin_role_id
+        JOIN admin_user ON admin_user_id=admin_role_user_admin_user_id
+        WHERE admin_role_user_admin_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
+    <!-- 根据角色ID和用户ID 查询是否存在记录 -->
+    <select id="findByUserIdAndRoleId" resultMap="BaseResultMap" parameterType="java.util.Map">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM admin_role_user
+        WHERE admin_role_user_admin_user_id = #{userId,jdbcType=INTEGER}
+        AND admin_role_user_admin_role_id = #{roleId,jdbcType=INTEGER}
     </select>
 
     <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >

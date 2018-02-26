@@ -1,8 +1,14 @@
 package com.lxl.admin.models;
 
+import com.lxl.common.util.JSONUtil;
+
+import java.io.IOException;
+import java.util.Map;
+
 public class Result {
     private Integer code;
     private String message;
+    private Map<String, Object> data;
 
     public Integer getCode() {
         return code;
@@ -20,10 +26,25 @@ public class Result {
         this.message = message;
     }
 
+    public String getData() throws IOException {
+        return JSONUtil.mapToJson(this.data);
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
+    }
+
     public String toJson() {
-        return "{\"code\": " + code +
-                ", \"message\": \"" + message +
-                "\"}";
+        try {
+            return "{\"code\": " + code +
+                    ", \"message\": \"" + message +
+                    "\", \"data\": " + this.getData() +
+                    "}";
+        } catch (IOException e) {
+            return "{\"code\": " + code +
+                    ", \"message\": \"" + message +
+                    "\"}";
+        }
     }
 
     @Override

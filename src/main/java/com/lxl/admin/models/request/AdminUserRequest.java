@@ -1,5 +1,7 @@
 package com.lxl.admin.models.request;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 public class AdminUserRequest extends BaseRequest {
 	private Integer id;
 	private String phone;
@@ -80,6 +82,9 @@ public class AdminUserRequest extends BaseRequest {
 	}
 
 	public String getPasswordHash() {
+		if (this.passwordHash == null) {
+			return (new BCryptPasswordEncoder().encode("ellababy"));
+		}
 		return this.passwordHash;
 	}
 

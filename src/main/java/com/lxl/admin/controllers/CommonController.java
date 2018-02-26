@@ -1,4 +1,4 @@
-package com.lxl.common.services;
+package com.lxl.admin.controllers;
 
 import com.lxl.common.consts.HeaderConst;
 import com.lxl.common.mapper.AdminUserMapper;
@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 
-/**
- * Created by Administrator on 2018/1/8.
- */
-public class BaseService {
+public class CommonController {
     @Autowired
     private HttpServletRequest request;
     @Autowired

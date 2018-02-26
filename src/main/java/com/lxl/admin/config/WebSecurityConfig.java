@@ -1,7 +1,9 @@
 package com.lxl.admin.config;
 
+import com.lxl.admin.components.AdminUserComponent;
 import com.lxl.admin.models.Result;
 import com.lxl.admin.services.AdminUserCService;
+import com.lxl.common.consts.CharacterConst;
 import com.lxl.common.consts.CommonConst;
 import com.lxl.common.consts.ErrorConst;
 import com.lxl.common.consts.HeaderConst;
@@ -18,11 +20,16 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.cors.CorsUtils;
 
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@CrossOrigin
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -47,6 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                 .withObjectPostProcessor(new ObjectPostProcessor<FilterSecurityInterceptor>() {
                     @Override
                     public <O extends FilterSecurityInterceptor> O postProcess(O o) {
@@ -60,6 +68,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordParameter(CommonConst.ADMIN_USER_LOGIN_PARAM_PASSWD).permitAll()
                 .failureHandler((httpServletRequest, httpServletResponse, e) -> {
                     httpServletResponse.setContentType(HeaderConst.CONTENT_TYPE);
+                    httpServletResponse.setHeader(HeaderConst.ACCESS_CONTROL_ALLOW_ORIGIN, CharacterConst.CHARACTER_ARBITRARILY);
                     PrintWriter out = httpServletResponse.getWriter();
                     Result result = new Result();
                     result.setCode(ErrorConst.SYSTEM_EXCEPTION);
@@ -76,10 +85,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 })
                 .successHandler((httpServletRequest, httpServletResponse, authentication) -> {
                     httpServletResponse.setContentType(HeaderConst.CONTENT_TYPE);
+                    httpServletResponse.setHeader(HeaderConst.ACCESS_CONTROL_ALLOW_ORIGIN, CharacterConst.CHARACTER_ARBITRARILY);
                     PrintWriter out = httpServletResponse.getWriter();
                     Result result = new Result();
                     result.setCode(ErrorConst.NO_EXCEPTION);
                     result.setMessage(ErrorConst.messageMap.get(ErrorConst.NO_EXCEPTION));
+                    Map<String, Object> map = new HashMap<>();
+                    map.put(CommonConst.RESPONSE_TOKEN, AdminUserComponent.getCurrentFilterUser().getAdminUserPasswordResetToken());
+                    result.setData(map);
                     out.write(result.toJson());
                     out.flush();
                     out.close();
