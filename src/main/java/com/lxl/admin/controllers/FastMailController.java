@@ -1,6 +1,7 @@
 package com.lxl.admin.controllers;
 
 import com.lxl.admin.models.request.FastMailRequest;
+import com.lxl.admin.models.request.IdRequest;
 import com.lxl.common.services.FastMailService;
 import com.lxl.common.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,14 @@ public class FastMailController {
     @RequestMapping("/save")
     public Map save(@RequestBody FastMailRequest request) {
         return FormatUtil.success(fastMailService.save(request));
+    }
+
+    @RequestMapping("/receive")
+    public Map receive(@RequestBody IdRequest request) {
+        if (fastMailService.receive(request.getId()) > 0) {
+            return FormatUtil.success();
+        }
+        return FormatUtil.fail();
     }
 
     @RequestMapping("/del")

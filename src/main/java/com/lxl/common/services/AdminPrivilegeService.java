@@ -49,8 +49,7 @@ public class AdminPrivilegeService {
             return null;
         }
 
-        List<Menu> list= this.getMenuByRoleList(Collections.singletonList(AdminResourceConst.PARENT_ID_DEFAULT));
-        ConsoleUtil.formatPrint(list.toString());
+        List<Menu> list= this.getMenuByRoleList(Collections.singletonList(adminRole.getAdminRoleParentId()));
         list = this.checkMenuPrivilege(list, Collections.singletonList(roleId));
 
         List<Integer> listCheckedKeys = new ArrayList<>(), listExpandedKeys = new ArrayList<>();
@@ -68,7 +67,6 @@ public class AdminPrivilegeService {
             }
         }
 
-        ConsoleUtil.formatPrint(list.toString());
         map.put("list", list);
         map.put("checkedKeys", listCheckedKeys);
         map.put("expandedKeys", listExpandedKeys);

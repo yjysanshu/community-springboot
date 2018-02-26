@@ -58,6 +58,20 @@ public class FastMailService {
         }
     }
 
+    /**
+     * 快递收货
+     * @param id Integer
+     * @return Integer
+     */
+    public Integer receive(Integer id) {
+        return fastMailMapper.receiveById(id);
+    }
+
+    /**
+     * 删除一条快递记录
+     * @param id Integer
+     * @return Integer
+     */
     public Integer delete(Integer id) {
         return fastMailMapper.deleteOneById(id);
     }
