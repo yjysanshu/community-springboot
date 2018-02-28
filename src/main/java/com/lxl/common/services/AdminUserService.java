@@ -1,26 +1,33 @@
 package com.lxl.common.services;
 
 import com.lxl.admin.models.request.AdminUserRequest;
+import com.lxl.admin.models.request.ChangeRequest;
 import com.lxl.admin.models.response.AdminUserResponse;
 import com.lxl.common.consts.AdminUserConst;
+import com.lxl.common.consts.CommonConst;
+import com.lxl.common.mapper.AdminRoleUserMapper;
 import com.lxl.common.mapper.AdminUserMapper;
 import com.lxl.common.models.AdminRole;
+import com.lxl.common.models.AdminRoleUser;
 import com.lxl.common.models.AdminUser;
+import com.lxl.common.util.ConsoleUtil;
 import com.lxl.common.util.encrypt.BASE;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
-public class AdminUserService {
+public class AdminUserService extends BaseService {
 
     @Autowired
     private AdminUserMapper adminUserMapper;
+
+    @Autowired
+    private AdminRoleUserMapper adminRoleUserMapper;
 
     /**
      * 根据角色获取用户
@@ -74,17 +81,68 @@ public class AdminUserService {
         adminUser.setAdminUserFullName(request.getFullName());
         adminUser.setAdminUserAvatar(request.getAvatar());
         adminUser.setAdminUserPosition(request.getPosition());
-        adminUser.setAdminUserAuthKey(request.getAuthKey());
-        adminUser.setAdminUserPasswordHash(request.getPasswordHash());
-        adminUser.setAdminUserPasswordResetToken(request.getPasswordResetToken());
+
+        String passwd = new BCryptPasswordEncoder().encode(CommonConst.INITIAL_PASSWORD);
+        adminUser.setAdminUserPasswordHash(passwd);
+        adminUser.setAdminUserPasswordResetToken(passwd.substring(20));
         adminUser.setAdminUserStatus(request.getStatus());
         adminUser.setAdminUserCreateBy(request.getCreateBy());
         adminUser.setAdminUserUpdateBy(request.getUpdateBy());
         if (request.getId() != null) {
-            return adminUserMapper.updateByIdAndParams(adminUser);
+            adminUserMapper.updateByIdAndParams(adminUser);
         } else {
-            return adminUserMapper.insertByParams(adminUser);
+            adminUserMapper.insertByParams(adminUser);
         }
+
+        //插入或修改用户的角色
+        AdminRoleUser adminRoleUser;
+        for (Integer roleId : request.getRoles()) {
+            Map<String, Integer> map = new HashMap<>();
+            map.put("userId", adminUser.getAdminUserId());
+            map.put("roleId", roleId);
+            adminRoleUser = adminRoleUserMapper.findByUserIdAndRoleId(map);
+            if (adminRoleUser != null) {
+                ConsoleUtil.formatPrint("已经存在" + adminUser.getAdminUserId());
+                continue;
+            }
+            adminRoleUser = new AdminRoleUser();
+            adminRoleUser.setAdminRoleUserAdminRoleId(roleId);
+            adminRoleUser.setAdminRoleUserAdminUserId(adminUser.getAdminUserId());
+            adminRoleUser.setAdminRoleUserCreateAt(new Date());
+            adminRoleUserMapper.insertByParams(adminRoleUser);
+        }
+        return CommonConst.SUCCESS;
+    }
+
+    /**
+     * 重置密码
+     * @return -
+     */
+    public Integer resetPwd() {
+        AdminUser adminUser = new AdminUser();
+        String passwd = new BCryptPasswordEncoder().encode(CommonConst.INITIAL_PASSWORD);
+        adminUser.setAdminUserPasswordHash(passwd);
+        adminUser.setAdminUserPasswordResetToken(passwd.substring(20));
+        return adminUserMapper.updateByIdAndParams(adminUser);
+    }
+
+    /**
+     * 修改信息
+     * @return -
+     */
+    public Integer changePwd(ChangeRequest request) {
+        ConsoleUtil.formatPrint(request);
+        AdminUser adminUser = this.getCurrentUser();
+        int count = 0;
+        BCryptPasswordEncoder encrypt = new BCryptPasswordEncoder();
+        String passwd = encrypt.encode(request.getPassword());
+        if (encrypt.matches(request.getPassword(), adminUser.getAdminUserPasswordHash())) {
+            adminUser.setAdminUserAvatar(request.getPic());
+            adminUser.setAdminUserPasswordHash(new BCryptPasswordEncoder().encode(request.getNewPassword()));
+            adminUser.setAdminUserPasswordResetToken(passwd.substring(20));
+            count = adminUserMapper.updateByIdAndParams(adminUser);
+        }
+        return count;
     }
 
     public Integer delete(Integer id) {
@@ -126,8 +184,6 @@ public class AdminUserService {
         adminUser.setAdminUserFullName(request.getFullName());
         adminUser.setAdminUserAvatar(request.getAvatar());
         adminUser.setAdminUserPosition(request.getPosition());
-        adminUser.setAdminUserAuthKey(request.getAuthKey());
-        adminUser.setAdminUserPasswordResetToken(request.getPasswordResetToken());
         adminUser.setAdminUserStatus(request.getStatus());
         adminUser.setAdminUserCreateAt(request.getCreateAt());
         adminUser.setAdminUserUpdateAt(request.getUpdateAt());

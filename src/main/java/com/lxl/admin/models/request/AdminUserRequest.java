@@ -1,6 +1,6 @@
 package com.lxl.admin.models.request;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import java.util.List;
 
 public class AdminUserRequest extends BaseRequest {
 	private Integer id;
@@ -10,12 +10,11 @@ public class AdminUserRequest extends BaseRequest {
 	private String fullName;
 	private String avatar;
 	private String position;
-	private String authKey;
-	private String passwordHash;
-	private String passwordResetToken;
 	private Integer status;
 	private String createBy;
 	private String updateBy;
+
+	private List<Integer> roles;
 
 	public Integer getId() {
 		return this.id;
@@ -73,33 +72,6 @@ public class AdminUserRequest extends BaseRequest {
 		this.position = position;
 	}
 
-	public String getAuthKey() {
-		return this.authKey;
-	}
-
-	public void setAuthKey(String authKey) {
-		this.authKey = authKey;
-	}
-
-	public String getPasswordHash() {
-		if (this.passwordHash == null) {
-			return (new BCryptPasswordEncoder().encode("ellababy"));
-		}
-		return this.passwordHash;
-	}
-
-	public void setPasswordHash(String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
-
-	public String getPasswordResetToken() {
-		return this.passwordResetToken;
-	}
-
-	public void setPasswordResetToken(String passwordResetToken) {
-		this.passwordResetToken = passwordResetToken;
-	}
-
 	public Integer getStatus() {
 		return this.status;
 	}
@@ -124,6 +96,14 @@ public class AdminUserRequest extends BaseRequest {
 		this.updateBy = updateBy;
 	}
 
+	public List<Integer> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Integer> roles) {
+		this.roles = roles;
+	}
+
 	@Override
 	public String toString() {
 		return "AdminUserRequest{" +
@@ -134,9 +114,6 @@ public class AdminUserRequest extends BaseRequest {
 				", fullName='" + fullName + '\'' +
 				", avatar='" + avatar + '\'' +
 				", position='" + position + '\'' +
-				", authKey='" + authKey + '\'' +
-				", passwordHash='" + passwordHash + '\'' +
-				", passwordResetToken='" + passwordResetToken + '\'' +
 				", status=" + status +
 				", createBy='" + createBy + '\'' +
 				", updateBy='" + updateBy + '\'' +

@@ -22,4 +22,6 @@ public class CommonConst {
     // 函数返回值
     public static final int SUCCESS = 1;
     public static final int ERROR = 0;
+
+    public static final String INITIAL_PASSWORD = "ellababy";
 }

@@ -75,4 +75,18 @@ public class AdminPrivilege {
 	public void setAdminPrivilegeUpdateBy(String adminPrivilegeUpdateBy) {
 		this.adminPrivilegeUpdateBy = adminPrivilegeUpdateBy;
 	}
+
+	@Override
+	public String toString() {
+		return "AdminPrivilege{" +
+				"adminPrivilegeId=" + adminPrivilegeId +
+				", adminPrivilegeAdminResourceId=" + adminPrivilegeAdminResourceId +
+				", adminPrivilegeAdminRoleId=" + adminPrivilegeAdminRoleId +
+				", adminPrivilegeType='" + adminPrivilegeType + '\'' +
+				", adminPrivilegeCreateAt=" + adminPrivilegeCreateAt +
+				", adminPrivilegeUpdateAt=" + adminPrivilegeUpdateAt +
+				", adminPrivilegeCreateBy='" + adminPrivilegeCreateBy + '\'' +
+				", adminPrivilegeUpdateBy='" + adminPrivilegeUpdateBy + '\'' +
+				'}';
+	}
 }

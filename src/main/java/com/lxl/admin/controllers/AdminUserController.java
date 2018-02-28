@@ -2,6 +2,7 @@ package com.lxl.admin.controllers;
 
 import com.lxl.admin.models.Menu;
 import com.lxl.admin.models.request.AdminUserRequest;
+import com.lxl.admin.models.request.ChangeRequest;
 import com.lxl.admin.models.response.AdminUserResponse;
 import com.lxl.common.services.AdminUserService;
 import com.lxl.common.services.MenuService;
@@ -38,6 +39,17 @@ public class AdminUserController extends CommonController {
     @RequestMapping("/save")
     public Map save(@RequestBody AdminUserRequest request) {
         return FormatUtil.success(adminUserService.save(request));
+    }
+
+    @RequestMapping("/reset-pwd")
+    public Map resetPwd() {
+        return FormatUtil.success(adminUserService.resetPwd());
+    }
+
+    @RequestMapping("/change-pwd")
+    public Map changePwd(@RequestBody ChangeRequest request) {
+        int count = adminUserService.changePwd(request);
+        return FormatUtil.success(count);
     }
 
     @RequestMapping(value = "/menu")

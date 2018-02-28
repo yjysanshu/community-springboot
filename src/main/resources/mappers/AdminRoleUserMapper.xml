@@ -62,7 +62,7 @@
         FROM admin_role_user
         JOIN admin_role ON admin_role_id=admin_role_user_admin_role_id
         JOIN admin_user ON admin_user_id=admin_role_user_admin_user_id
-        WHERE admin_role_user_admin_user_id = #{userId,jdbcType=INTEGER}
+        WHERE admin_role_user_admin_user_id = #{userId,jdbcType=INTEGER} LIMIT 1
     </select>
 
     <!-- 根据角色ID 查询关联用户 -->
@@ -88,7 +88,7 @@
         SELECT
         <include refid="Base_Column_List" />
         FROM admin_role_user
-        WHERE admin_role_user_id = #{id,jdbcType=INTEGER}
+        WHERE admin_role_user_id = #{id,jdbcType=INTEGER} ORDER BY admin_role_user_id LIMIT 1
     </select>
 
     <delete id="deleteOneById" parameterType="java.lang.Integer" >

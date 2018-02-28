@@ -17,7 +17,7 @@
         admin_privilege_id, admin_privilege_admin_resource_id, admin_privilege_admin_role_id, admin_privilege_type, admin_privilege_create_at, admin_privilege_update_at, admin_privilege_create_by, admin_privilege_update_by
     </sql>
 
-    <select id="findByRoleId" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+    <select id="findByRoleId" resultMap="BaseResultMap" parameterType="java.lang.Integer">
         SELECT
         <include refid="Base_Column_List" />
         FROM admin_privilege
