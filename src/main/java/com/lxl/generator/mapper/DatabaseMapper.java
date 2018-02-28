@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface DatabaseMapper {
     List<Database> select(String databaseName);
-
     List<Databases> showTables();
 }

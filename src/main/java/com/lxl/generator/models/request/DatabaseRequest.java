@@ -1,4 +1,4 @@
-package com.lxl.generator.models;
+package com.lxl.generator.models.request;
 
 public class DatabaseRequest {
     private String databaseName;

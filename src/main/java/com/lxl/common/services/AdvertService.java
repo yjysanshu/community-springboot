@@ -18,6 +18,14 @@ public class AdvertService {
     @Autowired
     private AdvertMapper advertMapper;
 
+    /**
+     * 获取所有的广告信息
+     * @return -
+     */
+    public List<Advert> getAll() {
+        return advertMapper.findByParams(new Advert());
+    }
+
     public List<AdvertResponse> getList(AdvertRequest request) {
         Advert advertSearch = formatModelDetail(request);
         List<Advert> listAdvert = advertMapper.findByParams(advertSearch);

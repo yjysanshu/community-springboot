@@ -7,6 +7,7 @@ public class Table {
     private String dataType;
     private String columnKey;
     private String columnComment;
+    private Integer characterMaximumLength;
 
     public String getColumnName() {
         return columnName;
@@ -54,6 +55,14 @@ public class Table {
 
     public void setColumnComment(String columnComment) {
         this.columnComment = columnComment;
+    }
+
+    public Integer getCharacterMaximumLength() {
+        return characterMaximumLength;
+    }
+
+    public void setCharacterMaximumLength(Integer characterMaximumLength) {
+        this.characterMaximumLength = characterMaximumLength;
     }
 
     @Override

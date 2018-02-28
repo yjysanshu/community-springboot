@@ -1,7 +1,7 @@
 package com.lxl.generator.controller;
 
 import com.lxl.common.util.FormatUtil;
-import com.lxl.generator.models.DatabaseRequest;
+import com.lxl.generator.models.request.DatabaseRequest;
 import com.lxl.generator.service.DatabaseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;

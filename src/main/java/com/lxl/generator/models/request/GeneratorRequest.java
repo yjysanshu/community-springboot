@@ -1,4 +1,4 @@
-package com.lxl.generator.models;
+package com.lxl.generator.models.request;
 
 import java.util.Arrays;
 
