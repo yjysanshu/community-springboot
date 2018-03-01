@@ -1,7 +1,7 @@
 package com.lxl.admin.models.response;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AdminUserResponse extends BaseResponse {
 	private Integer id;
@@ -18,7 +18,7 @@ public class AdminUserResponse extends BaseResponse {
 	private String createBy;
 	private String updateBy;
 
-	private List<String> roles = new ArrayList<>();
+	private Map<Integer, String> roles = new HashMap<>();
 
 	public Integer getId() {
 		return this.id;
@@ -124,11 +124,11 @@ public class AdminUserResponse extends BaseResponse {
 		this.updateBy = updateBy;
 	}
 
-	public List<String> getRoles() {
+	public Map getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<String> roles) {
+	public void setRoles(Map roles) {
 		this.roles = roles;
 	}
 }

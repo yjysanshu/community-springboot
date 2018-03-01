@@ -30,6 +30,32 @@ public class AdminRoleUserService {
     private AdminUserService adminUserService;
 
     /**
+     * 添加用户的角色
+     * @param userId -
+     * @param roleIds -
+     */
+    public void addUserRole(Integer userId, String roleIds) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+        map.put("roleIds", roleIds);
+        ConsoleUtil.formatPrint(roleIds);
+        adminRoleUserMapper.callProAddUserRole(map);
+    }
+
+    /**
+     * 添加角色的用户
+     * @param roleId -
+     * @param userIds -
+     */
+    public void addRoleUser(Integer roleId, List<Integer> userIds) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("roleId", roleId);
+        map.put("userIds", "," + userIds.toString() + ",".trim());
+        ConsoleUtil.formatPrint("," + userIds.toString() + ",".trim());
+        //adminRoleUserMapper.callProAddRoleUser(map);
+    }
+
+    /**
      * 保存角色用户信息
      * @param request UserRoleRequest
      * @return 影响的行数

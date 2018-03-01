@@ -3,15 +3,11 @@ package com.lxl.common.services;
 import com.lxl.admin.models.request.AdminUserRequest;
 import com.lxl.admin.models.request.ChangeRequest;
 import com.lxl.admin.models.response.AdminUserResponse;
-import com.lxl.common.consts.AdminUserConst;
 import com.lxl.common.consts.CommonConst;
-import com.lxl.common.mapper.AdminRoleUserMapper;
 import com.lxl.common.mapper.AdminUserMapper;
 import com.lxl.common.models.AdminRole;
-import com.lxl.common.models.AdminRoleUser;
 import com.lxl.common.models.AdminUser;
 import com.lxl.common.util.ConsoleUtil;
-import com.lxl.common.util.encrypt.BASE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +23,16 @@ public class AdminUserService extends BaseService {
     private AdminUserMapper adminUserMapper;
 
     @Autowired
-    private AdminRoleUserMapper adminRoleUserMapper;
+    private AdminRoleUserService adminRoleUserService;
+
+    /**
+     * 获取用户信息
+     * @return -
+     */
+    public AdminUserResponse getUserInfo() {
+        AdminUser adminUser = this.getCurrentUser();
+        return formatResponseDetail(adminUser);
+    }
 
     /**
      * 根据角色获取用户
@@ -95,22 +100,11 @@ public class AdminUserService extends BaseService {
         }
 
         //插入或修改用户的角色
-        AdminRoleUser adminRoleUser;
+        StringBuilder roleIds = new StringBuilder(",");
         for (Integer roleId : request.getRoles()) {
-            Map<String, Integer> map = new HashMap<>();
-            map.put("userId", adminUser.getAdminUserId());
-            map.put("roleId", roleId);
-            adminRoleUser = adminRoleUserMapper.findByUserIdAndRoleId(map);
-            if (adminRoleUser != null) {
-                ConsoleUtil.formatPrint("已经存在" + adminUser.getAdminUserId());
-                continue;
-            }
-            adminRoleUser = new AdminRoleUser();
-            adminRoleUser.setAdminRoleUserAdminRoleId(roleId);
-            adminRoleUser.setAdminRoleUserAdminUserId(adminUser.getAdminUserId());
-            adminRoleUser.setAdminRoleUserCreateAt(new Date());
-            adminRoleUserMapper.insertByParams(adminRoleUser);
+            roleIds.append(roleId).append(",");
         }
+        adminRoleUserService.addUserRole(adminUser.getAdminUserId(), roleIds.toString());
         return CommonConst.SUCCESS;
     }
 
@@ -159,19 +153,17 @@ public class AdminUserService extends BaseService {
         response.setAvatar(adminUser.getAdminUserAvatar());
         response.setPosition(adminUser.getAdminUserPosition());
         response.setAuthKey(adminUser.getAdminUserAuthKey());
-        response.setPasswordHash(adminUser.getAdminUserPasswordHash());
-        response.setPasswordResetToken(adminUser.getAdminUserPasswordResetToken());
         response.setStatus(adminUser.getAdminUserStatus());
         response.setCreateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(adminUser.getAdminUserCreateAt()));
         response.setUpdateAt((new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(adminUser.getAdminUserUpdateAt()));
         response.setCreateBy(adminUser.getAdminUserCreateBy());
         response.setUpdateBy(adminUser.getAdminUserUpdateBy());
 
-        List<String> list = new ArrayList<>();
+        Map<Integer, String> map = new HashMap<>();
         for (AdminRole adminRole : adminUser.getAdminRoles()) {
-            list.add(adminRole.getAdminRoleName());
+            map.put(adminRole.getAdminRoleId(), adminRole.getAdminRoleName());
         }
-        response.setRoles(list);
+        response.setRoles(map);
         return response;
     }
 

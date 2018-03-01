@@ -224,3 +224,68 @@ CREATE TABLE `order_detail` (
   PRIMARY KEY (`order_detail_id`),
   KEY `order_detail_idx1` (`order_detail_order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='支付订单详情表';
+
+--添加用户的角色
+DELIMITER ;;
+CREATE PROCEDURE `addUserRole`(IN userId INT, in roleIds_source varchar(50))
+BEGIN
+	DECLARE s int DEFAULT 0;
+	DECLARE roleId int;
+	DECLARE roleId_add varchar(11) default '';
+	DECLARE i int;
+	DECLARE num int;
+	DECLARE roleIds_data varchar(50) default '';
+	DECLARE roleIds_del varchar(50) default '';
+	DECLARE roleIds_add varchar(50) default '';
+
+	DECLARE roleUser CURSOR FOR SELECT admin_role_user_admin_role_id FROM admin_role_user WHERE admin_role_user_admin_user_id=userId;
+  	DECLARE CONTINUE HANDLER FOR NOT FOUND SET s=1;
+
+  	OPEN roleUser;
+  		FETCH roleUser INTO roleId;
+  		WHILE s <> 1 DO
+  			SET roleIds_data = CONCAT(roleIds_data, CONCAT(roleId, ','));
+  			FETCH roleUser INTO roleId;
+  		END WHILE;
+  	CLOSE roleUser;
+  	SET roleIds_data = CONCAT(',', roleIds_data);
+
+  	SET roleIds_del = roleIds_data;
+  	SET num = (length(roleIds_source) - length(replace(roleIds_source,',','')));
+  	SET i = 1;
+  	WHILE i <= num DO
+  		SET roleIds_del = replace(roleIds_del,CONCAT(',', reverse(substring_index(reverse(substring_index(roleIds_source,',', i)),',',1)), ','), ',');
+  		SET i = i + 1;
+  	END WHILE;
+
+  	SET num = (length(roleIds_del) - length(replace(roleIds_del,',','')));
+  	SET roleIds_del = substring_index(roleIds_del,',', num);
+  	SET roleIds_del = reverse(substring_index(reverse(roleIds_del), ',', num - 1));
+
+  	SET roleIds_add = roleIds_source;
+  	SET num = (length(roleIds_data) - length(replace(roleIds_data,',','')));
+  	SET i = 1;
+  	WHILE i <= num DO
+  		SET roleIds_add = replace(roleIds_add,CONCAT(',', reverse(substring_index(reverse(substring_index(roleIds_data,',', i)),',',1)), ','), ',');
+  		SET i = i + 1;
+  	END WHILE;
+
+  	SET num = (length(roleIds_add) - length(replace(roleIds_add,',','')));
+  	SET roleIds_add = substring_index(roleIds_add,',', num);
+  	SET roleIds_add = reverse(substring_index(reverse(roleIds_add), ',', num - 1));
+
+  	if roleIds_del != '' then
+  		delete from admin_role_user where admin_role_user_admin_role_id in (roleIds_del) and admin_role_user_admin_user_id = userId;
+  	end if;
+
+  	if roleIds_add != '' then
+    	SET num = (length(roleIds_add) - length(replace(roleIds_add,',',''))) + 1;
+  		SET i = 1;
+  		WHILE i <= num DO
+  			SET roleId_add = reverse(substring_index(reverse(substring_index(roleIds_add,',', i)),',',1));
+  			insert into admin_role_user(admin_role_user_admin_role_id, admin_role_user_admin_user_id) values(roleId_add, userId);
+  			SET i = i + 1;
+  		END WHILE;
+  	end if;
+END;;
+DELIMITER ;

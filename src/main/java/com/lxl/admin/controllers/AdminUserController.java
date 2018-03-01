@@ -60,7 +60,7 @@ public class AdminUserController extends CommonController {
 
     @RequestMapping(value = "/info")
     public Map info() {
-        return FormatUtil.success();
+        return FormatUtil.success(adminUserService.getUserInfo());
     }
 
     @RequestMapping("/logout")
