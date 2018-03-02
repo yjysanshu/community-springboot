@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class AdvertService {
@@ -27,7 +25,11 @@ public class AdvertService {
     }
 
     public List<AdvertResponse> getList(AdvertRequest request) {
+        Map<String, Object> map = new HashMap<>();
         Advert advertSearch = formatModelDetail(request);
+        map.put("advert", advertSearch);
+        map.put("page", request.getCurrentPage());
+        map.put("size", request.getLimit());
         List<Advert> listAdvert = advertMapper.findByParams(advertSearch);
         List<AdvertResponse> list = new ArrayList<>();
         for (Advert advert : listAdvert) {

@@ -4,23 +4,26 @@ import com.lxl.admin.models.request.RepairOrderRequest;
 import com.lxl.admin.models.response.RepairOrderResponse;
 import com.lxl.common.mapper.RepairOrderMapper;
 import com.lxl.common.models.RepairOrder;
+import com.lxl.common.util.CodeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
-public class RepairOrderService {
+public class RepairOrderService extends BaseService {
 
     @Autowired
     private RepairOrderMapper repairOrderMapper;
 
     public List<RepairOrderResponse> getList(RepairOrderRequest request) {
+        Map<String, Object> map = new HashMap<>();
         RepairOrder repairOrderSearch = formatModelDetail(request);
-        List<RepairOrder> listRepairOrder = repairOrderMapper.findByParams(repairOrderSearch);
+        map.put("repairOrder", repairOrderSearch);
+        map.put("page", request.getCurrentPage());
+        map.put("size", request.getLimit());
+        List<RepairOrder> listRepairOrder = repairOrderMapper.findByParamsAndPage(map);
         List<RepairOrderResponse> list = new ArrayList<>();
         for (RepairOrder repairOrder : listRepairOrder) {
             RepairOrderResponse repairOrderResponse = formatResponseDetail(repairOrder);
@@ -34,20 +37,25 @@ public class RepairOrderService {
         return repairOrderMapper.findTotalByParams(repairOrderSearch);
     }
 
+    /**
+     * 保存报修工单
+     * @param request -
+     * @return -
+     */
     public Integer save(RepairOrderRequest request) {
         RepairOrder repairOrder;
         if (request.getId() != null) {
             repairOrder = repairOrderMapper.findOneById(request.getId());
+            repairOrder.setRepairOrderAdminUserId(this.getCurrentUser().getAdminUserId());
         } else {
             repairOrder = new RepairOrder();
             repairOrder.setRepairOrderCreateAt(new Date());
+            repairOrder.setRepairOrderCode(CodeUtil.createRepairOrderCode());
         }
-        repairOrder.setRepairOrderCode(request.getCode());
         repairOrder.setRepairOrderRoomId(request.getRoomId());
         repairOrder.setRepairOrderRepairRangeId(request.getRepairRangeId());
         repairOrder.setRepairOrderPhone(request.getPhone());
         repairOrder.setRepairOrderStatus(request.getStatus());
-        repairOrder.setRepairOrderAdminUserId(request.getAdminUserId());
         repairOrder.setRepairOrderDescription(request.getDescription());
         if (request.getId() != null) {
             return repairOrderMapper.updateByIdAndParams(repairOrder);

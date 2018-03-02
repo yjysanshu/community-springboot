@@ -237,6 +237,7 @@ BEGIN
 	DECLARE roleIds_data varchar(50) default '';
 	DECLARE roleIds_del varchar(50) default '';
 	DECLARE roleIds_add varchar(50) default '';
+	DECLARE del_sql varchar(200) default '';
 
 	DECLARE roleUser CURSOR FOR SELECT admin_role_user_admin_role_id FROM admin_role_user WHERE admin_role_user_admin_user_id=userId;
   	DECLARE CONTINUE HANDLER FOR NOT FOUND SET s=1;
@@ -275,7 +276,10 @@ BEGIN
   	SET roleIds_add = reverse(substring_index(reverse(roleIds_add), ',', num - 1));
 
   	if roleIds_del != '' then
-  		delete from admin_role_user where admin_role_user_admin_role_id in (roleIds_del) and admin_role_user_admin_user_id = userId;
+  	  SET @del_sql = CONCAT("delete from admin_role_user where admin_role_user_admin_role_id in (", roleIds_del, ") and admin_role_user_admin_user_id=", userId);
+  		prepare mainStmt from @del_sql;
+  		execute mainStmt;
+  		deallocate prepare mainStmt;
   	end if;
 
   	if roleIds_add != '' then
@@ -284,6 +288,75 @@ BEGIN
   		WHILE i <= num DO
   			SET roleId_add = reverse(substring_index(reverse(substring_index(roleIds_add,',', i)),',',1));
   			insert into admin_role_user(admin_role_user_admin_role_id, admin_role_user_admin_user_id) values(roleId_add, userId);
+  			SET i = i + 1;
+  		END WHILE;
+  	end if;
+END;;
+DELIMITER ;
+
+--添加角色的用户
+DELIMITER ;;
+CREATE PROCEDURE `addRoleUser`(IN roleId INT, in userIds_source varchar(50))
+BEGIN
+	DECLARE s int DEFAULT 0;
+	DECLARE userId int;
+	DECLARE userId_add varchar(11) default '';
+	DECLARE i int;
+	DECLARE num int;
+	DECLARE userIds_data varchar(50) default '';
+	DECLARE userIds_del varchar(50) default '';
+	DECLARE userIds_add varchar(50) default '';
+	DECLARE del_sql varchar(200) default '';
+
+	DECLARE userRole CURSOR FOR SELECT admin_role_user_admin_user_id FROM admin_role_user WHERE admin_role_user_admin_role_id=roleId;
+  	DECLARE CONTINUE HANDLER FOR NOT FOUND SET s=1;
+
+  	OPEN userRole;
+  		FETCH userRole INTO userId;
+  		WHILE s <> 1 DO
+  			SET userIds_data = CONCAT(userIds_data, CONCAT(userId, ','));
+  			FETCH userRole INTO userId;
+  		END WHILE;
+  	CLOSE userRole;
+  	SET userIds_data = CONCAT(',', userIds_data);
+
+  	SET userIds_del = userIds_data;
+  	SET num = (length(userIds_source) - length(replace(userIds_source,',','')));
+  	SET i = 1;
+  	WHILE i <= num DO
+  		SET userIds_del = replace(userIds_del,CONCAT(',', reverse(substring_index(reverse(substring_index(userIds_source,',', i)),',',1)), ','), ',');
+  		SET i = i + 1;
+  	END WHILE;
+
+  	SET num = (length(userIds_del) - length(replace(userIds_del,',','')));
+  	SET userIds_del = substring_index(userIds_del,',', num);
+  	SET userIds_del = reverse(substring_index(reverse(userIds_del), ',', num - 1));
+
+  	SET userIds_add = userIds_source;
+  	SET num = (length(userIds_data) - length(replace(userIds_data,',','')));
+  	SET i = 1;
+  	WHILE i <= num DO
+  		SET userIds_add = replace(userIds_add,CONCAT(',', reverse(substring_index(reverse(substring_index(userIds_data,',', i)),',',1)), ','), ',');
+  		SET i = i + 1;
+  	END WHILE;
+
+  	SET num = (length(userIds_add) - length(replace(userIds_add,',','')));
+  	SET userIds_add = substring_index(userIds_add,',', num);
+  	SET userIds_add = reverse(substring_index(reverse(userIds_add), ',', num - 1));
+
+  	if userIds_del != '' then
+  		SET @del_sql = CONCAT("delete from admin_role_user where admin_role_user_admin_user_id in (", userIds_del, ") and admin_role_user_admin_role_id=", roleId);
+  		prepare mainStmt from @del_sql;
+  		execute mainStmt;
+  		deallocate prepare mainStmt;
+  	end if;
+
+  	if userIds_add != '' then
+    	SET num = (length(userIds_add) - length(replace(userIds_add,',',''))) + 1;
+  		SET i = 1;
+  		WHILE i <= num DO
+  			SET userId_add = reverse(substring_index(reverse(substring_index(userIds_add,',', i)),',',1));
+  			insert into admin_role_user(admin_role_user_admin_role_id, admin_role_user_admin_user_id) values(roleId, userId_add);
   			SET i = i + 1;
   		END WHILE;
   	end if;

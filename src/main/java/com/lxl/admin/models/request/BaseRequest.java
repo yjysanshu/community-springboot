@@ -8,9 +8,9 @@ public class BaseRequest {
     private Integer limit;
     private Integer currentPage;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date createAt;
+    private Date start;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private Date updateAt;
+    private Date end;
 
     public Integer getLimit() {
         return limit;
@@ -29,18 +29,18 @@ public class BaseRequest {
     }
 
     public Date getCreateAt() {
-        return createAt;
+        return start;
     }
 
     public void setCreateAt(Date createAt) {
-        this.createAt = createAt;
+        this.start = createAt;
     }
 
     public Date getUpdateAt() {
-        return updateAt;
+        return end;
     }
 
     public void setUpdateAt(Date updateAt) {
-        this.updateAt = updateAt;
+        this.end = updateAt;
     }
 }

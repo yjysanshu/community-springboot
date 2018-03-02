@@ -44,15 +44,18 @@ public class AdminRoleUserService {
 
     /**
      * 添加角色的用户
-     * @param roleId -
-     * @param userIds -
+     * @param request -
      */
-    public void addRoleUser(Integer roleId, List<Integer> userIds) {
+    public void addRoleUser(UserRoleRequest request) {
+        StringBuilder userIds = new StringBuilder(",");
+        for (Integer userId : request.getList()) {
+            userIds.append(userId).append(",");
+        }
         Map<String, Object> map = new HashMap<>();
-        map.put("roleId", roleId);
-        map.put("userIds", "," + userIds.toString() + ",".trim());
-        ConsoleUtil.formatPrint("," + userIds.toString() + ",".trim());
-        //adminRoleUserMapper.callProAddRoleUser(map);
+        map.put("roleId", request.getId());
+        map.put("userIds", userIds.toString());
+        ConsoleUtil.formatPrint(userIds.toString());
+        adminRoleUserMapper.callProAddRoleUser(map);
     }
 
     /**

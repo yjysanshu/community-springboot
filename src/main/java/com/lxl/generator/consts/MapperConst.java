@@ -13,6 +13,7 @@ public class MapperConst extends CommonConst {
     public static final String REPLACE_CONDITION_COLUMN_VALUE = "\\[conditionColumnValue\\]";
     public static final String REPLACE_CONDITION_COLUMN_SET = "\\[conditionColumnSet\\]";
     public static final String REPLACE_CONDITION_COLUMN_WHERE = "\\[conditionColumnWhere\\]";
+    public static final String REPLACE_CONDITION_COLUMN_WHERE_WITH_CLASS = "\\[conditionColumnWhereWithClass\\]";
 
     public static final String TXT_IMPORT_CUSTOM_INFO = "import [package].common.models.[ModelClass];\n\n";
     public static final String TXT_MIDDLE_CLASS = "public interface [ModelClass]Mapper extends BaseMapper<[ModelClass]> {\n\n}";
@@ -38,6 +39,9 @@ public class MapperConst extends CommonConst {
     public static final String TXT_CONDITION_WHERE = "            <if test=\"[columnName] != null\" >\n" +
                                                     "                AND [column] = #{[columnName],jdbcType=[jdbcType]}\n" +
                                                     "            </if>\n";
+    public static final String TXT_CONDITION_WHERE_WITH_MODEL = "            <if test=\"[modelClass].[columnName] != null\" >\n" +
+                                                                "                AND [column] = #{[modelClass].[columnName],jdbcType=[jdbcType]}\n" +
+                                                                "            </if>\n";
 
     public static final String TXT_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n" +
             "<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\n" +
@@ -94,6 +98,16 @@ public class MapperConst extends CommonConst {
             "[conditionColumnWhere]" +
             "        </where>\n" +
             "        ORDER BY [primaryKey] DESC\n" +
+            "    </select>\n" +
+            "\n" +
+            "    <select id=\"findByParamsAndPage\" resultMap=\"BaseResultMap\">\n" +
+            "        SELECT\n" +
+            "        <include refid=\"Base_Column_List\" />\n" +
+            "        FROM [tableName]\n" +
+            "        <where>\n" +
+            "[conditionColumnWhereWithClass]" +
+            "        </where>\n" +
+            "        ORDER BY [primaryKey] DESC LIMIT ${(page - 1) * size}, ${size}\n" +
             "    </select>\n" +
             "\n" +
             "    <select id=\"findTotalByParams\" resultType=\"java.lang.Integer\" parameterType=\"[package].common.models.[ModelClass]\">\n" +

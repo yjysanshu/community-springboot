@@ -15,6 +15,7 @@ public class MapperXmlService extends BaseService {
         StringBuilder sbConditionValue = new StringBuilder();
         StringBuilder sbConditionSet = new StringBuilder();
         StringBuilder sbConditionWhere = new StringBuilder();
+        StringBuilder sbConditionWhereWithModel = new StringBuilder();
         StringBuilder sbBaseLine = new StringBuilder();
         StringBuilder sbBaseValue = new StringBuilder();
 
@@ -29,6 +30,7 @@ public class MapperXmlService extends BaseService {
             sbConditionList.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_LIST, tableExtend));
             sbConditionValue.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_VALUE, tableExtend));
             sbConditionWhere.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_WHERE, tableExtend));
+            sbConditionWhereWithModel.append(this.getConditionAfterReplace(MapperConst.TXT_CONDITION_WHERE_WITH_MODEL, tableExtend));
             sbBaseLine.append(this.getConditionAfterReplace(MapperConst.TXT_COLUMN_LINE, tableExtend));
             sbBaseValue.append(this.getConditionAfterReplace(MapperConst.TXT_VALUE_LINE, tableExtend));
 
@@ -38,6 +40,9 @@ public class MapperXmlService extends BaseService {
                 .replaceAll(MapperConst.REPLACE_CONDITION_COLUMN_VALUE, sbConditionValue.toString())
                 .replaceAll(MapperConst.REPLACE_CONDITION_COLUMN_SET, sbConditionSet.toString())
                 .replaceAll(MapperConst.REPLACE_CONDITION_COLUMN_WHERE, sbConditionWhere.toString())
+                .replaceAll(MapperConst.REPLACE_CONDITION_COLUMN_WHERE_WITH_CLASS, sbConditionWhereWithModel.toString()
+                        .replaceAll(MapperConst.REPLACE_MODEL_CLASS, this.getLowerModelClass())
+                )
                 .replaceAll(MapperConst.REPLACE_PRIMARY_KEY, this.primaryKey)
                 .replaceAll(MapperConst.REPLACE_PRIMARY_KEY_COLUMN, this.primaryKeyColumn)
                 .replaceAll(MapperConst.REPLACE_BASE_COLUMN_LINE, sbBaseLine.deleteCharAt(sbBaseLine.length() - 1).deleteCharAt(sbBaseLine.length() - 1).toString())

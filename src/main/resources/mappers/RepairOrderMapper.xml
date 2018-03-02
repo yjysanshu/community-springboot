@@ -177,6 +177,45 @@
         ORDER BY repair_order_id DESC
     </select>
 
+    <select id="findByParamsAndPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM repair_order
+        <where>
+            <if test="repairOrder.repairOrderId != null" >
+                AND repair_order_id = #{repairOrder.repairOrderId,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrder.repairOrderCode != null" >
+                AND repair_order_code = #{repairOrder.repairOrderCode,jdbcType=VARCHAR}
+            </if>
+            <if test="repairOrder.repairOrderRoomId != null" >
+                AND repair_order_room_id = #{repairOrder.repairOrderRoomId,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrder.repairOrderRepairRangeId != null" >
+                AND repair_order_repair_range_id = #{repairOrder.repairOrderRepairRangeId,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrder.repairOrderPhone != null" >
+                AND repair_order_phone = #{repairOrder.repairOrderPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="repairOrder.repairOrderStatus != null" >
+                AND repair_order_status = #{repairOrder.repairOrderStatus,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrder.repairOrderAdminUserId != null" >
+                AND repair_order_admin_user_id = #{repairOrder.repairOrderAdminUserId,jdbcType=INTEGER}
+            </if>
+            <if test="repairOrder.repairOrderDescription != null" >
+                AND repair_order_description = #{repairOrder.repairOrderDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="repairOrder.repairOrderCreateAt != null" >
+                AND repair_order_create_at = #{repairOrder.repairOrderCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="repairOrder.repairOrderUpdateAt != null" >
+                AND repair_order_update_at = #{repairOrder.repairOrderUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY repair_order_id DESC LIMIT ${(page - 1) * size}, ${size}
+    </select>
+
     <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.RepairOrder">
         SELECT COUNT(*) FROM repair_order
         <where>

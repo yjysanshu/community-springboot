@@ -91,7 +91,7 @@
         VALUES (#{adminUserId,jdbcType=INTEGER}, #{adminUserPhone,jdbcType=VARCHAR}, #{adminUserName,jdbcType=VARCHAR}, #{adminUserEmail,jdbcType=VARCHAR}, #{adminUserFullName,jdbcType=VARCHAR}, #{adminUserAvatar,jdbcType=VARCHAR}, #{adminUserPosition,jdbcType=VARCHAR}, #{adminUserAuthKey,jdbcType=VARCHAR}, #{adminUserPasswordHash,jdbcType=VARCHAR}, #{adminUserPasswordResetToken,jdbcType=VARCHAR}, #{adminUserStatus,jdbcType=INTEGER}, #{adminUserCreateAt,jdbcType=TIMESTAMP}, #{adminUserUpdateAt,jdbcType=TIMESTAMP}, #{adminUserCreateBy,jdbcType=VARCHAR}, #{adminUserUpdateBy,jdbcType=VARCHAR})
     </insert>
 
-    <insert id="insertByParams" parameterType="com.lxl.common.models.AdminUser" >
+    <insert id="insertByParams" useGeneratedKeys="true" keyProperty="adminUserId" parameterType="com.lxl.common.models.AdminUser" >
         INSERT INTO admin_user
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="adminUserId != null" >

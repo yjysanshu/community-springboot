@@ -9,9 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class RoomService {
@@ -22,9 +20,29 @@ public class RoomService {
     @Autowired
     private HouseService houseService;
 
+    public List<RoomResponse> getAll() {
+        List<Room> listRoom = roomMapper.findByParams(new Room());
+        List<RoomResponse> list = new ArrayList<>();
+        for (Room room : listRoom) {
+            RoomResponse roomResponse = formatResponseDetail(room);
+            roomResponse.setHouseName(houseService.getHouseName(roomResponse.getHouseId()));
+            list.add(roomResponse);
+        }
+        return list;
+    }
+
+    /**
+     * 获取显示的列表
+     * @param request -
+     * @return -
+     */
     public List<RoomResponse> getList(RoomRequest request) {
+        Map<String, Object> map = new HashMap<>();
         Room roomSearch = formatModelDetail(request);
-        List<Room> listRoom = roomMapper.findByParams(roomSearch);
+        map.put("room", roomSearch);
+        map.put("page", request.getCurrentPage());
+        map.put("size", request.getLimit());
+        List<Room> listRoom = roomMapper.findByParamsAndPage(map);
         List<RoomResponse> list = new ArrayList<>();
         for (Room room : listRoom) {
             RoomResponse roomResponse = formatResponseDetail(room);

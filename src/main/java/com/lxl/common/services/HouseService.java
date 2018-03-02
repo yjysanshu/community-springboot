@@ -7,9 +7,7 @@ import com.lxl.common.models.House;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class HouseService {
@@ -17,19 +15,47 @@ public class HouseService {
     @Autowired
     private HouseMapper houseMapper;
 
+    /**
+     * 获取展示的列表
+     * @param request -
+     * @return -
+     */
     public List<HouseResponse> getList(HouseRequest request) {
+        Map<String, Object> map = new HashMap<>();
         House houseSearch = formatModelDetail(request);
-        List<House> listHouse = houseMapper.findByParams(houseSearch);
+        map.put("house", houseSearch);
+        map.put("page", request.getCurrentPage());
+        map.put("size", request.getLimit());
+        List<House> listHouse = houseMapper.findByParamsAndPage(map);
         List<HouseResponse> list = new ArrayList<>();
-        for (com.lxl.common.models.House house : listHouse) {
+        for (House house : listHouse) {
             HouseResponse response = formatInfoDetail(house);
             list.add(response);
         }
         return list;
     }
 
+    /**
+     * 获取所有的信息
+     * @return -
+     */
+    public List<HouseResponse> getAll() {
+        List<House> listHouse = houseMapper.findByParams(new House());
+        List<HouseResponse> list = new ArrayList<>();
+        for (House house : listHouse) {
+            HouseResponse response = formatInfoDetail(house);
+            list.add(response);
+        }
+        return list;
+    }
+
+    /**
+     * 获取数据总数
+     * @param request -
+     * @return -
+     */
     public Integer getTotal(HouseRequest request) {
-        com.lxl.common.models.House houseSearch = formatModelDetail(request);
+        House houseSearch = formatModelDetail(request);
         return houseMapper.findTotalByParams(houseSearch);
     }
 

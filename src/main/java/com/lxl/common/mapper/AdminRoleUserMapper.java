@@ -10,6 +10,8 @@ public interface AdminRoleUserMapper extends BaseMapper<AdminRoleUser> {
     List<AdminRoleUser> findRolesByUserId(Integer userId);
     AdminRoleUser findByUserIdAndRoleId(Map map);
     AdminRoleUserRelevant findByUserId(Integer userId);
+    List<AdminRoleUserRelevant> findAllByUserId(Integer userId);
     void callProAddUserRole(Map map);
+    void callProAddRoleUser(Map map);
     AdminRoleUserRelevant findByRoleId(Integer roleId);
 }

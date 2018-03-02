@@ -164,6 +164,42 @@
         ORDER BY room_id DESC
     </select>
 
+    <select id="findByParamsAndPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM room
+        <where>
+            <if test="room.roomId != null" >
+                AND room_id = #{room.roomId,jdbcType=INTEGER}
+            </if>
+            <if test="room.roomHouseId != null" >
+                AND room_house_id = #{room.roomHouseId,jdbcType=INTEGER}
+            </if>
+            <if test="room.roomCode != null" >
+                AND room_code = #{room.roomCode,jdbcType=VARCHAR}
+            </if>
+            <if test="room.roomName != null" >
+                AND room_name = #{room.roomName,jdbcType=VARCHAR}
+            </if>
+            <if test="room.roomUnit != null" >
+                AND room_unit = #{room.roomUnit,jdbcType=INTEGER}
+            </if>
+            <if test="room.roomFloor != null" >
+                AND room_floor = #{room.roomFloor,jdbcType=INTEGER}
+            </if>
+            <if test="room.roomDescription != null" >
+                AND room_description = #{room.roomDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="room.roomCreateAt != null" >
+                AND room_create_at = #{room.roomCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="room.roomUpdateAt != null" >
+                AND room_update_at = #{room.roomUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY room_id DESC LIMIT ${(page - 1) * size}, ${size}
+    </select>
+
     <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.Room">
         SELECT COUNT(*) FROM room
         <where>

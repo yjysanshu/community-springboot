@@ -14,22 +14,23 @@ import java.io.IOException;
 import java.util.Map;
 
 @RestController
+@RequestMapping("/menu")
 public class MenuController {
 
     @Autowired
     private MenuService menuService;
 
-    @RequestMapping("/menu/list")
+    @RequestMapping("/list")
     public Map list(@RequestBody Menu menu) throws IOException {
         return FormatUtil.success(menuService.getList(menu));
     }
 
-    @RequestMapping("/menu/father-menus")
+    @RequestMapping("/father-menus")
     public Map fatherMenus() throws IOException {
         return FormatUtil.success(menuService.getFatherList());
     }
 
-    @RequestMapping(value = "/menu/save", method = RequestMethod.POST)
+    @RequestMapping(value = "/save", method = RequestMethod.POST)
     public Map save(@RequestBody Menu request) throws JsonProcessingException {
         return FormatUtil.success(menuService.save(request));
     }

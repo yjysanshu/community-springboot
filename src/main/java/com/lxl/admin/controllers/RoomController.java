@@ -26,6 +26,11 @@ public class RoomController {
         return FormatUtil.success(map);
     }
 
+    @RequestMapping("/all")
+    public Map all() {
+        return FormatUtil.success(roomService.getAll());
+    }
+
     @RequestMapping("/save")
     public Map save(@RequestBody RoomRequest request) {
         return FormatUtil.success(roomService.save(request));

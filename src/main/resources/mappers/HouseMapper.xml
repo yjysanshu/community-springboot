@@ -138,6 +138,36 @@
         ORDER BY house_id DESC
     </select>
 
+    <select id="findByParamsAndPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM house
+        <where>
+            <if test="house.houseId != null" >
+                AND house_id = #{house.houseId,jdbcType=INTEGER}
+            </if>
+            <if test="house.houseCode != null" >
+                AND house_code = #{house.houseCode,jdbcType=VARCHAR}
+            </if>
+            <if test="house.houseName != null" >
+                AND house_name = #{house.houseName,jdbcType=VARCHAR}
+            </if>
+            <if test="house.houseStages != null" >
+                AND house_stages = #{house.houseStages,jdbcType=INTEGER}
+            </if>
+            <if test="house.houseDescription != null" >
+                AND house_description = #{house.houseDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="house.houseCreateAt != null" >
+                AND house_create_at = #{house.houseCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="house.houseUpdateAt != null" >
+                AND house_update_at = #{house.houseUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY house_id DESC LIMIT ${(page - 1) * size}, ${size}
+    </select>
+
     <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.House">
         SELECT COUNT(*) FROM house
         <where>

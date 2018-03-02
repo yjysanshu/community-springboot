@@ -119,7 +119,7 @@
     </insert>
 
     <update id="updateByIdAndParams" parameterType="com.lxl.common.models.FastMail" >
-        UPDATE fast_mail
+        update fast_mail
         <set>
             <if test="fastMailOrderNo != null" >
                 fast_mail_order_no = #{fastMailOrderNo,jdbcType=VARCHAR},
@@ -155,13 +155,7 @@
                 fast_mail_update_at = #{fastMailUpdateAt,jdbcType=TIMESTAMP},
             </if>
         </set>
-        WHERE fast_mail_id = #{fastMailId,jdbcType=INTEGER}
-    </update>
-
-    <update id="receiveById" parameterType="java.lang.Integer" >
-        UPDATE fast_mail
-        SET fast_mail_status = 1
-        WHERE fast_mail_id = #{id,jdbcType=INTEGER}
+        where fast_mail_id = #{fastMailId,jdbcType=INTEGER}
     </update>
 
     <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.FastMail">
@@ -207,6 +201,51 @@
             </if>
         </where>
         ORDER BY fast_mail_id DESC
+    </select>
+
+    <select id="findByParamsAndPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM fast_mail
+        <where>
+            <if test="fastMail.fastMailId != null" >
+                AND fast_mail_id = #{fastMail.fastMailId,jdbcType=INTEGER}
+            </if>
+            <if test="fastMail.fastMailOrderNo != null" >
+                AND fast_mail_order_no = #{fastMail.fastMailOrderNo,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMail.fastMailCustomNo != null" >
+                AND fast_mail_custom_no = #{fastMail.fastMailCustomNo,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMail.fastMailBusiness != null" >
+                AND fast_mail_business = #{fastMail.fastMailBusiness,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMail.fastMailReceiveRoomId != null" >
+                AND fast_mail_receive_room_id = #{fastMail.fastMailReceiveRoomId,jdbcType=INTEGER}
+            </if>
+            <if test="fastMail.fastMailReceiveName != null" >
+                AND fast_mail_receive_name = #{fastMail.fastMailReceiveName,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMail.fastMailReceivePhone != null" >
+                AND fast_mail_receive_phone = #{fastMail.fastMailReceivePhone,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMail.fastMailReceiveAddress != null" >
+                AND fast_mail_receive_address = #{fastMail.fastMailReceiveAddress,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMail.fastMailStatus != null" >
+                AND fast_mail_status = #{fastMail.fastMailStatus,jdbcType=INTEGER}
+            </if>
+            <if test="fastMail.fastMailMemo != null" >
+                AND fast_mail_memo = #{fastMail.fastMailMemo,jdbcType=VARCHAR}
+            </if>
+            <if test="fastMail.fastMailCreateAt != null" >
+                AND fast_mail_create_at = #{fastMail.fastMailCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="fastMail.fastMailUpdateAt != null" >
+                AND fast_mail_update_at = #{fastMail.fastMailUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY fast_mail_id DESC LIMIT ${(page - 1) * size}, ${size}
     </select>
 
     <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.FastMail">

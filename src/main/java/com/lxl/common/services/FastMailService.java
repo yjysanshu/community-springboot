@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class FastMailService {
@@ -19,8 +17,12 @@ public class FastMailService {
     private FastMailMapper fastMailMapper;
 
     public List<FastMailResponse> getList(FastMailRequest request) {
+        Map<String, Object> map = new HashMap<>();
         FastMail fastMailSearch = formatModelDetail(request);
-        List<FastMail> listFastMail = fastMailMapper.findByParams(fastMailSearch);
+        map.put("fastMail", fastMailSearch);
+        map.put("page", request.getCurrentPage());
+        map.put("size", request.getLimit());
+        List<FastMail> listFastMail = fastMailMapper.findByParamsAndPage(map);
         List<FastMailResponse> list = new ArrayList<>();
         for (FastMail fastMail : listFastMail) {
             FastMailResponse fastMailResponse = formatResponseDetail(fastMail);

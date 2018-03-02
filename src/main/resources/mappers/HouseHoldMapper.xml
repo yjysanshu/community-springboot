@@ -150,7 +150,8 @@
                 AND house_hold_room_id = #{houseHoldRoomId,jdbcType=INTEGER}
             </if>
             <if test="houseHoldName != null" >
-                AND house_hold_name = #{houseHoldName,jdbcType=VARCHAR}
+                <bind name="pattern" value="'%' + houseHoldName +'%'" />
+                AND house_hold_name LIKE #{pattern,jdbcType=VARCHAR}
             </if>
             <if test="houseHoldPhone != null" >
                 AND house_hold_phone = #{houseHoldPhone,jdbcType=VARCHAR}
@@ -177,6 +178,46 @@
         ORDER BY house_hold_id DESC
     </select>
 
+    <select id="findByParamsAndPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM house_hold
+        <where>
+            <if test="houseHold.houseHoldId != null" >
+                AND house_hold_id = #{houseHold.houseHoldId,jdbcType=INTEGER}
+            </if>
+            <if test="houseHold.houseHoldRoomId != null" >
+                AND house_hold_room_id = #{houseHold.houseHoldRoomId,jdbcType=INTEGER}
+            </if>
+            <if test="houseHold.houseHoldName != null" >
+                <bind name="pattern" value="'%' + houseHold.houseHoldName +'%'" />
+                AND house_hold_name LIKE #{pattern,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHold.houseHoldPhone != null" >
+                AND house_hold_phone = #{houseHold.houseHoldPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHold.houseHoldSex != null" >
+                AND house_hold_sex = #{houseHold.houseHoldSex,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHold.houseHoldIndividual != null" >
+                AND house_hold_individual = #{houseHold.houseHoldIndividual,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHold.houseHoldType != null" >
+                AND house_hold_type = #{houseHold.houseHoldType,jdbcType=INTEGER}
+            </if>
+            <if test="houseHold.houseHoldDescription != null" >
+                AND house_hold_description = #{houseHold.houseHoldDescription,jdbcType=VARCHAR}
+            </if>
+            <if test="houseHold.houseHoldCreateAt != null" >
+                AND house_hold_create_at = #{houseHold.houseHoldCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="houseHold.houseHoldUpdateAt != null" >
+                AND house_hold_update_at = #{houseHold.houseHoldUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY house_hold_id DESC LIMIT ${(page - 1) * size}, ${size}
+    </select>
+
     <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.HouseHold">
         SELECT COUNT(*) FROM house_hold
         <where>
@@ -187,7 +228,8 @@
                 AND house_hold_room_id = #{houseHoldRoomId,jdbcType=INTEGER}
             </if>
             <if test="houseHoldName != null" >
-                AND house_hold_name = #{houseHoldName,jdbcType=VARCHAR}
+                <bind name="pattern" value="'%' + houseHoldName +'%'" />
+                AND house_hold_name LIKE #{pattern,jdbcType=VARCHAR}
             </if>
             <if test="houseHoldPhone != null" >
                 AND house_hold_phone = #{houseHoldPhone,jdbcType=VARCHAR}

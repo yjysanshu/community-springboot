@@ -54,7 +54,8 @@ public class AdminRoleController {
 
     @RequestMapping("/save-user")
     public Map saveUser(@RequestBody UserRoleRequest request) {
-        return FormatUtil.success(adminRoleUserService.saveRoleUser(request));
+        adminRoleUserService.addRoleUser(request);
+        return FormatUtil.success();
     }
 
     @RequestMapping("/save-privilege")

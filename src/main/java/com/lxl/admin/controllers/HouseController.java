@@ -26,6 +26,11 @@ public class HouseController {
         return FormatUtil.success(map);
     }
 
+    @RequestMapping("/all")
+    public Map all() {
+        return FormatUtil.success(houseService.getAll());
+    }
+
     @RequestMapping("/save")
     public Map save(@RequestBody HouseRequest request) {
         return FormatUtil.success(houseService.save(request));

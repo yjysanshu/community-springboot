@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class HouseHoldService {
@@ -21,9 +19,18 @@ public class HouseHoldService {
     @Autowired
     private RoomService roomService;
 
+    /**
+     * 获取显示的列表
+     * @param request -
+     * @return -
+     */
     public List<HouseHoldResponse> getList(HouseHoldRequest request) {
+        Map<String, Object> map = new HashMap<>();
         HouseHold houseHoldSearch = formatModelDetail(request);
-        List<HouseHold> listHouseHold = houseHoldMapper.findByParams(houseHoldSearch);
+        map.put("houseHold", houseHoldSearch);
+        map.put("page", request.getCurrentPage());
+        map.put("size", request.getLimit());
+        List<HouseHold> listHouseHold = houseHoldMapper.findByParamsAndPage(map);
         List<HouseHoldResponse> list = new ArrayList<>();
         for (HouseHold houseHold : listHouseHold) {
             HouseHoldResponse houseHoldResponse = formatResponseDetail(houseHold);

@@ -11,6 +11,7 @@ import com.lxl.common.models.AdminResource;
 import com.lxl.common.models.AdminRole;
 import com.lxl.common.models.AdminUser;
 import com.lxl.common.models.relevant.AdminRoleUserRelevant;
+import com.lxl.common.util.ConsoleUtil;
 import com.lxl.common.util.JSONUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,8 @@ public class MenuService extends BaseService {
     @Autowired
     private AdminPrivilegeService adminPrivilegeService;
 
+    private List<AdminResource> adminResourceListAll;
+
     public List<AdminResource> getAll() {
         return new ArrayList<>();
     }
@@ -40,11 +43,16 @@ public class MenuService extends BaseService {
      */
     public List<Menu> getMenuByUser() throws IOException {
         AdminUser adminUser = this.getCurrentUser();
-        AdminRoleUserRelevant relevant = adminRoleUserMapper.findByUserId(adminUser.getAdminUserId());
-        if (relevant == null) {
+        List<AdminRoleUserRelevant> relevantList = adminRoleUserMapper.findAllByUserId(adminUser.getAdminUserId());
+        if (relevantList.size() <= 0) {
             return new ArrayList<>();
         }
-        return adminPrivilegeService.getMenuByRoleList(Collections.singletonList(relevant.getAdminRole().getAdminRoleId()));
+        List<Integer> roleIds = new ArrayList<>();
+        for (AdminRoleUserRelevant relevant : relevantList) {
+            roleIds.add(relevant.getAdminRole().getAdminRoleId());
+        }
+        ConsoleUtil.formatPrint(roleIds);
+        return adminPrivilegeService.getMenuByRoleList(roleIds);
     }
 
     /**
@@ -54,7 +62,16 @@ public class MenuService extends BaseService {
      * @throws IOException 解析JSON错误
      */
     public List<Menu> getMenuByParentId(Integer parentId) throws IOException {
-        List<AdminResource> listResource = adminRMapper.findByParentId(parentId);
+        if (parentId == AdminResourceConst.PARENT_ID_DEFAULT) {
+            adminResourceListAll = adminRMapper.findByParams(new AdminResource());
+        }
+        List<AdminResource> listResource;
+        //本地有使用本地的数据
+        if (adminResourceListAll.size() > 0) {
+            listResource = this.getMenuByListAndParentId(parentId);
+        } else {
+            listResource = adminRMapper.findByParentId(parentId);
+        }
         List<Menu> list = new ArrayList<>();
         for (AdminResource adminResource : listResource) {
             Menu menu = formatInfoDetail(adminResource);
@@ -62,6 +79,21 @@ public class MenuService extends BaseService {
             list.add(menu);
         }
         return list;
+    }
+
+    /**
+     * 查询本地list信息
+     * @param parentId -
+     * @return -
+     */
+    public List<AdminResource> getMenuByListAndParentId(Integer parentId) {
+        List<AdminResource> adminResourceList = new ArrayList<>();
+        for (AdminResource adminResource : adminResourceListAll) {
+            if (adminResource.getAdminResourceParentId().equals(parentId)) {
+                adminResourceList.add(adminResource);
+            }
+        }
+        return adminResourceList;
     }
 
     /**
@@ -141,8 +173,8 @@ public class MenuService extends BaseService {
 
     /**
      * 是否选中父菜单
-     * @param menu
-     * @return
+     * @param menu -
+     * @return -
      */
     public Boolean isChecked(Menu menu) {
         for (Menu cMenu : menu.getChildren()) {
