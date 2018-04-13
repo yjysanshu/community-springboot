@@ -16,6 +16,12 @@ public class AdvertService {
     @Autowired
     private AdvertMapper advertMapper;
 
+    public List<Advert> getAdvertByType(Integer type) {
+        Advert advert = new Advert();
+        advert.setAdvertType(type);
+        return advertMapper.findByParams(advert);
+    }
+
     /**
      * 获取所有的广告信息
      * @return -

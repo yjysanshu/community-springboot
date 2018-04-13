@@ -2,6 +2,7 @@ package com.lxl.common.services;
 
 import com.lxl.admin.models.request.RepairOrderRequest;
 import com.lxl.admin.models.response.RepairOrderResponse;
+import com.lxl.api.models.request.RepairRequest;
 import com.lxl.common.mapper.RepairOrderMapper;
 import com.lxl.common.models.RepairOrder;
 import com.lxl.common.util.CodeUtil;
@@ -16,6 +17,18 @@ public class RepairOrderService extends BaseService {
 
     @Autowired
     private RepairOrderMapper repairOrderMapper;
+
+    public Integer userReport(RepairRequest request) {
+        RepairOrder repairOrder = new RepairOrder();
+        repairOrder.setRepairOrderCreateAt(new Date());
+        repairOrder.setRepairOrderCode(CodeUtil.createRepairOrderCode());
+        repairOrder.setRepairOrderRoomId(request.getRoomId());
+        repairOrder.setRepairOrderRepairRangeId(request.getRangeId());
+        repairOrder.setRepairOrderPhone(request.getPhone());
+        repairOrder.setRepairOrderStatus(0);
+        repairOrder.setRepairOrderDescription(request.getDescription());
+        return repairOrderMapper.insertByParams(repairOrder);
+    }
 
     public List<RepairOrderResponse> getList(RepairOrderRequest request) {
         Map<String, Object> map = new HashMap<>();
