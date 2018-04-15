@@ -28,6 +28,13 @@
         WHERE fast_mail_id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="findByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM fast_mail
+        WHERE fast_mail_receive_phone = #{phone,jdbcType=VARCHAR}
+    </select>
+
     <delete id="deleteOneById" parameterType="java.lang.Integer" >
         DELETE FROM fast_mail
         WHERE fast_mail_id = #{id,jdbcType=INTEGER}

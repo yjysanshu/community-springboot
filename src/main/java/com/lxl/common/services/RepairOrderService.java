@@ -4,8 +4,10 @@ import com.lxl.admin.models.request.RepairOrderRequest;
 import com.lxl.admin.models.response.RepairOrderResponse;
 import com.lxl.api.models.request.RepairRequest;
 import com.lxl.common.mapper.RepairOrderMapper;
+import com.lxl.common.models.OauthUser;
 import com.lxl.common.models.RepairOrder;
 import com.lxl.common.util.CodeUtil;
+import com.lxl.common.util.ConsoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +20,34 @@ public class RepairOrderService extends BaseService {
     @Autowired
     private RepairOrderMapper repairOrderMapper;
 
+    @Autowired
+    private OauthUserService userService;
+
+    public List<RepairOrderResponse> getListByUser() {
+        OauthUser oauthUser = this.getUser();
+        if (oauthUser == null) {
+            return null;
+        }
+        ConsoleUtil.formatPrint(oauthUser);
+        List<RepairOrderResponse> list = new ArrayList<>();
+        List<RepairOrder> listRepairOrder = repairOrderMapper.findByUserId(oauthUser.getOauthUserId());
+        for (RepairOrder repairOrder : listRepairOrder) {
+            RepairOrderResponse repairOrderResponse = formatResponseDetail(repairOrder);
+            list.add(repairOrderResponse);
+        }
+        ConsoleUtil.formatPrint(list);
+        return list;
+    }
+
     public Integer userReport(RepairRequest request) {
+        OauthUser oauthUser = this.getUser();
+        if (oauthUser == null) {
+            return 0;
+        }
         RepairOrder repairOrder = new RepairOrder();
         repairOrder.setRepairOrderCreateAt(new Date());
         repairOrder.setRepairOrderCode(CodeUtil.createRepairOrderCode());
-        repairOrder.setRepairOrderRoomId(request.getRoomId());
+        repairOrder.setRepairOrderUserId(oauthUser.getOauthUserId());
         repairOrder.setRepairOrderRepairRangeId(request.getRangeId());
         repairOrder.setRepairOrderPhone(request.getPhone());
         repairOrder.setRepairOrderStatus(0);
@@ -65,7 +90,7 @@ public class RepairOrderService extends BaseService {
             repairOrder.setRepairOrderCreateAt(new Date());
             repairOrder.setRepairOrderCode(CodeUtil.createRepairOrderCode());
         }
-        repairOrder.setRepairOrderRoomId(request.getRoomId());
+        repairOrder.setRepairOrderUserId(request.getUserId());
         repairOrder.setRepairOrderRepairRangeId(request.getRepairRangeId());
         repairOrder.setRepairOrderPhone(request.getPhone());
         repairOrder.setRepairOrderStatus(request.getStatus());
@@ -85,7 +110,8 @@ public class RepairOrderService extends BaseService {
         RepairOrderResponse response = new RepairOrderResponse();
         response.setId(repairOrder.getRepairOrderId());
         response.setCode(repairOrder.getRepairOrderCode());
-        response.setRoomId(repairOrder.getRepairOrderRoomId());
+        response.setUserId(repairOrder.getRepairOrderUserId());
+        response.setUserName(userService.getUserNameById(repairOrder.getRepairOrderUserId()));
         response.setRepairRangeId(repairOrder.getRepairOrderRepairRangeId());
         response.setPhone(repairOrder.getRepairOrderPhone());
         response.setStatus(repairOrder.getRepairOrderStatus());
@@ -100,7 +126,7 @@ public class RepairOrderService extends BaseService {
         RepairOrder repairOrder = new RepairOrder();
         repairOrder.setRepairOrderId(request.getId());
         repairOrder.setRepairOrderCode(request.getCode());
-        repairOrder.setRepairOrderRoomId(request.getRoomId());
+        repairOrder.setRepairOrderUserId(request.getUserId());
         repairOrder.setRepairOrderRepairRangeId(request.getRepairRangeId());
         repairOrder.setRepairOrderPhone(request.getPhone());
         repairOrder.setRepairOrderStatus(request.getStatus());

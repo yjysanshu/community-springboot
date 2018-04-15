@@ -37,7 +37,7 @@ public class FormatUtil {
     }
 
     public static Map fail(int errorCode, Map data) {
-        return FormatUtil.fail(ErrorConst.SYSTEM_EXCEPTION, ErrorConst.messageMap.get(errorCode), data);
+        return FormatUtil.fail(errorCode, ErrorConst.messageMap.get(errorCode), data);
     }
 
     public static Map fail(int errorCode, String message, Map data) {

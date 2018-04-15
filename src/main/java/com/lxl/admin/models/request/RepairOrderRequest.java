@@ -3,7 +3,7 @@ package com.lxl.admin.models.request;
 public class RepairOrderRequest extends BaseRequest {
 	private Integer id;
 	private String code;
-	private Integer roomId;
+	private Integer userId;
 	private Integer repairRangeId;
 	private String phone;
 	private Integer status;
@@ -26,12 +26,12 @@ public class RepairOrderRequest extends BaseRequest {
 		this.code = code;
 	}
 
-	public Integer getRoomId() {
-		return this.roomId;
+	public Integer getUserId() {
+		return this.userId;
 	}
 
-	public void setRoomId(Integer roomId) {
-		this.roomId = roomId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public Integer getRepairRangeId() {

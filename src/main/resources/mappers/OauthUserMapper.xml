@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lxl.common.mapper.OauthUserMapper" >
+
+    <resultMap id="BaseResultMap" type="com.lxl.common.models.OauthUser" >
+        <result column="oauth_user_id" property="oauthUserId" jdbcType="INTEGER" />
+        <result column="oauth_user_phone" property="oauthUserPhone" jdbcType="VARCHAR" />
+        <result column="oauth_user_name" property="oauthUserName" jdbcType="VARCHAR" />
+        <result column="oauth_user_password_hash" property="oauthUserPasswordHash" jdbcType="VARCHAR" />
+        <result column="oauth_user_password_reset_token" property="oauthUserPasswordResetToken" jdbcType="VARCHAR" />
+        <result column="oauth_user_house_hold_id" property="oauthUserHouseHoldId" jdbcType="INTEGER" />
+        <result column="oauth_user_status" property="oauthUserStatus" jdbcType="INTEGER" />
+        <result column="oauth_user_create_at" property="oauthUserCreateAt" jdbcType="TIMESTAMP" />
+        <result column="oauth_user_update_at" property="oauthUserUpdateAt" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        oauth_user_id, oauth_user_phone, oauth_user_name, oauth_user_password_hash, oauth_user_password_reset_token, oauth_user_house_hold_id, oauth_user_status, oauth_user_create_at, oauth_user_update_at
+    </sql>
+
+    <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM oauth_user
+        WHERE oauth_user_id = #{id,jdbcType=INTEGER}
+    </select>
+
+    <select id="findOneByPhone" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM oauth_user
+        WHERE oauth_user_phone = #{phone, jdbcType=VARCHAR}
+    </select>
+
+    <select id="findOneByToken" resultMap="BaseResultMap" parameterType="java.lang.String" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM oauth_user
+        WHERE oauth_user_password_reset_token = #{token, jdbcType=VARCHAR}
+    </select>
+
+    <delete id="deleteOneById" parameterType="java.lang.Integer" >
+        DELETE FROM oauth_user
+        WHERE oauth_user_id = #{id,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" parameterType="com.lxl.common.models.OauthUser" >
+        INSERT INTO HOUSE (oauth_user_id, oauth_user_phone, oauth_user_name, oauth_user_password_hash, oauth_user_password_reset_token, oauth_user_house_hold_id, oauth_user_status, oauth_user_create_at, oauth_user_update_at)
+        VALUES (#{oauthUserId,jdbcType=INTEGER}, #{oauthUserPhone,jdbcType=VARCHAR}, #{oauthUserName,jdbcType=VARCHAR}, #{oauthUserPasswordHash,jdbcType=VARCHAR}, #{oauthUserPasswordResetToken,jdbcType=VARCHAR}, #{oauthUserHouseHoldId,jdbcType=INTEGER}, #{oauthUserStatus,jdbcType=INTEGER}, #{oauthUserCreateAt,jdbcType=TIMESTAMP}, #{oauthUserUpdateAt,jdbcType=TIMESTAMP})
+    </insert>
+
+    <insert id="insertByParams" parameterType="com.lxl.common.models.OauthUser" >
+        INSERT INTO oauth_user
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            <if test="oauthUserId != null" >
+                oauth_user_id,
+            </if>
+            <if test="oauthUserPhone != null" >
+                oauth_user_phone,
+            </if>
+            <if test="oauthUserName != null" >
+                oauth_user_name,
+            </if>
+            <if test="oauthUserPasswordHash != null" >
+                oauth_user_password_hash,
+            </if>
+            <if test="oauthUserPasswordResetToken != null" >
+                oauth_user_password_reset_token,
+            </if>
+            <if test="oauthUserHouseHoldId != null" >
+                oauth_user_house_hold_id,
+            </if>
+            <if test="oauthUserStatus != null" >
+                oauth_user_status,
+            </if>
+            <if test="oauthUserCreateAt != null" >
+                oauth_user_create_at,
+            </if>
+            <if test="oauthUserUpdateAt != null" >
+                oauth_user_update_at,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            <if test="oauthUserId != null" >
+                #{oauthUserId,jdbcType=INTEGER},
+            </if>
+            <if test="oauthUserPhone != null" >
+                #{oauthUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserName != null" >
+                #{oauthUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserPasswordHash != null" >
+                #{oauthUserPasswordHash,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserPasswordResetToken != null" >
+                #{oauthUserPasswordResetToken,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserHouseHoldId != null" >
+                #{oauthUserHouseHoldId,jdbcType=INTEGER},
+            </if>
+            <if test="oauthUserStatus != null" >
+                #{oauthUserStatus,jdbcType=INTEGER},
+            </if>
+            <if test="oauthUserCreateAt != null" >
+                #{oauthUserCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="oauthUserUpdateAt != null" >
+                #{oauthUserUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByIdAndParams" parameterType="com.lxl.common.models.OauthUser" >
+        update oauth_user
+        <set>
+            <if test="oauthUserPhone != null" >
+                oauth_user_phone = #{oauthUserPhone,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserName != null" >
+                oauth_user_name = #{oauthUserName,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserPasswordHash != null" >
+                oauth_user_password_hash = #{oauthUserPasswordHash,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserPasswordResetToken != null" >
+                oauth_user_password_reset_token = #{oauthUserPasswordResetToken,jdbcType=VARCHAR},
+            </if>
+            <if test="oauthUserHouseHoldId != null" >
+                oauth_user_house_hold_id = #{oauthUserHouseHoldId,jdbcType=INTEGER},
+            </if>
+            <if test="oauthUserStatus != null" >
+                oauth_user_status = #{oauthUserStatus,jdbcType=INTEGER},
+            </if>
+            <if test="oauthUserCreateAt != null" >
+                oauth_user_create_at = #{oauthUserCreateAt,jdbcType=TIMESTAMP},
+            </if>
+            <if test="oauthUserUpdateAt != null" >
+                oauth_user_update_at = #{oauthUserUpdateAt,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where oauth_user_id = #{oauthUserId,jdbcType=INTEGER}
+    </update>
+
+    <select id="findByParams" resultMap="BaseResultMap" parameterType="com.lxl.common.models.OauthUser">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM oauth_user
+        <where>
+            <if test="oauthUserId != null" >
+                AND oauth_user_id = #{oauthUserId,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUserPhone != null" >
+                AND oauth_user_phone = #{oauthUserPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserName != null" >
+                AND oauth_user_name = #{oauthUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserPasswordHash != null" >
+                AND oauth_user_password_hash = #{oauthUserPasswordHash,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserPasswordResetToken != null" >
+                AND oauth_user_password_reset_token = #{oauthUserPasswordResetToken,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserHouseHoldId != null" >
+                AND oauth_user_house_hold_id = #{oauthUserHouseHoldId,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUserStatus != null" >
+                AND oauth_user_status = #{oauthUserStatus,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUserCreateAt != null" >
+                AND oauth_user_create_at = #{oauthUserCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="oauthUserUpdateAt != null" >
+                AND oauth_user_update_at = #{oauthUserUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY oauth_user_id DESC
+    </select>
+
+    <select id="findByParamsAndPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM oauth_user
+        <where>
+            <if test="oauthUser.oauthUserId != null" >
+                AND oauth_user_id = #{oauthUser.oauthUserId,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUser.oauthUserPhone != null" >
+                AND oauth_user_phone = #{oauthUser.oauthUserPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUser.oauthUserName != null" >
+                AND oauth_user_name = #{oauthUser.oauthUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUser.oauthUserPasswordHash != null" >
+                AND oauth_user_password_hash = #{oauthUser.oauthUserPasswordHash,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUser.oauthUserPasswordResetToken != null" >
+                AND oauth_user_password_reset_token = #{oauthUser.oauthUserPasswordResetToken,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUser.oauthUserHouseHoldId != null" >
+                AND oauth_user_house_hold_id = #{oauthUser.oauthUserHouseHoldId,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUser.oauthUserStatus != null" >
+                AND oauth_user_status = #{oauthUser.oauthUserStatus,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUser.oauthUserCreateAt != null" >
+                AND oauth_user_create_at = #{oauthUser.oauthUserCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="oauthUser.oauthUserUpdateAt != null" >
+                AND oauth_user_update_at = #{oauthUser.oauthUserUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+        ORDER BY oauth_user_id DESC LIMIT ${(page - 1) * size}, ${size}
+    </select>
+
+    <select id="findTotalByParams" resultType="java.lang.Integer" parameterType="com.lxl.common.models.OauthUser">
+        SELECT COUNT(*) FROM oauth_user
+        <where>
+            <if test="oauthUserId != null" >
+                AND oauth_user_id = #{oauthUserId,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUserPhone != null" >
+                AND oauth_user_phone = #{oauthUserPhone,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserName != null" >
+                AND oauth_user_name = #{oauthUserName,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserPasswordHash != null" >
+                AND oauth_user_password_hash = #{oauthUserPasswordHash,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserPasswordResetToken != null" >
+                AND oauth_user_password_reset_token = #{oauthUserPasswordResetToken,jdbcType=VARCHAR}
+            </if>
+            <if test="oauthUserHouseHoldId != null" >
+                AND oauth_user_house_hold_id = #{oauthUserHouseHoldId,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUserStatus != null" >
+                AND oauth_user_status = #{oauthUserStatus,jdbcType=INTEGER}
+            </if>
+            <if test="oauthUserCreateAt != null" >
+                AND oauth_user_create_at = #{oauthUserCreateAt,jdbcType=TIMESTAMP}
+            </if>
+            <if test="oauthUserUpdateAt != null" >
+                AND oauth_user_update_at = #{oauthUserUpdateAt,jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+</mapper>

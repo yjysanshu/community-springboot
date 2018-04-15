@@ -1,17 +1,17 @@
 package com.lxl.api.models.request;
 
 public class RepairRequest {
-    private Integer roomId;
+    private Integer userId;
     private Integer rangeId;
     private String phone;
     private String description;
 
-    public Integer getRoomId() {
-        return roomId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setRoomId(Integer roomId) {
-        this.roomId = roomId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Integer getRangeId() {

@@ -1,6 +1,7 @@
 package com.lxl.api.controllers;
 
 import com.lxl.api.models.request.RepairRequest;
+import com.lxl.common.consts.ErrorConst;
 import com.lxl.common.services.RepairOrderService;
 import com.lxl.common.util.FormatUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +18,18 @@ public class RepairController {
     @Autowired
     private RepairOrderService repairOrderService;
 
+    @RequestMapping("/list")
+    public Map getList() {
+        return FormatUtil.success(repairOrderService.getListByUser());
+    }
+
     @RequestMapping("/report")
     public Map report(@RequestBody RepairRequest request) {
         Integer result = repairOrderService.userReport(request);
         if (result > 0) {
             return FormatUtil.success();
         } else {
-            return FormatUtil.fail();
+            return FormatUtil.fail(ErrorConst.LOGIN_EXCEPTION, null);
         }
         //return FormatUtil.success();
     }

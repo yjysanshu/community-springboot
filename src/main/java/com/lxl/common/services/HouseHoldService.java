@@ -6,6 +6,7 @@ import com.lxl.common.mapper.HouseHoldMapper;
 import com.lxl.common.models.HouseHold;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -18,6 +19,9 @@ public class HouseHoldService {
 
     @Autowired
     private RoomService roomService;
+
+    @Autowired
+    private OauthUserService userService;
 
     /**
      * 获取显示的列表
@@ -50,6 +54,7 @@ public class HouseHoldService {
      * @param request 请求的信息
      * @return 受影响的行数
      */
+    @Transactional
     public Integer save(HouseHoldRequest request) {
         HouseHold houseHold;
         if (request.getId() != null) {
@@ -66,10 +71,11 @@ public class HouseHoldService {
         houseHold.setHouseHoldType(request.getType());
         houseHold.setHouseHoldDescription(request.getDescription());
         if (request.getId() != null) {
-            return houseHoldMapper.updateByIdAndParams(houseHold);
+            houseHoldMapper.updateByIdAndParams(houseHold);
         } else {
-            return houseHoldMapper.insertByParams(houseHold);
+            houseHoldMapper.insertByParams(houseHold);
         }
+        return userService.addUser(houseHold.getHouseHoldId(), houseHold.getHouseHoldPhone(), houseHold.getHouseHoldName());
     }
 
     /**

@@ -3,11 +3,12 @@ package com.lxl.admin.models.response;
 public class RepairOrderResponse extends BaseResponse {
 	private Integer id;
 	private String code;
-	private Integer roomId;
+	private Integer userId;
 	private Integer repairRangeId;
 	private String phone;
 	private Integer status;
 	private Integer adminUserId;
+	private String userName;
 	private String description;
 
 	public Integer getId() {
@@ -26,12 +27,20 @@ public class RepairOrderResponse extends BaseResponse {
 		this.code = code;
 	}
 
-	public Integer getRoomId() {
-		return this.roomId;
+	public Integer getUserId() {
+		return this.userId;
 	}
 
-	public void setRoomId(Integer roomId) {
-		this.roomId = roomId;
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
+
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 
 	public Integer getRepairRangeId() {

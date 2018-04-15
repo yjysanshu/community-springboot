@@ -5,7 +5,7 @@
     <resultMap id="BaseResultMap" type="com.lxl.common.models.RepairOrder" >
         <result column="repair_order_id" property="repairOrderId" jdbcType="INTEGER" />
         <result column="repair_order_code" property="repairOrderCode" jdbcType="VARCHAR" />
-        <result column="repair_order_room_id" property="repairOrderRoomId" jdbcType="INTEGER" />
+        <result column="repair_order_user_id" property="repairOrderUserId" jdbcType="INTEGER" />
         <result column="repair_order_repair_range_id" property="repairOrderRepairRangeId" jdbcType="INTEGER" />
         <result column="repair_order_phone" property="repairOrderPhone" jdbcType="VARCHAR" />
         <result column="repair_order_status" property="repairOrderStatus" jdbcType="INTEGER" />
@@ -16,7 +16,7 @@
     </resultMap>
 
     <sql id="Base_Column_List" >
-        repair_order_id, repair_order_code, repair_order_room_id, repair_order_repair_range_id, repair_order_phone, repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at
+        repair_order_id, repair_order_code, repair_order_user_id, repair_order_repair_range_id, repair_order_phone, repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at
     </sql>
 
     <select id="findOneById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
@@ -26,14 +26,21 @@
         WHERE repair_order_id = #{id,jdbcType=INTEGER}
     </select>
 
+    <select id="findByUserId" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM repair_order
+        WHERE repair_order_user_id = #{userId,jdbcType=INTEGER}
+    </select>
+
     <delete id="deleteOneById" parameterType="java.lang.Integer" >
         DELETE FROM repair_order
         WHERE repair_order_id = #{id,jdbcType=INTEGER}
     </delete>
 
     <insert id="insert" parameterType="com.lxl.common.models.RepairOrder" >
-        INSERT INTO HOUSE (repair_order_id, repair_order_code, repair_order_room_id, repair_order_repair_range_id, repair_order_phone, repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at)
-        VALUES (#{repairOrderId,jdbcType=INTEGER}, #{repairOrderCode,jdbcType=VARCHAR}, #{repairOrderRoomId,jdbcType=INTEGER}, #{repairOrderRepairRangeId,jdbcType=INTEGER}, #{repairOrderPhone,jdbcType=VARCHAR}, #{repairOrderStatus,jdbcType=INTEGER}, #{repairOrderAdminUserId,jdbcType=INTEGER}, #{repairOrderDescription,jdbcType=VARCHAR}, #{repairOrderCreateAt,jdbcType=TIMESTAMP}, #{repairOrderUpdateAt,jdbcType=TIMESTAMP})
+        INSERT INTO HOUSE (repair_order_id, repair_order_code, repair_order_user_id, repair_order_repair_range_id, repair_order_phone, repair_order_status, repair_order_admin_user_id, repair_order_description, repair_order_create_at, repair_order_update_at)
+        VALUES (#{repairOrderId,jdbcType=INTEGER}, #{repairOrderCode,jdbcType=VARCHAR}, #{repairOrderUserId,jdbcType=INTEGER}, #{repairOrderRepairRangeId,jdbcType=INTEGER}, #{repairOrderPhone,jdbcType=VARCHAR}, #{repairOrderStatus,jdbcType=INTEGER}, #{repairOrderAdminUserId,jdbcType=INTEGER}, #{repairOrderDescription,jdbcType=VARCHAR}, #{repairOrderCreateAt,jdbcType=TIMESTAMP}, #{repairOrderUpdateAt,jdbcType=TIMESTAMP})
     </insert>
 
     <insert id="insertByParams" parameterType="com.lxl.common.models.RepairOrder" >
@@ -45,8 +52,8 @@
             <if test="repairOrderCode != null" >
                 repair_order_code,
             </if>
-            <if test="repairOrderRoomId != null" >
-                repair_order_room_id,
+            <if test="repairOrderUserId != null" >
+                repair_order_user_id,
             </if>
             <if test="repairOrderRepairRangeId != null" >
                 repair_order_repair_range_id,
@@ -77,8 +84,8 @@
             <if test="repairOrderCode != null" >
                 #{repairOrderCode,jdbcType=VARCHAR},
             </if>
-            <if test="repairOrderRoomId != null" >
-                #{repairOrderRoomId,jdbcType=INTEGER},
+            <if test="repairOrderUserId != null" >
+                #{repairOrderUserId,jdbcType=INTEGER},
             </if>
             <if test="repairOrderRepairRangeId != null" >
                 #{repairOrderRepairRangeId,jdbcType=INTEGER},
@@ -110,8 +117,8 @@
             <if test="repairOrderCode != null" >
                 repair_order_code = #{repairOrderCode,jdbcType=VARCHAR},
             </if>
-            <if test="repairOrderRoomId != null" >
-                repair_order_room_id = #{repairOrderRoomId,jdbcType=INTEGER},
+            <if test="repairOrderUserId != null" >
+                repair_order_user_id = #{repairOrderUserId,jdbcType=INTEGER},
             </if>
             <if test="repairOrderRepairRangeId != null" >
                 repair_order_repair_range_id = #{repairOrderRepairRangeId,jdbcType=INTEGER},
@@ -149,8 +156,8 @@
             <if test="repairOrderCode != null" >
                 AND repair_order_code = #{repairOrderCode,jdbcType=VARCHAR}
             </if>
-            <if test="repairOrderRoomId != null" >
-                AND repair_order_room_id = #{repairOrderRoomId,jdbcType=INTEGER}
+            <if test="repairOrderUserId != null" >
+                AND repair_order_user_id = #{repairOrderUserId,jdbcType=INTEGER}
             </if>
             <if test="repairOrderRepairRangeId != null" >
                 AND repair_order_repair_range_id = #{repairOrderRepairRangeId,jdbcType=INTEGER}
@@ -188,8 +195,8 @@
             <if test="repairOrder.repairOrderCode != null" >
                 AND repair_order_code = #{repairOrder.repairOrderCode,jdbcType=VARCHAR}
             </if>
-            <if test="repairOrder.repairOrderRoomId != null" >
-                AND repair_order_room_id = #{repairOrder.repairOrderRoomId,jdbcType=INTEGER}
+            <if test="repairOrder.repairOrderUserId != null" >
+                AND repair_order_user_id = #{repairOrder.repairOrderUserId,jdbcType=INTEGER}
             </if>
             <if test="repairOrder.repairOrderRepairRangeId != null" >
                 AND repair_order_repair_range_id = #{repairOrder.repairOrderRepairRangeId,jdbcType=INTEGER}
@@ -225,8 +232,8 @@
             <if test="repairOrderCode != null" >
                 AND repair_order_code = #{repairOrderCode,jdbcType=VARCHAR}
             </if>
-            <if test="repairOrderRoomId != null" >
-                AND repair_order_room_id = #{repairOrderRoomId,jdbcType=INTEGER}
+            <if test="repairOrderUserId != null" >
+                AND repair_order_user_id = #{repairOrderUserId,jdbcType=INTEGER}
             </if>
             <if test="repairOrderRepairRangeId != null" >
                 AND repair_order_repair_range_id = #{repairOrderRepairRangeId,jdbcType=INTEGER}

@@ -36,7 +36,7 @@
         VALUES (#{houseHoldId,jdbcType=INTEGER}, #{houseHoldRoomId,jdbcType=INTEGER}, #{houseHoldName,jdbcType=VARCHAR}, #{houseHoldPhone,jdbcType=VARCHAR}, #{houseHoldSex,jdbcType=VARCHAR}, #{houseHoldIndividual,jdbcType=VARCHAR}, #{houseHoldType,jdbcType=INTEGER}, #{houseHoldDescription,jdbcType=VARCHAR}, #{houseHoldCreateAt,jdbcType=TIMESTAMP}, #{houseHoldUpdateAt,jdbcType=TIMESTAMP})
     </insert>
 
-    <insert id="insertByParams" parameterType="com.lxl.common.models.HouseHold" >
+    <insert id="insertByParams" useGeneratedKeys="true" keyProperty="houseHoldId" parameterType="com.lxl.common.models.HouseHold" >
         INSERT INTO house_hold
         <trim prefix="(" suffix=")" suffixOverrides="," >
             <if test="houseHoldId != null" >

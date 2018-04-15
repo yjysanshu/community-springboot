@@ -5,7 +5,7 @@ import java.util.Date;
 public class RepairOrder {
 	private Integer repairOrderId;
 	private String repairOrderCode;
-	private Integer repairOrderRoomId;
+	private Integer repairOrderUserId;
 	private Integer repairOrderRepairRangeId;
 	private String repairOrderPhone;
 	private Integer repairOrderStatus;
@@ -30,12 +30,12 @@ public class RepairOrder {
 		this.repairOrderCode = repairOrderCode;
 	}
 
-	public Integer getRepairOrderRoomId() {
-		return this.repairOrderRoomId;
+	public Integer getRepairOrderUserId() {
+		return this.repairOrderUserId;
 	}
 
-	public void setRepairOrderRoomId(Integer repairOrderRoomId) {
-		this.repairOrderRoomId = repairOrderRoomId;
+	public void setRepairOrderUserId(Integer repairOrderUserId) {
+		this.repairOrderUserId = repairOrderUserId;
 	}
 
 	public Integer getRepairOrderRepairRangeId() {

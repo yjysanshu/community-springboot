@@ -4,6 +4,8 @@ import com.lxl.admin.models.request.FastMailRequest;
 import com.lxl.admin.models.response.FastMailResponse;
 import com.lxl.common.mapper.FastMailMapper;
 import com.lxl.common.models.FastMail;
+import com.lxl.common.models.OauthUser;
+import com.lxl.common.util.ConsoleUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +13,26 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
-public class FastMailService {
+public class FastMailService extends BaseService {
 
     @Autowired
     private FastMailMapper fastMailMapper;
+
+    public List<FastMailResponse> getListByUser() {
+        OauthUser oauthUser = this.getUser();
+        if (oauthUser == null) {
+            return null;
+        }
+        ConsoleUtil.formatPrint(oauthUser);
+        List<FastMailResponse> list = new ArrayList<>();
+        List<FastMail> listFastMail = fastMailMapper.findByPhone(oauthUser.getOauthUserPhone());
+        for (FastMail fastMail : listFastMail) {
+            FastMailResponse fastMailResponse = formatResponseDetail(fastMail);
+            list.add(fastMailResponse);
+        }
+        ConsoleUtil.formatPrint(list);
+        return list;
+    }
 
     public List<FastMailResponse> getList(FastMailRequest request) {
         Map<String, Object> map = new HashMap<>();
