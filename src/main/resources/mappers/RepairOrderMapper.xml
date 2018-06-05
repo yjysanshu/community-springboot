@@ -30,7 +30,7 @@
         SELECT
         <include refid="Base_Column_List" />
         FROM repair_order
-        WHERE repair_order_user_id = #{userId,jdbcType=INTEGER}
+        WHERE repair_order_user_id = #{userId,jdbcType=INTEGER} ORDER BY repair_order_id desc
     </select>
 
     <delete id="deleteOneById" parameterType="java.lang.Integer" >

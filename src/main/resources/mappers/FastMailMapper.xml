@@ -32,7 +32,7 @@
         SELECT
         <include refid="Base_Column_List" />
         FROM fast_mail
-        WHERE fast_mail_receive_phone = #{phone,jdbcType=VARCHAR}
+        WHERE fast_mail_receive_phone = #{phone,jdbcType=VARCHAR}  ORDER BY fast_mail_id desc
     </select>
 
     <delete id="deleteOneById" parameterType="java.lang.Integer" >
